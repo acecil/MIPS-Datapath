@@ -1,0 +1,9 @@
+MIPS-Datapath is written by Andrew Gascoyne-Cecil.
+
+http://mi.eng.cam.ac.uk/~ahg/MIPS-Datapath/
+
+MIPS-Datapath is released under the terms of the GNU General Public License Version 3. (see http://www.gnu.org/licenses/gpl.html)
+
+To make the file browse to the Release folder and type "make" in a terminal.
+
+This program requires the wxWidgets, OpenGL and GLUT development libraries to be installed.
