@@ -168,7 +168,7 @@ void Model::saveFile(wxString file)
 		do
 		{
 			pmz->getInstructionString(address, curLine, err);
-			sfile.write(curLine.fn_str(), curLine.Len());
+			sfile.write((const char*)curLine.fn_str(), curLine.Len());
 			address += 4;
 		}
 		while(address < MAX_INSTRUCTIONS);
@@ -177,7 +177,7 @@ void Model::saveFile(wxString file)
 		do
 		{
 			pmz->getMemString(address, curLine);
-			sfile.write(curLine.fn_str(), curLine.Len());
+			sfile.write((const char*)curLine.fn_str(), curLine.Len());
 			address ++;
 			if(!(address % 16))
 			{

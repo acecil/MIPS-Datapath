@@ -1684,8 +1684,8 @@ void ALU::step()
 			break;
 		case 7: // Set on less than 
 			// 2's complement subtraction
-			neg1 = (input1>>31); // is input1 negative
-			neg2 = (input2>>31); // is input2 negative
+			neg1 = !!(input1>>31); // is input1 negative
+			neg2 = !!(input2>>31); // is input2 negative
 			input1N = neg1 ? ((luint)(1)<<32) - input1 : input1; // positive version of input1;
 			input2N = neg2 ? ((luint)(1)<<32) - input2 : input2; // positive version of input1;
 			if((neg1 ? -input1N : input1N) < (neg2 ? -input2N : input2N))
@@ -2015,9 +2015,9 @@ void IDEXReg::step()
 	{
 		// Extract the three Execution control lines
 		int EX = linkList[6]->getVal();
-		bool RegDst = EX >> 3;
+		bool RegDst = !!(EX >> 3);
 		int ALUOp = (EX >> 1) - (RegDst << 2);
-		bool ALUSrc = EX % 2;
+		bool ALUSrc = !!(EX % 2);
 		
 		linkList[9]->setVal(linkList[0]->getVal());
 		linkList[10]->setVal(linkList[1]->getVal());
@@ -2048,9 +2048,9 @@ void EXMEMReg::step()
 	if(getDelayRemaining() == 1)
 	{
 		int MEM = linkList[5]->getVal();
-		bool MemRead = MEM >> 2;
-		bool MemWrite = (MEM >> 1) - (MemRead << 1);
-		bool Branch = MEM % 2;
+		bool MemRead = !!(MEM >> 2);
+		bool MemWrite = !!((MEM >> 1) - (MemRead << 1));
+		bool Branch = !!(MEM % 2);
 		
 		linkList[7]->setVal(linkList[0]->getVal());
 		linkList[8]->setVal(linkList[1]->getVal());
@@ -2074,8 +2074,8 @@ void MEMWBReg::step()
 	if(getDelayRemaining() == 1)
 	{
 		int WB = linkList[3]->getVal();
-		bool RegWrite = WB >> 1;
-		bool MemToReg = WB % 2;
+		bool RegWrite = !!(WB >> 1);
+		bool MemToReg = !!(WB % 2);
 		
 		linkList[4]->setVal(linkList[0]->getVal());
 		linkList[5]->setVal(linkList[1]->getVal());

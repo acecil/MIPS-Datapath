@@ -158,7 +158,7 @@ bool Config::parse()
 
 void Config::readConfigValue()
 {
-	uint num;
+	unsigned int num;
 	configName name;
 	
 	// Get config name
@@ -171,8 +171,8 @@ void Config::readConfigValue()
 	
 	configName actualName = name;
 	bool actualBool;
-	uint actualNum;
-	uint col[4];
+	unsigned int actualNum;
+	unsigned int col[4];
 	if(name == BAD_NAME)
 	{
 		readToLineEnd();
@@ -247,7 +247,7 @@ void Config::readConfigValue()
 		}
 		else
 		{
-			actualBool = num;
+			actualBool = !!num;
 		}
 		getSymbol(curSymbol, num, name);
 		setBool(actualName, actualBool);
@@ -257,7 +257,7 @@ void Config::readConfigValue()
 
 void Config::readToLineEnd()
 {
-	uint num;
+	unsigned int num;
 	configName name;
 	do
 	{
@@ -266,7 +266,7 @@ void Config::readToLineEnd()
 	while(curSymbol != SYM_SEMICOL && curSymbol != SYM_EOF);
 }
 
-void Config::getSymbol(Symbol & s, uint & num, configName & name)
+void Config::getSymbol(Symbol & s, unsigned int & num, configName & name)
 {
   	if (!eofile)
     {
@@ -321,7 +321,7 @@ void Config::skipSpaces()
 }
 
 // Gets the number from definition file until non-digit character found
-void Config::getNumber(uint &num)
+void Config::getNumber(unsigned int &num)
 {
   	num = 0;
   	while((!eofile) && isdigit(curch))
@@ -367,7 +367,7 @@ void Config::save()
 			
 			if(col.IsOk())
 			{
-				oFile << names[name] <<  ": " << (uint)col.Red() << ", " << (uint)col.Green() << ", " << (uint)col.Blue() << ", " << (uint)col.Alpha() << ";" << endl;
+				oFile << names[name] <<  ": " << (unsigned int)col.Red() << ", " << (unsigned int)col.Green() << ", " << (unsigned int)col.Blue() << ", " << (unsigned int)col.Alpha() << ";" << endl;
 			}
 		}
 		// Write each bool.
@@ -379,10 +379,10 @@ void Config::save()
 			oFile << names[name] << ": " << val << ";" << endl;
 		}
 		// Write each number.
-		for(map<configName, uint>::iterator i = numbers.begin(); i != numbers.end(); ++i)
+		for(map<configName, unsigned int>::iterator i = numbers.begin(); i != numbers.end(); ++i)
 		{
 			configName name = (*i).first;
-			uint val = (*i).second;
+			unsigned int val = (*i).second;
 			
 			oFile << names[name] << ": " << val << ";" << endl;
 		}
@@ -405,7 +405,7 @@ bool Config::getBool(configName name)
 	return bools[name];
 }
 
-uint Config::getNumber(configName name)
+unsigned int Config::getNumber(configName name)
 {
 	return numbers[name];
 }
@@ -420,7 +420,7 @@ void Config::setBool(configName name, bool newBool)
 	bools[name] = newBool;	
 }
 
-void Config::setNumber(configName name, uint newNum)
+void Config::setNumber(configName name, unsigned int newNum)
 {
 	numbers[name] = newNum;
 }

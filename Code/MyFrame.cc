@@ -108,14 +108,14 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 	
 	// Import icons
 	ico = new wxIconBundle();
-	ico->AddIcon(wxIcon(Icons::Cog_2_48_n_p_xpm, 48, 48));
-	ico->AddIcon(wxIcon(Icons::Cog_2_48_h_p_xpm, 48, 48));
-	ico->AddIcon(wxIcon(Icons::Cog_2_32_n_p_xpm, 32, 32));
-	ico->AddIcon(wxIcon(Icons::Cog_2_32_h_p_xpm, 32, 32));
-	ico->AddIcon(wxIcon(Icons::Cog_2_24_n_p_xpm, 24, 24));
-	ico->AddIcon(wxIcon(Icons::Cog_2_24_h_p_xpm, 24, 24));
-	ico->AddIcon(wxIcon(Icons::Cog_2_16_n_p_xpm, 16, 16));
-	ico->AddIcon(wxIcon(Icons::Cog_2_16_h_p_xpm, 16, 16));
+	ico->AddIcon(wxIcon(Icons::Cog_2_48_n_p_xpm));
+	ico->AddIcon(wxIcon(Icons::Cog_2_48_h_p_xpm));
+	ico->AddIcon(wxIcon(Icons::Cog_2_32_n_p_xpm));
+	ico->AddIcon(wxIcon(Icons::Cog_2_32_h_p_xpm));
+	ico->AddIcon(wxIcon(Icons::Cog_2_24_n_p_xpm));
+	ico->AddIcon(wxIcon(Icons::Cog_2_24_h_p_xpm));
+	ico->AddIcon(wxIcon(Icons::Cog_2_16_n_p_xpm));
+	ico->AddIcon(wxIcon(Icons::Cog_2_16_h_p_xpm));
 	SetIcons(*ico);
 	
 	wxAcceleratorEntry entries[4];
@@ -699,7 +699,7 @@ void MyFrame::EditOptions(wxCommandEvent& WXUNUSED(event))
 
 void MyFrame::LoadFile(wxCommandEvent& event)
 {
-	wxFileDialog openDlg(this, _T("Load Instruction File"), _T(""), _T(""), _T("Definition files (*.def)|*.def"), wxOPEN);
+	wxFileDialog openDlg(this, _T("Load Instruction File"), _T(""), _T(""), _T("Definition files (*.def)|*.def"), wxFD_OPEN);
 	if(openDlg.ShowModal() == wxID_OK)
 	{
 		if(openDlg.GetPath().c_str() != _T(""))
@@ -721,7 +721,7 @@ void MyFrame::LoadFile(wxCommandEvent& event)
 void MyFrame::SaveFile(wxCommandEvent& event)
 {
 	Parse(event);
-	wxFileDialog saveDlg(this, _T("Save Instruction File"), _T(""), _T(""), _T("Definition files (*.def)|*.def"), wxSAVE);
+	wxFileDialog saveDlg(this, _T("Save Instruction File"), _T(""), _T(""), _T("Definition files (*.def)|*.def"), wxFD_SAVE);
 	if(saveDlg.ShowModal() == wxID_OK)
 	{
 		wxString path = saveDlg.GetPath();
@@ -766,7 +766,7 @@ void MyFrame::ShowAbout(wxCommandEvent& WXUNUSED(event))
 	info.SetName(_T("MIPS-Datapath"));
 	info.SetDescription(_T("Graphical MIPS Datapath Simulator."));
 	info.AddDeveloper(_T("Andrew Gascoyne-Cecil"));
-	info.SetIcon(wxIcon(Icons::Cog_2_48_n_p_xpm, 48, 48));
+	info.SetIcon(wxIcon(Icons::Cog_2_48_n_p_xpm));
 	wxAboutBox(info);
 }
 

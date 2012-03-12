@@ -73,11 +73,11 @@ class Config
 		static Config* Instance();
 		wxColour getColour(configName name);
 		bool getBool(configName name);
-		uint getNumber(configName name);
+		unsigned int getNumber(configName name);
 		void setColour(configName name, wxColour newColour);
 		bool isNameAColour(configName name){ return nameIsColour[name]; };
 		void setBool(configName name, bool newBool);
-		void setNumber(configName name, uint newNum);
+		void setNumber(configName name, unsigned int newNum);
 		void save();
 	protected:
 		Config();
@@ -101,14 +101,14 @@ class Config
 		void readConfigValue();
 		void readToLineEnd();
 		void skipSpaces();
-		void getSymbol(Symbol & s, uint & num, configName & name);
-		void getNumber(uint & num);
+		void getSymbol(Symbol & s, unsigned int & num, configName & name);
+		void getNumber(unsigned int & num);
 		void getName(configName & name);
 		void getChar();
 		static Config* pinstance;
 		map<configName, wxColour> colours;
 		map<configName, bool> bools;
-		map<configName, uint> numbers;
+		map<configName, unsigned int> numbers;
 		map<configName, string> names;
 		map<configName, bool> nameIsColour;
 		map<configName, bool> isNameANumber;

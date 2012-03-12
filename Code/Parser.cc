@@ -272,7 +272,7 @@ void Parser::readLoadStoreInstruction()
 	readPunct(SYM_COMMA, ERR_COMMA);
 	readNum(val, imm, ERR_OFFSET);	
 	// Check bounds on offset.
-	if(val < -(1<<15 - 1) || (1<<15 - 1) < val)
+	if(val < -((1<<15) - 1) || ((1<<15) - 1) < val)
 	{
 		invalidInput(ERR_OFFSET);
 	}
