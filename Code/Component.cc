@@ -250,8 +250,7 @@ int Component::findOutput(wxPoint mouseLocation)
 
 int Component::findNearestLink(wxPoint mouseLocation, bool isOutput)
 {
-	numeric_limits<int> intInfo;
-	int nearest = intInfo.max();
+	int nearest = numeric_limits<int>::max();
 	Link* currLink;
 	
 	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
