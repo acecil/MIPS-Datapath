@@ -173,7 +173,7 @@ void Scanner::getChar(bool fromFile)
 
 bool Scanner::checkFile()
 {
-	return deffile;
+	return deffile.good();
 }
 
 // Private Methods

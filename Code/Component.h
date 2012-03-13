@@ -28,6 +28,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <list>
 #include <iostream>
 #include <limits>
 #include <exception>
@@ -35,16 +36,13 @@
 #include <wx/gdicmn.h>
 #include <wx/string.h>
 #include <wx/colour.h>
-#include "Link.h"
-#include "Coord.h"
-#include "Side.h"
-#include "Color.h"
 #include "Types.h"
 #include "Enums.h"
 #include "Maths.h"
 #include "Config.h"
-
-using namespace std;
+#include "Side.h"
+#include "Color.h"
+#include "Coord.h"
 
 class Link;
 class InputLink;
@@ -154,12 +152,12 @@ class Component
 	protected:
 		void drawShadedRectangle();
 		void drawRectangle();
-		static map<configName, Color> colours;
-		static vector<Color> activeLinkColors;
+		static std::map<configName, Color> colours;
+		static std::vector<Color> activeLinkColors;
 		float oldActiveLinkColor;
 		Color fillColorMin;
 		static Color scaleColors(Color c1, Color c2, double proportion);
-		map<int, Link*> linkList;
+		std::map<int, Link*> linkList;
 		uint pipelineStage; // What pipiline stage is this component in?
 		static uint pipelineCycle; // What pipeline stage is the program in?
 		static bool dataLinesBold;

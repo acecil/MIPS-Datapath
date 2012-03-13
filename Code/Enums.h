@@ -23,7 +23,7 @@
 #ifndef ENUMS_H_
 #define ENUMS_H_
 
-enum _Symbol
+enum Symbol
 {
 	SYM_MIN = 0,
 	SYM_BAD = 0,
@@ -49,9 +49,7 @@ enum _Symbol
 	SYM_MAX,
 };
 
-typedef enum _Symbol Symbol;
-
-enum _Layout
+enum Layout
 {
 	LAYOUT_MIN = 0,
 	LAYOUT_SIMPLE = 0,
@@ -59,8 +57,6 @@ enum _Layout
 	LAYOUT_FORWARDING = 2,
 	LAYOUT_MAX = 2
 };
-
-typedef enum _Layout Layout;
 
 enum _MainControlInputOutputs
 {

@@ -20,6 +20,11 @@
  * 
  */
  
+#include "MyFrame.h"
+#include "Model.h"
+#include "Component.h"
+#include "Link.h"
+
 #include "MyGLCanvas.h"
 
 BEGIN_EVENT_TABLE(MyGLCanvas, wxGLCanvas)
@@ -91,8 +96,6 @@ void MyGLCanvas::InitGL()
 void MyGLCanvas::OnPaint(wxPaintEvent& event)
 {
   wxPaintDC dc(this); // required for correct refreshing under MS windows
-  Render();
-  event.Skip();
 }
 
 void MyGLCanvas::OnSize(wxSizeEvent& event)

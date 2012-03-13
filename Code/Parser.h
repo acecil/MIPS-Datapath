@@ -25,12 +25,13 @@
 
 #include <map>
 #include <vector>
-#include "Scanner.h"
 #include "Types.h"
 #include "Enums.h"
 #include <iostream>
 
-typedef enum
+class Scanner;
+
+enum ParseError
 {
 	ERR_MIN,
 	ERR_INSTRUCTION,
@@ -47,7 +48,7 @@ typedef enum
 	ERR_NO_DATA_TAG,
 	ERR_NO_COLON,
 	ERR_MAX,
-} ParseError;
+};
 
 class Parser
 {

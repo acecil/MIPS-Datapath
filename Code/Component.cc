@@ -20,6 +20,11 @@
  * 
  */
  
+#include "Link.h"
+#include "Coord.h"
+#include "Side.h"
+#include "Color.h"
+
 #include "Component.h"
 
 class InvalidInputException : public exception

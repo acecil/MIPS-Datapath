@@ -20,9 +20,15 @@
  * 
  */
  
+#include "Component.h"
+#include "Scanner.h"
+#include "Parser.h"
+#include "Config.h"
+#include "Link.h"
+
 #include "Model.h"
 
-map<configName, bool> Model::bools;
+std::map<configName, bool> Model::bools;
 
 Model::Model()
 {
@@ -52,6 +58,11 @@ luint Model::getCurrentInstruction()
 void Model::getError(int num, wxString& error)
 {
 	pmz->getError(num, error);
+}
+
+int Model::getNumberOfErrors()
+{
+	return pmz->getNumberOfErrors();
 }
 
 void Model::getInstructionString(luint address, wxString& instr, bool & err)
@@ -1642,6 +1653,15 @@ Link* Model::findLink(wxPoint mousePos)
 	return 0;
 }
 
+luint Model::getMemoryData(uint mem, luint address)
+{
+	return memories[mem]->getData(address);
+}
+
+void Model::setMemoryData(uint mem, luint address, luint data)
+{
+	memories[mem]->setData(address, data);
+}
 
 
 

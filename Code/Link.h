@@ -26,14 +26,13 @@
 #include <vector>
 #include <string>
 #include <list>
+#include <map>
 #include <sstream>
-#include "Component.h"
+#include <wx/string.h>
 #include "Coord.h"
 #include "Side.h"
 #include "Types.h"
 #include "Enums.h"
-
-using namespace std;
 
 class Component;
 class OutputLink;
@@ -55,11 +54,11 @@ class Link
 		bool isShowText(){ return showText; };
 		Coord getTextPos(){ return textPos; };
 		void addVertex(double x, double y);
-		list<Coord*> getVertices(){ return vertices; };
+		std::list<Coord*> getVertices(){ return vertices; };
 		bool isOutput(){ return output; };
 		int getSlot(){ return slot; };
 		Component* getComp(){ return comp; };
-		void setVertexList(list<Coord*> *vertices);
+		void setVertexList(std::list<Coord*> *vertices);
 		int getAbsX();
 		int getAbsY();
 		virtual bool isActive() = 0;
@@ -79,7 +78,7 @@ class Link
 		bool active;
 		bool negBit16;
 		luint value; // Value in link.
-		map<Symbol, bool> instructionActive;
+		std::map<Symbol, bool> instructionActive;
 	private:
 		bool output;
 		bool showText;
@@ -89,7 +88,7 @@ class Link
 		Coord pos;
 		Coord textPos;
 		wxString name;
-		list<Coord*> vertices;
+		std::list<Coord*> vertices;
 		int ID;
 		int slot;
 		static const int LINK_WIDTH;
@@ -124,11 +123,11 @@ class OutputLink: public Link
 		OutputLink(int slot, Component* comp, double x, double y, Side edge, wxString name = _T(""), bool control = false, bool PC = false, bool showText = false, double textX = 0, double textY = 0);
 		void connect(Link* link);
 		virtual bool isConnected();
-		vector<Link*> getLinkList(){ return linkList; };
+		std::vector<Link*> getLinkList(){ return linkList; };
 		virtual bool isActive();
 		virtual luint getVal();
 	private:
-		vector<Link*> linkList;
+		std::vector<Link*> linkList;
 };
 
 #endif /*LINK_H_*/

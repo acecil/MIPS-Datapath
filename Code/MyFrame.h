@@ -24,6 +24,8 @@
 #define MYFRAME_H_
 
 #include "Enums.h"
+#include "Types.h"
+#include <map>
 #include <iostream>
 #include <wx/wx.h>
 #include <wx/icon.h>
@@ -42,15 +44,11 @@
 #include <wx/html/helpctrl.h>
 #include <wx/fs_arc.h>
 #include <wx/accel.h>
-#include "MyGLCanvas.h"
-#include "MyDialog.h"
-#include "MyDatalist.h"
-#include "Model.h"
-#include "Maths.h"
-#include "Config.h"
-#include "Icons.h"
 
 class MyGLCanvas;
+class ScrolledWindow;
+class Model;
+class MyDatalist;
 
 class MyFrame : public wxFrame
 {
@@ -92,7 +90,7 @@ private:
 	static const int LEFT_PANEL_MIN_WIDTH=213;
 	static const int LEFT_PANEL_MIN_HEIGHT=450;
 	MyGLCanvas *canvas;
-	wxScrolledWindow *GLWindow;
+	ScrolledWindow *GLWindow;
 	Model *processor;
 	wxPanel *leftPanel;
 	wxPanel *memoryPane;
@@ -100,7 +98,7 @@ private:
 	wxSplitterWindow *editorSplitter;
 	wxTextCtrl *editorText;
 	wxTextCtrl *errorText;
-	map<uint, MyDatalist*> dataList;
+	std::map<uint, MyDatalist*> dataList;
 	wxGrid *memoryList;
 	wxHtmlHelpController* help;
 	wxIconBundle* ico;

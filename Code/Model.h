@@ -25,9 +25,6 @@
 
 #include "Enums.h"
 #include "Types.h"
-#include "Component.h"
-#include "Scanner.h"
-#include "Parser.h"
 #include "Config.h"
 #include <list>
 #include <iostream>
@@ -39,8 +36,17 @@
 #include <cmath>
 #include <map>
 
-
-using namespace std;
+class Component;
+class Link;
+class Scanner;
+class Parser;
+class Memory;
+class PipelineRegister;
+class PC;
+class AndGate;
+class OutputLink;
+class InputLink;
+struct Coord;
 
 class Model
 {
@@ -49,7 +55,7 @@ class Model
 		~Model();
 		void resetColours();
 		void getError(int num, wxString& error);
-		int getNumberOfErrors(){return pmz->getNumberOfErrors();};
+		int getNumberOfErrors();
 		void getFileContents(wxString & str);
 		luint getParserMemData(luint address);
 		void setParserMemData(luint address, luint data);
@@ -75,8 +81,8 @@ class Model
 		void addVertex(wxPoint mousePos);
 		Component* findComponent(wxPoint mousePos);
 		Link* findLink(wxPoint mousePos);
-		luint getMemoryData(uint mem, luint address){ return memories[mem]->getData(address); };
-		void setMemoryData(uint mem, luint address, luint data){ memories[mem]->setData(address, data); };
+		luint getMemoryData(uint mem, luint address);
+		void setMemoryData(uint mem, luint address, luint data);
 		void getFieldedInstruction(luint address, wxString & str);
 		void getParsedInstructions();
 		luint getCurrentInstruction();
@@ -89,8 +95,8 @@ class Model
 		static void setBool(configName name, bool newBool){ bools[name] = newBool; };
 		static bool getBool(configName name){ return bools[name]; };
 	private:
-	  	list<Component*> components;
-	  	map<uint, Memory*> memories;
+	  	std::list<Component*> components;
+	  	std::map<uint, Memory*> memories;
 	  	PipelineRegister* buffers[4];
 	  	PC *programCounter;
 	  	AndGate* branchCheckGate;
@@ -100,7 +106,7 @@ class Model
 	  	wxRealPoint movingDifference;
 	  	OutputLink* oLink;
 	  	InputLink* iLink;
-	  	list<Coord*> vertices;
+	  	std::list<Coord*> vertices;
 	  	Layout layout;
 	  	Scanner *smz;
 	  	Parser *pmz;
@@ -108,7 +114,7 @@ class Model
 	  	Symbol currInstr[5];
 	  	luint currAddr[5];
 	  	uint lastAddrLoc;
-	  	static map<configName, bool> bools;
+	  	static std::map<configName, bool> bools;
 };
 
 #endif /*MODEL_H_*/

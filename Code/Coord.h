@@ -23,14 +23,12 @@
 #ifndef COORD_H_
 #define COORD_H_
 
-struct _Coord
+struct Coord
 {
-	_Coord(){};
-	_Coord(double x, double y){ this->x = x; this->y = y;};
+	Coord(){};
+	Coord(double x, double y){ this->x = x; this->y = y;};
 	double x;
 	double y;
 };
-
-typedef struct _Coord Coord;
 
 #endif /*COORD_H_*/

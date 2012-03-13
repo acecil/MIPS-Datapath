@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,26 +20,31 @@
  * 
  */
  
-#ifndef MYAPP_H_
-#define MYAPP_H_
+#ifndef SCROLLEDWINDOW_H_
+#define SCROLLEDWINDOW_H_
 
 #include <wx/wx.h>
-#include "Enums.h"
+#include <wx/utils.h>
+#include <wx/scrolwin.h>
 
-class MyFrame;
+class MyGLCanvas;
 
-class MyApp : public wxApp
+class ScrolledWindow : public wxScrolledWindow
 {
 	public:
-		MyApp();
-		virtual ~MyApp();
-		virtual bool OnInit();
+		ScrolledWindow(wxWindow *parent,
+                     wxWindowID winid = wxID_ANY,
+                     const wxPoint& pos = wxDefaultPosition,
+                     const wxSize& size = wxDefaultSize,
+                     long style = wxScrolledWindowStyle,
+                     const wxString& name = wxPanelNameStr);
+		void SetCanvas(MyGLCanvas *canvas);
+		
+		void OnScroll(wxScrollWinEvent &event);
 	private:
-		MyFrame *frame;
+		MyGLCanvas *glCanvas;
+		 		
+  		DECLARE_EVENT_TABLE()
 };
-#ifndef DEBUG_BUILD
-IMPLEMENT_APP(MyApp)
-#endif
 
-#endif /*MYAPP_H_*/
-
+#endif /*SCROLLEDWINDOW_H_*/

@@ -19,7 +19,16 @@
  *  Contact: gascoyne+mips@gmail.com
  * 
  */
- 
+
+#include "ScrolledWindow.h"
+#include "MyGLCanvas.h"
+#include "MyDialog.h"
+#include "MyDatalist.h"
+#include "Model.h"
+#include "Maths.h"
+#include "Config.h"
+#include "Icons.h"
+
 #include "MyFrame.h"
 
 BEGIN_EVENT_TABLE(MyFrame, wxFrame)
@@ -149,7 +158,7 @@ void MyFrame::setupSimulatorPage(wxNotebook *notebook)
 	
 	mainSplitter = new wxSplitterWindow(simulatorPage, ID_SPLITTER_WINDOW);
 	wxBoxSizer *GLSizer = new wxBoxSizer(wxHORIZONTAL);
-	GLWindow = new wxScrolledWindow(mainSplitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, _T("GLWindow"));
+	GLWindow = new ScrolledWindow(mainSplitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, _T("GLWindow"));
 	GLWindow->SetMinSize(wxSize(400, 200));
 	GLWindow->SetScrollRate(5, 5);
 	wxBoxSizer *leftSizer = new wxBoxSizer(wxVERTICAL);
@@ -186,11 +195,12 @@ void MyFrame::setupSimulatorPage(wxNotebook *notebook)
     dataPage->SetSizer(dataSizer);
         
     // Set up GL canvas.
-    int attribList[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER};
+	int attribList[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, wxFULL_REPAINT_ON_RESIZE};
     processor = new Model();
     processor->resetup();
     canvas = new MyGLCanvas(processor, GLWindow, this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, _T("GLCanvas"), attribList, wxNullPalette);
-   	GLWindow->SetSizer(GLSizer);
+   	GLWindow->SetCanvas(canvas);
+	GLWindow->SetSizer(GLSizer);
    	GLSizer->Add(canvas, 1, wxEXPAND | wxALL, 0);
    
    	mainSplitter->SetMinimumPaneSize(20);

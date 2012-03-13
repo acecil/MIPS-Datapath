@@ -19,7 +19,12 @@
  *  Contact: gascoyne+mips@gmail.com
  * 
  */
- 
+
+#include <GL/glut.h>
+
+#include "MyFrame.h"
+#include "Config.h" 
+
 #include "MyApp.h"
 
 MyApp::MyApp()

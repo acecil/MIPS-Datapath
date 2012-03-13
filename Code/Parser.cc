@@ -20,6 +20,8 @@
  * 
  */
  
+#include "Scanner.h"
+
 #include "Parser.h"
 
 Parser::Parser(Scanner *smz)

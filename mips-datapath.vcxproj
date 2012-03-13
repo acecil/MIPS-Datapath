@@ -63,7 +63,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>comctl32.lib;rpcrt4.lib;ws2_32.lib;winmm.lib;wxmsw29ud_core.lib;wxbase29ud.lib;wxpngd.lib;wxzlibd.lib;wxjpegd.lib;wxtiffd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcd.lib;libcid.lib;msvcrt.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalLibraryDirectories>C:\wxWidgets-2.9.3\lib;C:\wxWidgets-2.9.3\contrib\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\wxWidgets-2.9.3\lib\vc_lib</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
@@ -112,6 +112,7 @@
     <ClInclude Include="Code\MyGLCanvas.h" />
     <ClInclude Include="Code\Parser.h" />
     <ClInclude Include="Code\Scanner.h" />
+    <ClInclude Include="Code\ScrolledWindow.h" />
     <ClInclude Include="Code\Side.h" />
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +131,7 @@
     <ClCompile Include="Code\MyGLCanvas.cc" />
     <ClCompile Include="Code\Parser.cc" />
     <ClCompile Include="Code\Scanner.cc" />
+    <ClCompile Include="Code\ScrolledWindow.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

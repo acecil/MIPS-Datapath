@@ -30,11 +30,12 @@
 #include <wx/string.h>
 #include <wx/tipwin.h>
 #include <string>
-#include <GL/glut.h>
-#include "Model.h"
-#include "MyFrame.h"
+
 
 class MyFrame;
+class Model;
+class Component;
+class Link;
 
 class MyGLCanvas : public wxGLCanvas
 {

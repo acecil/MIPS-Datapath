@@ -23,14 +23,12 @@
 #ifndef SIDE_H_
 #define SIDE_H_
 
-enum _Side
+enum Side
 {
 	TOP = 0,
 	BOTTOM = 1,
 	LEFT = 2,
 	RIGHT = 3
 };
-
-typedef enum _Side Side;
 
 #endif /*SIDE_H_*/

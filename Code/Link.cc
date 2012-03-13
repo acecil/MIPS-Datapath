@@ -19,7 +19,9 @@
  *  Contact: gascoyne+mips@gmail.com
  * 
  */
- 
+
+#include "Component.h"
+
 #include "Link.h"
 
 int Link::count = 0;
