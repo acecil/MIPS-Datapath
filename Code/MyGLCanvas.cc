@@ -19,7 +19,9 @@
  *  Contact: gascoyne+mips@gmail.com
  * 
  */
- 
+
+#include <cmath>
+
 #include "MyFrame.h"
 #include "Model.h"
 #include "Component.h"
@@ -30,9 +32,12 @@
 BEGIN_EVENT_TABLE(MyGLCanvas, wxGLCanvas)
   EVT_SIZE(MyGLCanvas::OnSize)
   EVT_PAINT(MyGLCanvas::OnPaint)
-  EVT_RIGHT_UP(MyGLCanvas::OnRightClick)
   EVT_LEFT_UP(MyGLCanvas::OnLeftClick)
+  EVT_LEFT_DCLICK(MyGLCanvas::OnLeftDClick)
+  EVT_RIGHT_UP(MyGLCanvas::OnRightClick)
+  EVT_RIGHT_DCLICK(MyGLCanvas::OnRightDClick)
   EVT_MOTION(MyGLCanvas::OnMouseMotion)
+  EVT_MOUSEWHEEL(MyGLCanvas::OnMouseWheel)
 END_EVENT_TABLE()
 
 const double MyGLCanvas::defaultWidth = 250.0;
@@ -49,6 +54,7 @@ MyGLCanvas::MyGLCanvas(Model* proc, wxWindow* parent, MyFrame* frame, wxWindowID
 	this->frame = frame;
 	init = false;
 	processor = proc;
+	scale = 1.0;
 	
 	processor->setup();
 }
@@ -68,7 +74,7 @@ void MyGLCanvas::Render()
   	glOrtho(0, size.x, 0, size.y, -1, 1); 
   	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glScalef(canvasWidth / defaultWidth, canvasHeight / defaultHeight, 1.0);
+	glScalef(canvasWidth / defaultWidth * scale, canvasHeight / defaultHeight * scale, 1.0);
 	processor->draw(GetMousePosition());
 
 	glFlush();
@@ -96,6 +102,7 @@ void MyGLCanvas::InitGL()
 void MyGLCanvas::OnPaint(wxPaintEvent& event)
 {
   wxPaintDC dc(this); // required for correct refreshing under MS windows
+  Render();
 }
 
 void MyGLCanvas::OnSize(wxSizeEvent& event)
@@ -110,22 +117,17 @@ wxPoint MyGLCanvas::GetMousePosition()
 {
 	wxPoint mousePos = wxGetMousePosition();
 	wxPoint scaledPos;
-	scaledPos.x = (int)((mousePos.x - GetScreenPosition().x) * defaultWidth / canvasWidth);
-	scaledPos.y = (int)((size.y - mousePos.y + GetScreenPosition().y) * defaultHeight / canvasHeight);
+	scaledPos.x = (int)((mousePos.x - GetScreenPosition().x) * defaultWidth / canvasWidth / scale);
+	scaledPos.y = (int)((size.y - mousePos.y + GetScreenPosition().y) * defaultHeight / canvasHeight / scale);
 	return scaledPos;
 }
 
 wxPoint MyGLCanvas::convertScreenToMouseCoord(wxPoint pos)
 {
 	wxPoint scaledPos;
-	scaledPos.x = (int)(pos.x * canvasWidth / defaultWidth + GetScreenPosition().x);
-	scaledPos.y = (int)(size.y - (pos.y * canvasHeight / defaultHeight) + GetScreenPosition().y);
+	scaledPos.x = (int)(pos.x * canvasWidth / defaultWidth * scale + GetScreenPosition().x);
+	scaledPos.y = (int)(size.y - (pos.y * canvasHeight / defaultHeight * scale) + GetScreenPosition().y);
 	return scaledPos;
-}
-
-void MyGLCanvas::OnRightClick(wxMouseEvent& event)
-{
-	frame->showHideLeftPanel(true, true);
 }
 
 void MyGLCanvas::OnLeftClick(wxMouseEvent& event)
@@ -133,6 +135,24 @@ void MyGLCanvas::OnLeftClick(wxMouseEvent& event)
 	processor->step();
 	frame->updateDataList();
  	Render();
+}
+
+void MyGLCanvas::OnLeftDClick(wxMouseEvent& event)
+{
+	scale /= 0.85;
+	Render();
+}
+
+void MyGLCanvas::OnRightClick(wxMouseEvent& event)
+{
+	frame->showHideLeftPanel(true, true);
+	Render();
+}
+
+void MyGLCanvas::OnRightDClick(wxMouseEvent& event)
+{
+	scale *= 0.85;
+	Render();
 }
 
 void MyGLCanvas::OnMouseMotion(wxMouseEvent& event)
@@ -261,4 +281,11 @@ void MyGLCanvas::OnMouseMotion(wxMouseEvent& event)
 	event.Skip();
 }
 
+void MyGLCanvas::OnMouseWheel(wxMouseEvent& event)
+{
+	int change = event.m_wheelRotation / event.m_wheelDelta;
+	scale /= std::pow(0.95, static_cast<double>(change));
+	Render();
+	event.Skip();
+}
 

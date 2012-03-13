@@ -58,14 +58,18 @@ class MyGLCanvas : public wxGLCanvas
  		void OnSize(wxSizeEvent& event);   // callback for when canvas is resized
   		void OnPaint(wxPaintEvent& event); // callback for when canvas is exposed
   		void OnLeftClick(wxMouseEvent& event);
+		void OnLeftDClick(wxMouseEvent& event);
   		void OnRightClick(wxMouseEvent& event);
+		void OnRightDClick(wxMouseEvent& event);
   		void OnMouseMotion(wxMouseEvent& event);
+		void OnMouseWheel(wxMouseEvent& event);
   		wxPoint GetMousePosition();
   		wxPoint convertScreenToMouseCoord(wxPoint pos);
   		bool init;
    		//wxGLContext *context;
   		Model *processor;
   		wxSize size;
+		double scale;
   		static const double defaultWidth;
   		static const double defaultHeight;
   		static const GLint canvasWidth;
