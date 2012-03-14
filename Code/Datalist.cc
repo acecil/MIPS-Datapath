@@ -20,7 +20,7 @@
  * 
  */
  
-#include "MyDatalist.h"
+#include "Datalist.h"
 
 BEGIN_EVENT_TABLE(MyDatalist, wxListCtrl)
     EVT_LIST_COL_BEGIN_DRAG(ID_INSTRUCTION_LIST, MyDatalist::OnDataListColSizeAdjusted)

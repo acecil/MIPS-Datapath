@@ -20,7 +20,7 @@
  * 
  */
  
-#include "MyDialog.h"
+#include "Dialog.h"
 
 BEGIN_EVENT_TABLE(MyDialog, wxDialog)
     EVT_BUTTON(COMPONENT_COLOUR, MyDialog::EditColour)

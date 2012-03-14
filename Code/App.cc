@@ -22,10 +22,10 @@
 
 #include <GL/glut.h>
 
-#include "MyFrame.h"
+#include "Frame.h"
 #include "Config.h" 
 
-#include "MyApp.h"
+#include "App.h"
 
 MyApp::MyApp()
 {

@@ -22,12 +22,12 @@
 
 #include <cmath>
 
-#include "MyFrame.h"
+#include "Frame.h"
 #include "Model.h"
 #include "Component.h"
 #include "Link.h"
 
-#include "MyGLCanvas.h"
+#include "GLCanvas.h"
 
 BEGIN_EVENT_TABLE(MyGLCanvas, wxGLCanvas)
   EVT_SIZE(MyGLCanvas::OnSize)

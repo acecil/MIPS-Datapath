@@ -22,7 +22,7 @@
 
 #include "ScrolledWindow.h"
 
-#include "MyGLCanvas.h"
+#include "GLCanvas.h"
 
 BEGIN_EVENT_TABLE(ScrolledWindow, wxScrolledWindow)
 	EVT_SCROLLWIN(ScrolledWindow::OnScroll)

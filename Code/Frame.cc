@@ -21,15 +21,15 @@
  */
 
 #include "ScrolledWindow.h"
-#include "MyGLCanvas.h"
-#include "MyDialog.h"
-#include "MyDatalist.h"
+#include "GLCanvas.h"
+#include "Dialog.h"
+#include "Datalist.h"
 #include "Model.h"
 #include "Maths.h"
 #include "Config.h"
 #include "Icons.h"
 
-#include "MyFrame.h"
+#include "Frame.h"
 
 BEGIN_EVENT_TABLE(MyFrame, wxFrame)
 	EVT_SPLITTER_SASH_POS_CHANGED(ID_SPLITTER_WINDOW, MyFrame::OnSplitterSizeChanged)
