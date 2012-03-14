@@ -65,6 +65,8 @@ void ScrolledWindow::OnScroll(wxScrollWinEvent &event)
 
 void ScrolledWindow::OnSize(wxSizeEvent &event)
 {
+	wxSize size = glCanvas->GetCanvasSize();
+	SetVirtualSize(size.GetWidth() * glCanvas->GetScale(), size.GetHeight() * glCanvas->GetScale());
 	updateScrollbars(GetVirtualSize(), GetViewStart());
 }
 

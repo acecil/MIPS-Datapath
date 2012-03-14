@@ -56,6 +56,7 @@ public:
 	void Render();
 	void SetZoom(int zoom);
 	wxSize GetCanvasSize();
+	double GetScale() { return scale; }
 private:
 	void InitGL();                     // function to initialise GL context
 	void OnSize(wxSizeEvent& event);   // callback for when canvas is resized

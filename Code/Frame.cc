@@ -848,7 +848,7 @@ void Frame::OnSelectInstruction(wxListEvent& WXUNUSED(event))
 void Frame::OnZoomSliderChanged(wxCommandEvent& event)
 {
 	canvas->SetZoom(-event.GetInt());
-	double scale = std::pow(0.98, static_cast<double>(-event.GetInt()));
 	wxSize size = canvas->GetCanvasSize();
-	GLWindow->SetVirtualSize(size.GetWidth() * scale, size.GetHeight() * scale);
+	GLWindow->SetVirtualSize(size.GetWidth() * canvas->GetScale(), 
+		size.GetHeight() * canvas->GetScale());
 }
