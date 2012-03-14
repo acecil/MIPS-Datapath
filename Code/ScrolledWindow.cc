@@ -26,6 +26,7 @@
 
 BEGIN_EVENT_TABLE(ScrolledWindow, wxScrolledWindow)
 	EVT_SCROLLWIN(ScrolledWindow::OnScroll)
+	EVT_ERASE_BACKGROUND(ScrolledWindow::OnEraseBackground)
 END_EVENT_TABLE()
 
 ScrolledWindow::ScrolledWindow(wxWindow *parent,
@@ -55,4 +56,9 @@ void ScrolledWindow::OnScroll(wxScrollWinEvent &event)
 
 	/* Pass on event to base class. */
 	event.Skip();
+}
+
+void ScrolledWindow::OnEraseBackground(wxEraseEvent &event)
+{
+	/* Do nothing to prevent flicker. */
 }

@@ -52,6 +52,7 @@ BEGIN_EVENT_TABLE(MyFrame, wxFrame)
     EVT_BUTTON(ID_PARSE_INSTRUCTIONS, MyFrame::Parse)
     EVT_GRID_CMD_CELL_CHANGE(ID_MEMORY_LIST, MyFrame::MemoryGridChanged)
     EVT_LIST_ITEM_SELECTED(ID_INSTRUCTION_LIST, MyFrame::OnSelectInstruction)
+	EVT_SLIDER(ID_ZOOM_SLIDER, MyFrame::OnZoomSliderChanged)
 END_EVENT_TABLE()
 
 MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
@@ -157,12 +158,11 @@ void MyFrame::setupSimulatorPage(wxNotebook *notebook)
 	wxPanel *simulatorPage = new wxPanel(notebook);
 	
 	mainSplitter = new wxSplitterWindow(simulatorPage, ID_SPLITTER_WINDOW);
-	wxBoxSizer *GLSizer = new wxBoxSizer(wxHORIZONTAL);
+	GLSizer = new wxBoxSizer(wxHORIZONTAL);
 	GLWindow = new ScrolledWindow(mainSplitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, _T("GLWindow"));
 	GLWindow->SetMinSize(wxSize(400, 200));
 	GLWindow->SetScrollRate(5, 5);
 	wxBoxSizer *leftSizer = new wxBoxSizer(wxVERTICAL);
-    //wxBoxSizer *listButtonSizer = new wxBoxSizer(wxHORIZONTAL);
     
     // Set up Left panel.
     Config *c = Config::Instance();
@@ -193,6 +193,9 @@ void MyFrame::setupSimulatorPage(wxNotebook *notebook)
     instructionPage->SetSizer(instructionSizer);
     registerPage->SetSizer(registerSizer);
     dataPage->SetSizer(dataSizer);
+
+	// Add a slider for control the zoom of the simulator.
+	leftSizer->Add(new wxSlider(leftPanel, ID_ZOOM_SLIDER, 0, -100, 100), 0, wxEXPAND | wxALL, 0);
         
     // Set up GL canvas.
 	int attribList[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, wxFULL_REPAINT_ON_RESIZE};
@@ -839,4 +842,12 @@ void MyFrame::OnSelectInstruction(wxListEvent& WXUNUSED(event))
 {
 	processor->setHighlightInstruction(dataList[ID_INSTRUCTION_LIST]->getSelectedIndex(), dataList[ID_INSTRUCTION_LIST]->isSelectedIndexValid());
 	canvas->Render();
+}
+
+void MyFrame::OnZoomSliderChanged(wxCommandEvent& event)
+{
+	canvas->SetZoom(-event.GetInt());
+	double scale = std::pow(0.98, static_cast<double>(-event.GetInt()));
+	wxSize size = canvas->GetCanvasSize();
+	GLWindow->SetVirtualSize(size.GetWidth() * scale, size.GetHeight() * scale);
 }

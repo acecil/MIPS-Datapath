@@ -53,16 +53,16 @@ class MyGLCanvas : public wxGLCanvas
 					const wxPalette& palette = wxNullPalette);
 		 // constructor
 	    void Render();
+		void SetZoom(int zoom);
+		wxSize GetCanvasSize();
 	private:
 	  	void InitGL();                     // function to initialise GL context
  		void OnSize(wxSizeEvent& event);   // callback for when canvas is resized
   		void OnPaint(wxPaintEvent& event); // callback for when canvas is exposed
   		void OnLeftClick(wxMouseEvent& event);
-		void OnLeftDClick(wxMouseEvent& event);
   		void OnRightClick(wxMouseEvent& event);
-		void OnRightDClick(wxMouseEvent& event);
   		void OnMouseMotion(wxMouseEvent& event);
-		void OnMouseWheel(wxMouseEvent& event);
+		void OnEraseBackground(wxEraseEvent& event);
   		wxPoint GetMousePosition();
   		wxPoint convertScreenToMouseCoord(wxPoint pos);
   		bool init;
@@ -79,6 +79,7 @@ class MyGLCanvas : public wxGLCanvas
   		Component* prevTipComp;
   		Link* prevTipLink;
   		MyFrame* frame;
+		wxGLContext glContext;
  		
   		DECLARE_EVENT_TABLE()
 };

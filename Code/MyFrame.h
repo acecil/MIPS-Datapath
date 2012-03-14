@@ -85,12 +85,14 @@ private:
 	void resetLeftPanelSizes();
 	void OnSplitterSizeChanged(wxSplitterEvent& event);
 	void OnSelectInstruction(wxListEvent& event);
+	void OnZoomSliderChanged(wxCommandEvent& event);
 	void updateDataListHighlighting();
 	static const int LEFT_PANEL_DEFAULT_SIZE=100;
 	static const int LEFT_PANEL_MIN_WIDTH=213;
 	static const int LEFT_PANEL_MIN_HEIGHT=450;
 	MyGLCanvas *canvas;
 	ScrolledWindow *GLWindow;
+	wxBoxSizer *GLSizer;
 	Model *processor;
 	wxPanel *leftPanel;
 	wxPanel *memoryPane;
@@ -138,6 +140,7 @@ enum
     ID_MEMORY_LIST,
     ID_SPLITTER_WINDOW,
     ID_EDSPLITTER_WINDOW,
+	ID_ZOOM_SLIDER
 };
 
 #endif /*MYFRAME_H_*/

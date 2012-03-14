@@ -33,11 +33,9 @@ BEGIN_EVENT_TABLE(MyGLCanvas, wxGLCanvas)
   EVT_SIZE(MyGLCanvas::OnSize)
   EVT_PAINT(MyGLCanvas::OnPaint)
   EVT_LEFT_UP(MyGLCanvas::OnLeftClick)
-  EVT_LEFT_DCLICK(MyGLCanvas::OnLeftDClick)
   EVT_RIGHT_UP(MyGLCanvas::OnRightClick)
-  EVT_RIGHT_DCLICK(MyGLCanvas::OnRightDClick)
   EVT_MOTION(MyGLCanvas::OnMouseMotion)
-  EVT_MOUSEWHEEL(MyGLCanvas::OnMouseWheel)
+  EVT_ERASE_BACKGROUND(MyGLCanvas::OnEraseBackground)
 END_EVENT_TABLE()
 
 const double MyGLCanvas::defaultWidth = 250.0;
@@ -49,7 +47,8 @@ wxTipWindow* MyGLCanvas::tipWin = NULL;
 MyGLCanvas::MyGLCanvas(Model* proc, wxWindow* parent, MyFrame* frame, wxWindowID id, const wxPoint& pos, 
 	const wxSize& size, long style, const wxString& name, int* attribList, 
 	const wxPalette& palette):
-	wxGLCanvas(parent, id, pos, wxSize(canvasWidth, canvasHeight), style, name, attribList, palette)
+	wxGLCanvas(parent, id, attribList, pos, wxSize(canvasWidth, canvasHeight)),
+	glContext(wxGLContext(this))
 {
 	this->frame = frame;
 	init = false;
@@ -61,7 +60,7 @@ MyGLCanvas::MyGLCanvas(Model* proc, wxWindow* parent, MyFrame* frame, wxWindowID
 
 void MyGLCanvas::Render()
 {
-	SetCurrent();
+	SetCurrent(glContext);
   	if (!init) {
     	InitGL();
     	init = true;
@@ -81,9 +80,20 @@ void MyGLCanvas::Render()
   	SwapBuffers();
 }
 
+void MyGLCanvas::SetZoom(int zoom)
+{
+	scale = std::pow(0.98, static_cast<double>(zoom));
+	Render();
+}
+
+wxSize MyGLCanvas::GetCanvasSize()
+{
+	return wxSize(canvasWidth, canvasHeight);
+}
+
 void MyGLCanvas::InitGL()
 {
-  	SetCurrent();
+  	SetCurrent(glContext);
   	glDrawBuffer(GL_BACK);
   	glClearColor(1.0, 1.0, 1.0, 0.0);
    	glViewport(0, 0, size.x, size.y);
@@ -108,9 +118,9 @@ void MyGLCanvas::OnPaint(wxPaintEvent& event)
 void MyGLCanvas::OnSize(wxSizeEvent& event)
 {
   	size = this->GetSize();
-  	wxGLCanvas::OnSize(event); // required on some platforms
   	Refresh(); // required by some buggy nvidia graphics drivers,
   	Update();  // harmless on other platforms!
+	event.Skip();
 }
 
 wxPoint MyGLCanvas::GetMousePosition()
@@ -137,21 +147,9 @@ void MyGLCanvas::OnLeftClick(wxMouseEvent& event)
  	Render();
 }
 
-void MyGLCanvas::OnLeftDClick(wxMouseEvent& event)
-{
-	scale /= 0.85;
-	Render();
-}
-
 void MyGLCanvas::OnRightClick(wxMouseEvent& event)
 {
 	frame->showHideLeftPanel(true, true);
-	Render();
-}
-
-void MyGLCanvas::OnRightDClick(wxMouseEvent& event)
-{
-	scale *= 0.85;
 	Render();
 }
 
@@ -281,11 +279,8 @@ void MyGLCanvas::OnMouseMotion(wxMouseEvent& event)
 	event.Skip();
 }
 
-void MyGLCanvas::OnMouseWheel(wxMouseEvent& event)
+void MyGLCanvas::OnEraseBackground(wxEraseEvent &event)
 {
-	int change = event.m_wheelRotation / event.m_wheelDelta;
-	scale /= std::pow(0.95, static_cast<double>(change));
-	Render();
-	event.Skip();
+	/* Do nothing to prevent flicker. */
 }
 

@@ -27,7 +27,7 @@ numFormat Maths::numberFormat = FORMAT_DECIMAL;
 wxString Maths::convertToBase(luint number, bool noNegative, bool negBit16, numFormat format)
 {
 	uint numNegBits = negBit16 ? 16 : 32;
-	bool negative = number & ((luint)(1)<<(numNegBits - 1));
+	bool negative = !!(number & ((luint)(1)<<(numNegBits - 1)));
 	luint tempNum = negative ? ((luint)(1)<<(numNegBits)) - number : number;
 	wxString decNum, binNum, temp, hexNum;
 	bool foundOne = false;

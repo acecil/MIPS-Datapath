@@ -41,6 +41,7 @@ class ScrolledWindow : public wxScrolledWindow
 		void SetCanvas(MyGLCanvas *canvas);
 		
 		void OnScroll(wxScrollWinEvent &event);
+		void OnEraseBackground(wxEraseEvent &event);
 	private:
 		MyGLCanvas *glCanvas;
 		 		
