@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,15 +22,15 @@
  
 #include "Datalist.h"
 
-BEGIN_EVENT_TABLE(MyDatalist, wxListCtrl)
-    EVT_LIST_COL_BEGIN_DRAG(ID_INSTRUCTION_LIST, MyDatalist::OnDataListColSizeAdjusted)
-    //EVT_LISTBOX_DCLICK(ID_INSTRUCTION_LIST, MyDatalist::OnDataListColSizeAdjusted)
-    EVT_LIST_COL_BEGIN_DRAG(ID_REGISTER_LIST, MyDatalist::OnDataListColSizeAdjusted)
-    EVT_LIST_COL_BEGIN_DRAG(ID_DATA_LIST, MyDatalist::OnDataListColSizeAdjusted)
-    EVT_LIST_ITEM_SELECTED(ID_INSTRUCTION_LIST, MyDatalist::OnSelect)
+BEGIN_EVENT_TABLE(Datalist, wxListCtrl)
+    EVT_LIST_COL_BEGIN_DRAG(ID_INSTRUCTION_LIST, Datalist::OnDataListColSizeAdjusted)
+    //EVT_LISTBOX_DCLICK(ID_INSTRUCTION_LIST, Datalist::OnDataListColSizeAdjusted)
+    EVT_LIST_COL_BEGIN_DRAG(ID_REGISTER_LIST, Datalist::OnDataListColSizeAdjusted)
+    EVT_LIST_COL_BEGIN_DRAG(ID_DATA_LIST, Datalist::OnDataListColSizeAdjusted)
+    EVT_LIST_ITEM_SELECTED(ID_INSTRUCTION_LIST, Datalist::OnSelect)
 END_EVENT_TABLE()
 
-MyDatalist::MyDatalist(uint multiplier, uint maxVals, wxString firstColTitle, wxWindow* parent, wxWindowID id)
+Datalist::Datalist(uint multiplier, uint maxVals, wxString firstColTitle, wxWindow* parent, wxWindowID id)
 : wxListCtrl(parent, id, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_SINGLE_SEL)
 {
 	this->multiplier = multiplier;
@@ -39,18 +39,18 @@ MyDatalist::MyDatalist(uint multiplier, uint maxVals, wxString firstColTitle, wx
 	selectedIndex = -1;
 }
 
-void MyDatalist::InsertFirstColumn()
+void Datalist::InsertFirstColumn()
 {
 	this->InsertColumn(0, firstColTitle);
 }
 
-void MyDatalist::OnDataListColSizeAdjusted(wxListEvent& event)
+void Datalist::OnDataListColSizeAdjusted(wxListEvent& event)
 {
 	// Prevent adjusting column sizes on these lists.
 	event.Veto();
 }
 
-void MyDatalist::OnSelect(wxListEvent& event)
+void Datalist::OnSelect(wxListEvent& event)
 {
 	selectedIndex = event.GetIndex() * multiplier;
 	event.Skip();

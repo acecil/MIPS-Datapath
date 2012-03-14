@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,17 +25,17 @@
 
 #include <cmath>
 #include <iostream>
+
 #include <wx/string.h>
+
 #include "Types.h"
 
-using namespace std;
-
-typedef enum
+enum numFormat
 {
 	FORMAT_DECIMAL,
 	FORMAT_BINARY,
-	FORMAT_HEX,
-} numFormat;
+	FORMAT_HEX
+};
 
 class Maths
 {

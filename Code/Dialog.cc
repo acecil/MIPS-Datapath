@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,24 +20,26 @@
  * 
  */
  
+#include "Types.h"
+
 #include "Dialog.h"
 
-BEGIN_EVENT_TABLE(MyDialog, wxDialog)
-    EVT_BUTTON(COMPONENT_COLOUR, MyDialog::EditColour)
-    EVT_BUTTON(PIPEREG_COLOUR, MyDialog::EditColour)
-    EVT_BUTTON(TEXT_COLOUR, MyDialog::EditColour)
-    EVT_BUTTON(FADE_COLOUR, MyDialog::EditColour)
-    EVT_BUTTON(BORDER_COLOUR, MyDialog::EditColour)
-    EVT_BUTTON(BACKGROUND_COLOUR, MyDialog::EditColour)
-    EVT_BUTTON(STAGE1_COLOUR, MyDialog::EditColour)
-    EVT_BUTTON(STAGE2_COLOUR, MyDialog::EditColour)
-    EVT_BUTTON(STAGE3_COLOUR, MyDialog::EditColour)
-    EVT_BUTTON(STAGE4_COLOUR, MyDialog::EditColour)
-    EVT_BUTTON(STAGE5_COLOUR, MyDialog::EditColour)
-    EVT_BUTTON(LINK_COLOUR, MyDialog::EditColour)
+BEGIN_EVENT_TABLE(Dialog, wxDialog)
+    EVT_BUTTON(COMPONENT_COLOUR, Dialog::EditColour)
+    EVT_BUTTON(PIPEREG_COLOUR, Dialog::EditColour)
+    EVT_BUTTON(TEXT_COLOUR, Dialog::EditColour)
+    EVT_BUTTON(FADE_COLOUR, Dialog::EditColour)
+    EVT_BUTTON(BORDER_COLOUR, Dialog::EditColour)
+    EVT_BUTTON(BACKGROUND_COLOUR, Dialog::EditColour)
+    EVT_BUTTON(STAGE1_COLOUR, Dialog::EditColour)
+    EVT_BUTTON(STAGE2_COLOUR, Dialog::EditColour)
+    EVT_BUTTON(STAGE3_COLOUR, Dialog::EditColour)
+    EVT_BUTTON(STAGE4_COLOUR, Dialog::EditColour)
+    EVT_BUTTON(STAGE5_COLOUR, Dialog::EditColour)
+    EVT_BUTTON(LINK_COLOUR, Dialog::EditColour)
 END_EVENT_TABLE()
 
-MyDialog::MyDialog(wxWindow* parent, wxWindowID id, wxIconBundle *ico, Model *proc, const wxString& title, 
+Dialog::Dialog(wxWindow* parent, wxWindowID id, wxIconBundle *ico, Model *proc, const wxString& title, 
 				bool mainSplitterSplit, bool instructionsInFields, const wxPoint& pos, const wxSize& size, 
 				long style, const wxString& name)
 				:wxDialog(parent, id, title, pos, wxDefaultSize, style, name)
@@ -88,7 +90,7 @@ MyDialog::MyDialog(wxWindow* parent, wxWindowID id, wxIconBundle *ico, Model *pr
 	
 	Config* c = Config::Instance();
 	// Get default values for all the checkboxes & add then to the dialog.
-	for(map<configName, wxCheckBox*>::iterator i = checkBoxes.begin(); i != checkBoxes.end(); ++i)
+	for(auto i = checkBoxes.begin(); i != checkBoxes.end(); ++i)
 	{
 		optionsSizer->Add((*i).second, 0, wxEXPAND | wxALL, 3);
 		((*i).second)->SetValue(c->getBool((*i).first));
@@ -99,11 +101,11 @@ MyDialog::MyDialog(wxWindow* parent, wxWindowID id, wxIconBundle *ico, Model *pr
 	this->Fit();
 }
 
-MyDialog::~MyDialog()
+Dialog::~Dialog()
 {
 }
 
-void MyDialog::createColourButton(wxFlexGridSizer *parent, wxString caption, configName id)
+void Dialog::createColourButton(wxFlexGridSizer *parent, wxString caption, configName id)
 {
 	// Create the colour button with the specified caption
 	// Also get the default colour from the config file.
@@ -125,7 +127,7 @@ void MyDialog::createColourButton(wxFlexGridSizer *parent, wxString caption, con
 	parent->Add(buttons[id], 0, wxEXPAND | wxRIGHT, 3);
 }
 
-void MyDialog::showColourPicker(configName id)
+void Dialog::showColourPicker(configName id)
 {
 	// Show the colour picker, setting the original colour based on the required one,
 	// and storing the new colour in the same location.
@@ -154,7 +156,7 @@ void MyDialog::showColourPicker(configName id)
 	dialog->Destroy();
 }
 
-void MyDialog::EditColour(wxCommandEvent& event)
+void Dialog::EditColour(wxCommandEvent& event)
 {
 	// show the colour picker using the relevant colour based on the calling button.
 	showColourPicker((configName)event.GetId());

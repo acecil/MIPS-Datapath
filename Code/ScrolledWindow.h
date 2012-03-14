@@ -27,25 +27,28 @@
 #include <wx/utils.h>
 #include <wx/scrolwin.h>
 
-class MyGLCanvas;
+class GLCanvas;
 
 class ScrolledWindow : public wxScrolledWindow
 {
-	public:
-		ScrolledWindow(wxWindow *parent,
-                     wxWindowID winid = wxID_ANY,
-                     const wxPoint& pos = wxDefaultPosition,
-                     const wxSize& size = wxDefaultSize,
-                     long style = wxScrolledWindowStyle,
-                     const wxString& name = wxPanelNameStr);
-		void SetCanvas(MyGLCanvas *canvas);
-		
-		void OnScroll(wxScrollWinEvent &event);
-		void OnEraseBackground(wxEraseEvent &event);
-	private:
-		MyGLCanvas *glCanvas;
-		 		
-  		DECLARE_EVENT_TABLE()
+public:
+	ScrolledWindow(wxWindow *parent,
+		wxWindowID winid = wxID_ANY,
+		const wxPoint& pos = wxDefaultPosition,
+		const wxSize& size = wxDefaultSize,
+		long style = wxScrolledWindowStyle,
+		const wxString& name = wxPanelNameStr);
+	void SetCanvas(GLCanvas *canvas);
+
+	void OnScroll(wxScrollWinEvent &event);
+	void OnSize(wxSizeEvent &event);
+	void OnEraseBackground(wxEraseEvent &event);
+private:
+	GLCanvas *glCanvas;
+	void updateScrollbars(const wxSize& size, const wxPoint& start);
+
+
+	DECLARE_EVENT_TABLE()
 };
 
 #endif /*SCROLLEDWINDOW_H_*/

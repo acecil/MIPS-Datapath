@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,13 +20,12 @@
  * 
  */
  
-#ifndef MYFRAME_H_
-#define MYFRAME_H_
+#ifndef FRAME_H_
+#define FRAME_H_
 
-#include "Enums.h"
-#include "Types.h"
 #include <map>
 #include <iostream>
+
 #include <wx/wx.h>
 #include <wx/icon.h>
 #include <wx/textctrl.h>
@@ -45,16 +44,19 @@
 #include <wx/fs_arc.h>
 #include <wx/accel.h>
 
-class MyGLCanvas;
+#include "Enums.h"
+#include "Types.h"
+
+class GLCanvas;
 class ScrolledWindow;
 class Model;
-class MyDatalist;
+class Datalist;
 
-class MyFrame : public wxFrame
+class Frame : public wxFrame
 {
 public:
-    MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
-	virtual ~MyFrame();
+    Frame(const wxString& title, const wxPoint& pos, const wxSize& size);
+	virtual ~Frame();
     void showHideLeftPanel(bool showLeftPanel, bool justSwitch = false);
     void updateDataList(bool initialCall = false, bool selectInstruction = false);
     void finishInit();
@@ -90,7 +92,7 @@ private:
 	static const int LEFT_PANEL_DEFAULT_SIZE=100;
 	static const int LEFT_PANEL_MIN_WIDTH=213;
 	static const int LEFT_PANEL_MIN_HEIGHT=450;
-	MyGLCanvas *canvas;
+	GLCanvas *canvas;
 	ScrolledWindow *GLWindow;
 	wxBoxSizer *GLSizer;
 	Model *processor;
@@ -100,7 +102,7 @@ private:
 	wxSplitterWindow *editorSplitter;
 	wxTextCtrl *editorText;
 	wxTextCtrl *errorText;
-	std::map<uint, MyDatalist*> dataList;
+	std::map<uint, Datalist*> dataList;
 	wxGrid *memoryList;
 	wxHtmlHelpController* help;
 	wxIconBundle* ico;
@@ -143,4 +145,4 @@ enum
 	ID_ZOOM_SLIDER
 };
 
-#endif /*MYFRAME_H_*/
+#endif /*FRAME_H_*/

@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -82,7 +82,7 @@ Config::Config()
 	isNameANumber[SIMULATOR_SASH_POS] =  true;
 	isNameANumber[EDITOR_SASH_POS] = true;
 	
-	for(map<configName, string>::iterator i = names.begin(); i != names.end(); ++i)
+	for(auto i = names.begin(); i != names.end(); ++i)
 	{
 		snames[(*i).second] = (*i).first;
 	}
@@ -334,7 +334,7 @@ void Config::getNumber(unsigned int &num)
 // Gets the name from the definition file until non-alpha or non-digit character found
 void Config::getName(configName &name)
 {
-  	string tempName;
+  	std::string tempName;
   
   	while((!eofile) && (isalpha(curch) || isdigit(curch)))
     {
@@ -354,37 +354,40 @@ void Config::getChar()
 
 void Config::save()
 {
-	ofstream oFile;
+	std::ofstream oFile;
 	oFile.open("mips.conf");
 	
 	if(oFile)
 	{
 		// Write each colour.
-		for(map<configName, wxColour>::iterator i = colours.begin(); i != colours.end(); ++i)
+		for(auto i = colours.begin(); i != colours.end(); ++i)
 		{
 			configName name = (*i).first;
 			wxColour col = (*i).second;
 			
 			if(col.IsOk())
 			{
-				oFile << names[name] <<  ": " << (unsigned int)col.Red() << ", " << (unsigned int)col.Green() << ", " << (unsigned int)col.Blue() << ", " << (unsigned int)col.Alpha() << ";" << endl;
+				oFile << names[name] <<  ": " << (unsigned int)col.Red();
+				oFile << ", " << (unsigned int)col.Green();
+				oFile << ", " << (unsigned int)col.Blue();
+				oFile << ", " << (unsigned int)col.Alpha() << ";" << std::endl;
 			}
 		}
 		// Write each bool.
-		for(map<configName, bool>::iterator i = bools.begin(); i != bools.end(); ++i)
+		for(auto i = bools.begin(); i != bools.end(); ++i)
 		{
 			configName name = (*i).first;
 			bool val = (*i).second;
 			
-			oFile << names[name] << ": " << val << ";" << endl;
+			oFile << names[name] << ": " << val << ";" << std::endl;
 		}
 		// Write each number.
-		for(map<configName, unsigned int>::iterator i = numbers.begin(); i != numbers.end(); ++i)
+		for(auto i = numbers.begin(); i != numbers.end(); ++i)
 		{
 			configName name = (*i).first;
 			unsigned int val = (*i).second;
 			
-			oFile << names[name] << ": " << val << ";" << endl;
+			oFile << names[name] << ": " << val << ";" << std::endl;
 		}
 	}
 	else

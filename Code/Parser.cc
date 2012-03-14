@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -168,9 +168,9 @@ bool Parser::readIn()
 
 void Parser::printInstructions()
 {
-	for(map<luint, luint>::iterator i = instructions.begin(); i != instructions.end(); i++)
+	for(auto i = instructions.begin(); i != instructions.end(); i++)
 	{
-		cout << i->first << " " << i->second << endl;
+		std::cout << i->first << " " << i->second << std::endl;
 	}
 }
 

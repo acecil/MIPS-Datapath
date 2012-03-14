@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
  * 
  */
  
+#include <exception>
+
 #include "Link.h"
 #include "Coord.h"
 #include "Side.h"
@@ -27,20 +29,21 @@
 
 #include "Component.h"
 
-class InvalidInputException : public exception
+class InvalidInputException : public std::exception
 {
 	virtual const char* what() const throw()
   	{
     	return "Invalid Input: ComponentID: ";
   	}
+
 } InvalidInputEx;
 
 int Component::count = 0;
 
 uint Component::pipelineCycle = 0;
 
-vector<Color> Component::activeLinkColors;
-map<configName, Color> Component::colours;
+std::vector<Color> Component::activeLinkColors;
+std::map<configName, Color> Component::colours;
 bool Component::dataLinesBold = true;
 bool Component::highlightSingleInstruction = true;
 int Component::currentInstruction = 0;
@@ -116,7 +119,7 @@ void Component::preStep()
 	}
 	if(type != NODE_TYPE)
 	{
-		for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+		for(auto i = linkList.begin(); i != linkList.end(); ++i)
 		{
 			Link* currLink = (*i).second;
 			if(!(currLink->isOutput()))
@@ -199,7 +202,7 @@ void Component::setActive(bool active)
 wxString Component::getMainInfo()
 {
 	wxString inInfo, outInfo;
-	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
 		Link* currLink = (*i).second;
 		if(!(currLink->isOutput()))
@@ -255,10 +258,10 @@ int Component::findOutput(wxPoint mouseLocation)
 
 int Component::findNearestLink(wxPoint mouseLocation, bool isOutput)
 {
-	int nearest = numeric_limits<int>::max();
+	int nearest = std::numeric_limits<int>::max();
 	Link* currLink;
 	
-	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
 		currLink = (*i).second;
 		bool output = currLink->isOutput() && isOutput;
@@ -328,7 +331,7 @@ void Component::drawName(bool showControl, bool showPC)
     	}
 	}
 	glPopMatrix();
-	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
 		Link* currLink = (*i).second;
 		if(currLink->isShowText())
@@ -358,7 +361,7 @@ void Component::drawConnections(bool showControl, bool showPC, Symbol* instr, bo
 	glPushAttrib(GL_COLOR_BUFFER_BIT);
 	glPushMatrix();
 
-	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
 		if(((*i).second)->isOutput())
 		{
@@ -368,8 +371,8 @@ void Component::drawConnections(bool showControl, bool showPC, Symbol* instr, bo
 			{
 				if(showPC || !(oLink->getIsPC()))
 				{
-					vector<Link*> iLinkList = oLink->getLinkList();
-					for(vector<Link*>::iterator j = iLinkList.begin(); j != iLinkList.end(); ++j)
+					auto iLinkList = oLink->getLinkList();
+					for(auto j = iLinkList.begin(); j != iLinkList.end(); ++j)
 					{
 						if(!((*j)->isOutput()))
 						{
@@ -430,8 +433,8 @@ void Component::drawConnections(bool showControl, bool showPC, Symbol* instr, bo
 								if(showPC || !(inputComp->getIsPC()))
 								{
 									glVertex2f(x1, y1);
-									list<Coord*> iVertices = iLink->getVertices();
-									for(list<Coord*>::iterator iVertex = iVertices.begin(); iVertex != iVertices.end(); ++iVertex)
+									auto iVertices = iLink->getVertices();
+									for(auto iVertex = iVertices.begin(); iVertex != iVertices.end(); ++iVertex)
 									{
 										Coord *vertex = *iVertex;
 										double x = vertex->x;
@@ -459,7 +462,7 @@ void Component::drawConnectors(bool showControl, bool showPC, Symbol* instr, boo
 	bool large;
 	glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT);
 	glEnable(GL_POLYGON_SMOOTH);
-	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
 		large = false;
 		if(!(((*i).second)->isOutput()))
@@ -586,13 +589,13 @@ void Component::connect(int outSlot, Component *comp, int inSlot)
 
 void Component::printLinkData()
 {
-	cout << this->getName() << ": " << endl;
-	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+	std::cout << this->getName() << ": " << std::endl;
+	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
 		Link* aLink = (*i).second;
 		if(aLink->isOutput())
 		{
-			cout << "	" << (*i).first << ": " << aLink->getVal() << endl;
+			std::cout << "	" << (*i).first << ": " << aLink->getVal() << std::endl;
 		}
 	}
 //	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
@@ -679,7 +682,7 @@ void Component::drawRectangle()
 bool Component::allInputsActive()
 {
 	// Make sure all inputs are active.
-	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
 		Link* curLink = (*i).second;
 		if(!(curLink->isOutput()))
@@ -1004,8 +1007,8 @@ wxString PipelineRegister::getMainInfo(wxPoint mousePos)
 	}
 	
 	// Get puts in descending order of y pos.
-	map<double, Link*> yposList;
-	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+	std::map<double, Link*> yposList;
+	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
 		Link* ln = (*i).second;
 		if((findInputs && !ln->isOutput()) || (!findInputs && ln->isOutput()))
@@ -1013,7 +1016,7 @@ wxString PipelineRegister::getMainInfo(wxPoint mousePos)
 			yposList[1.0 - ln->getY()] = ln;
 		}
 	}
-	for(map<double, Link*>::iterator i = yposList.begin(); i != yposList.end(); ++i)
+	for(auto i = yposList.begin(); i != yposList.end(); ++i)
 	{
 		Link* ln = (*i).second;
 		info += Maths::convertToBase(ln->getVal()) + _T("\n");
@@ -1025,7 +1028,7 @@ wxString PipelineRegister::getMainInfo(wxPoint mousePos)
 // Set all outputs of a pipeline register to 0.
 void PipelineRegister::reset()
 {
-	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
 		Link* link= (*i).second;
 		if(link->isOutput())
@@ -1411,15 +1414,15 @@ void Node::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLay
 		OutputLink* oLink;
 		InputLink* iLink;
 		Component* nComp;
-		for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+		for(auto i = linkList.begin(); i != linkList.end(); ++i)
 		{
 			Link* link= (*i).second;
 			if(link->isOutput())
 			{
 				oLink = (OutputLink*)(link);
 				
-				vector<Link*> oLinkList = oLink->getLinkList();
-				for(vector<Link*>::iterator j = oLinkList.begin(); j != oLinkList.end(); ++j)
+				std::vector<Link*> oLinkList = oLink->getLinkList();
+				for(auto j = oLinkList.begin(); j != oLinkList.end(); ++j)
 				{
 					if(!((*j)->isOutput()))
 					{
@@ -1500,7 +1503,7 @@ void Node::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLay
 
 bool Node::isActive()
 {
-	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
 		Link* link= (*i).second;
 		if(!(link->isOutput()))
@@ -1531,7 +1534,7 @@ bool Node::isActive()
 
 bool Node::isActiveValid(Symbol instr)
 {
-	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
 		Link* link= (*i).second;
 		if(!(link->isOutput()))
@@ -1551,7 +1554,7 @@ bool Node::isActiveValid(Symbol instr)
 
 luint Node::getVal()
 {
-	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
 		Link* link= (*i).second;
 		if(!(link->isOutput()))
@@ -1571,7 +1574,7 @@ luint Node::getVal()
 
 bool Node::getIsControl()
 {
-	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
 		Link* link= (*i).second;
 		if(!(link->isOutput()))
@@ -1592,7 +1595,7 @@ bool Node::getIsControl()
 
 bool Node::getIsPC()
 {
-	for(map<int, Link*>::iterator i = linkList.begin(); i != linkList.end(); ++i)
+	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
 		Link* link= (*i).second;
 		if(!(link->isOutput()))
@@ -1651,9 +1654,9 @@ void Mux3::step()
 			throw InvalidInputEx;		
 		}
 	}
-	catch(exception& e)
+	catch(std::exception& e)
 	{
-		cout << e.what() << this->getID() << endl;
+		std::cout << e.what() << this->getID() << std::endl;
 	}
 	
 	if(!isActive() && linkList[0]->isActive() && linkList[3]->isActive())
@@ -1770,9 +1773,9 @@ void ALUControl::step()
 				break;
 		}
 	}
-	catch(exception& e)
+	catch(std::exception& e)
 	{
-		cout << e.what() << this->getID() << endl;
+		std::cout << e.what() << this->getID() << std::endl;
 		result = 0;
 	}
 	

@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -79,10 +79,10 @@ void Link::addVertex(double x, double y)
 	this->vertices.push_back(new Coord(x, y)); 
 }
 
-void Link::setVertexList(list<Coord*> *vertices)
+void Link::setVertexList(std::list<Coord*> *vertices)
 {
 	this->vertices.clear();
-	for(list<Coord*>::iterator i = vertices->begin(); i != vertices->end(); ++i)
+	for(auto i = vertices->begin(); i != vertices->end(); ++i)
 	{
 		Coord *vertex = *i;
 		this->vertices.push_back(new Coord(vertex->x, vertex->y));

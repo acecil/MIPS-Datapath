@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ enum Symbol
 	SYM_EOF,
 	SYM_EOL,
 	SYM_DATA,
-	SYM_MAX,
+	SYM_MAX
 };
 
 enum Layout
@@ -70,7 +70,7 @@ enum _MainControlInputOutputs
 	MAINCONTROL_ALUSRC = 6,
 	MAINCONTROL_REGWRITE = 7,
 	MAINCONTROL_REGDST = 8,
-	MAINCONTROL_MAX = 8,
+	MAINCONTROL_MAX = 8
 };
 
 enum _MainControlPipelinedInputOutputs
@@ -80,7 +80,7 @@ enum _MainControlPipelinedInputOutputs
 	MAINCONTROLPIPELINED_WB = 1,
 	MAINCONTROLPIPELINED_MEM = 2,
 	MAINCONTROLPIPELINED_EX = 3,
-	MAINCONTROLPIPELINED_MAX = 3,
+	MAINCONTROLPIPELINED_MAX = 3
 };
 
 enum _ForwardingInputsOutputs
@@ -92,14 +92,14 @@ enum _ForwardingInputsOutputs
 	FORWARDING_MEMWBREG = 2,
 	FORWARDING_MUXA = 5,
 	FORWARDING_MUXB = 4,
-	FORWARDING_MAX = 5,
+	FORWARDING_MAX = 5
 };
 
 enum _DataLists
 {
 	ID_INSTRUCTION_LIST,
     ID_REGISTER_LIST,
-    ID_DATA_LIST,
+    ID_DATA_LIST
 };
 
 #endif /*ENUMS_H_*/

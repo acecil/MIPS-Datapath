@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #define COMPONENT_H_
 
 #include <GL/glut.h>
+
 #include <cmath>
 #include <string>
 #include <vector>
@@ -32,10 +33,12 @@
 #include <iostream>
 #include <limits>
 #include <exception>
+
 #include <wx/wx.h>
 #include <wx/gdicmn.h>
 #include <wx/string.h>
 #include <wx/colour.h>
+
 #include "Types.h"
 #include "Enums.h"
 #include "Maths.h"
@@ -253,7 +256,7 @@ class MainControl: public Control
 		MainControl(int layout, double x, double y, double w = 10, double h = 15, wxString name = _T("Control"));
 		virtual void step();
 	private:
-		map<uint, mainControlLookup*> lookup;
+		std::map<uint, mainControlLookup*> lookup;
 		
 };
 
@@ -263,7 +266,7 @@ class MainControlPipelined: public Control
 		MainControlPipelined(int layout, double x, double y, double w = 10, double h = 15, wxString name = _T("Control"));
 		virtual void step();
 	private:
-		map<uint, mainControlLookup*> lookup;
+		std::map<uint, mainControlLookup*> lookup;
 };
 
 class ALUControl: public Control
@@ -272,7 +275,7 @@ class ALUControl: public Control
 		ALUControl(double x, double y, double w = 10, double h = 15, wxString name = _T("ALU Control"));
 		virtual void step();
 	private:
-		map<uint, uint> funcLookup;
+		std::map<uint, uint> funcLookup;
 };
 
 class SignExtend: public Control
@@ -300,7 +303,7 @@ class Memory: public Component
 		luint getData(luint address);
 		void setData(luint address, luint val){ data[address] = val; };
 	protected:
-		map<luint, luint> data;
+		std::map<luint, luint> data;
 	private:
 };
 

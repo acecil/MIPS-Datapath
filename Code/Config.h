@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,13 +23,12 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
-#include <wx/colour.h>
 #include <map>
 #include <fstream>
 #include <string>
 #include <iostream>
 
-using namespace std;
+#include <wx/colour.h>
 
 enum configName		
 {
@@ -64,7 +63,6 @@ enum configName
 	EDITOR_SASH_POS,
 	CONFIG_MAX_NAME,
 };
-
 
 class Config
 {
@@ -106,14 +104,14 @@ class Config
 		void getName(configName & name);
 		void getChar();
 		static Config* pinstance;
-		map<configName, wxColour> colours;
-		map<configName, bool> bools;
-		map<configName, unsigned int> numbers;
-		map<configName, string> names;
-		map<configName, bool> nameIsColour;
-		map<configName, bool> isNameANumber;
-		map<string, configName> snames;
-		ifstream configFile;	
+		std::map<configName, wxColour> colours;
+		std::map<configName, bool> bools;
+		std::map<configName, unsigned int> numbers;
+		std::map<configName, std::string> names;
+		std::map<configName, bool> nameIsColour;
+		std::map<configName, bool> isNameANumber;
+		std::map<std::string, configName> snames;
+		std::ifstream configFile;	
 		Symbol curSymbol;
 		char curch;
 		bool eofile;

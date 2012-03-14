@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -28,34 +28,35 @@
 #include "Maths.h"
 #include "Config.h"
 #include "Icons.h"
+#include "Component.h"
 
 #include "Frame.h"
 
-BEGIN_EVENT_TABLE(MyFrame, wxFrame)
-	EVT_SPLITTER_SASH_POS_CHANGED(ID_SPLITTER_WINDOW, MyFrame::OnSplitterSizeChanged)
-	EVT_SPLITTER_SASH_POS_CHANGED(ID_EDSPLITTER_WINDOW, MyFrame::OnSplitterSizeChanged)
-	EVT_BUTTON(wxID_FORWARD, MyFrame::StepButtonClicked)
-    EVT_BUTTON(wxID_STOP, MyFrame::ResetButtonClicked)
-    EVT_MENU(ID_MENU_LAYOUT_SIMPLE, MyFrame::SetSimpleLayout)
-    EVT_MENU(ID_MENU_LAYOUT_PIPELINE, MyFrame::SetPipelineLayout)
-    EVT_MENU(ID_MENU_LAYOUT_FORWARDING, MyFrame::SetForwardingLayout)
-    EVT_MENU(ID_MENU_FORMAT_BIN, MyFrame::SetFormatBin)
-    EVT_MENU(ID_MENU_FORMAT_DEC, MyFrame::SetFormatDec)
-    EVT_MENU(ID_MENU_FORMAT_HEX, MyFrame::SetFormatHex)
-    EVT_MENU(ID_MENU_EDIT_OPTIONS, MyFrame::EditOptions)
-    EVT_MENU(ID_MENU_FILE_LOAD, MyFrame::LoadFile)
-    EVT_MENU(ID_MENU_HELP_CONTENTS, MyFrame::ShowContents)
-    EVT_MENU(ID_MENU_HELP_INDEX, MyFrame::ShowIndex)
-    EVT_MENU(ID_MENU_HELP_ABOUT, MyFrame::ShowAbout)
-    EVT_BUTTON(ID_LOAD_INSTRUCTIONS, MyFrame::LoadFile)
-    EVT_BUTTON(ID_SAVE_INSTRUCTIONS, MyFrame::SaveFile)
-    EVT_BUTTON(ID_PARSE_INSTRUCTIONS, MyFrame::Parse)
-    EVT_GRID_CMD_CELL_CHANGE(ID_MEMORY_LIST, MyFrame::MemoryGridChanged)
-    EVT_LIST_ITEM_SELECTED(ID_INSTRUCTION_LIST, MyFrame::OnSelectInstruction)
-	EVT_SLIDER(ID_ZOOM_SLIDER, MyFrame::OnZoomSliderChanged)
+BEGIN_EVENT_TABLE(Frame, wxFrame)
+	EVT_SPLITTER_SASH_POS_CHANGED(ID_SPLITTER_WINDOW, Frame::OnSplitterSizeChanged)
+	EVT_SPLITTER_SASH_POS_CHANGED(ID_EDSPLITTER_WINDOW, Frame::OnSplitterSizeChanged)
+	EVT_BUTTON(wxID_FORWARD, Frame::StepButtonClicked)
+    EVT_BUTTON(wxID_STOP, Frame::ResetButtonClicked)
+    EVT_MENU(ID_MENU_LAYOUT_SIMPLE, Frame::SetSimpleLayout)
+    EVT_MENU(ID_MENU_LAYOUT_PIPELINE, Frame::SetPipelineLayout)
+    EVT_MENU(ID_MENU_LAYOUT_FORWARDING, Frame::SetForwardingLayout)
+    EVT_MENU(ID_MENU_FORMAT_BIN, Frame::SetFormatBin)
+    EVT_MENU(ID_MENU_FORMAT_DEC, Frame::SetFormatDec)
+    EVT_MENU(ID_MENU_FORMAT_HEX, Frame::SetFormatHex)
+    EVT_MENU(ID_MENU_EDIT_OPTIONS, Frame::EditOptions)
+    EVT_MENU(ID_MENU_FILE_LOAD, Frame::LoadFile)
+    EVT_MENU(ID_MENU_HELP_CONTENTS, Frame::ShowContents)
+    EVT_MENU(ID_MENU_HELP_INDEX, Frame::ShowIndex)
+    EVT_MENU(ID_MENU_HELP_ABOUT, Frame::ShowAbout)
+    EVT_BUTTON(ID_LOAD_INSTRUCTIONS, Frame::LoadFile)
+    EVT_BUTTON(ID_SAVE_INSTRUCTIONS, Frame::SaveFile)
+    EVT_BUTTON(ID_PARSE_INSTRUCTIONS, Frame::Parse)
+    EVT_GRID_CMD_CELL_CHANGE(ID_MEMORY_LIST, Frame::MemoryGridChanged)
+    EVT_LIST_ITEM_SELECTED(ID_INSTRUCTION_LIST, Frame::OnSelectInstruction)
+	EVT_SLIDER(ID_ZOOM_SLIDER, Frame::OnZoomSliderChanged)
 END_EVENT_TABLE()
 
-MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
+Frame::Frame(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
 	init = false;
@@ -141,7 +142,7 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 	this->Maximize(true);
 }
 
-void MyFrame::finishInit()
+void Frame::finishInit()
 { 
 	init = true; 
 	Config* c = Config::Instance();
@@ -153,7 +154,7 @@ void MyFrame::finishInit()
 	resetLeftPanelSizes();
 };
 
-void MyFrame::setupSimulatorPage(wxNotebook *notebook)
+void Frame::setupSimulatorPage(wxNotebook *notebook)
 {
 	wxPanel *simulatorPage = new wxPanel(notebook);
 	
@@ -180,9 +181,9 @@ void MyFrame::setupSimulatorPage(wxNotebook *notebook)
     dataBook->AddPage(registerPage, _T("&Registers"), false);
     dataBook->AddPage(dataPage, _T("&Data"), false);
     
-    dataList[ID_INSTRUCTION_LIST] = new MyDatalist(4, Model::MAX_INSTRUCTIONS, _T("Instr."), instructionPage, ID_INSTRUCTION_LIST);
-    dataList[ID_REGISTER_LIST] = new MyDatalist(1, Model::MAX_REGISTERS, _T("Addr."), registerPage, ID_REGISTER_LIST);
-    dataList[ID_DATA_LIST] = new MyDatalist(1, Model::MAX_DATA, _T("Addr."), dataPage, ID_DATA_LIST);
+    dataList[ID_INSTRUCTION_LIST] = new Datalist(4, Model::MAX_INSTRUCTIONS, _T("Instr."), instructionPage, ID_INSTRUCTION_LIST);
+    dataList[ID_REGISTER_LIST] = new Datalist(1, Model::MAX_REGISTERS, _T("Addr."), registerPage, ID_REGISTER_LIST);
+    dataList[ID_DATA_LIST] = new Datalist(1, Model::MAX_DATA, _T("Addr."), dataPage, ID_DATA_LIST);
     
     wxSizer *instructionSizer = new wxBoxSizer(wxVERTICAL);
     wxSizer *registerSizer = new wxBoxSizer(wxVERTICAL);
@@ -201,7 +202,7 @@ void MyFrame::setupSimulatorPage(wxNotebook *notebook)
 	int attribList[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, wxFULL_REPAINT_ON_RESIZE};
     processor = new Model();
     processor->resetup();
-    canvas = new MyGLCanvas(processor, GLWindow, this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, _T("GLCanvas"), attribList, wxNullPalette);
+    canvas = new GLCanvas(processor, GLWindow, this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, _T("GLCanvas"), attribList, wxNullPalette);
    	GLWindow->SetCanvas(canvas);
 	GLWindow->SetSizer(GLSizer);
    	GLSizer->Add(canvas, 1, wxEXPAND | wxALL, 0);
@@ -218,7 +219,7 @@ void MyFrame::setupSimulatorPage(wxNotebook *notebook)
 
 }
 
-void MyFrame::setupEditorPage(wxNotebook *notebook)
+void Frame::setupEditorPage(wxNotebook *notebook)
 {
 	wxPanel *editorPage = new wxPanel(notebook);
 	
@@ -279,7 +280,7 @@ void MyFrame::setupEditorPage(wxNotebook *notebook)
 	notebook->AddPage(editorPage, _T("&Editor"), false);
 }
 
-void MyFrame::setupMenubar()
+void Frame::setupMenubar()
 {
 	// Menu Bar
 	wxMenuBar *menubar = new wxMenuBar();
@@ -356,12 +357,12 @@ void MyFrame::setupMenubar()
 	helpMenu->Append(ID_MENU_HELP_ABOUT, _T("&About..."));
 }
 
-MyFrame::~MyFrame()
+Frame::~Frame()
 {
 
 }
 
-void MyFrame::updateEditorText()
+void Frame::updateEditorText()
 {
 	editorText->Clear();
 	wxString instr;
@@ -370,7 +371,7 @@ void MyFrame::updateEditorText()
 	editorText->SetInsertionPoint(0);
 }
 
-void MyFrame::updateEditorTextFromStore()
+void Frame::updateEditorTextFromStore()
 {
 	editorText->Clear();
 	for(uint i = 0; i < Model::MAX_INSTRUCTIONS; i+=4)
@@ -389,7 +390,7 @@ void MyFrame::updateEditorTextFromStore()
 	editorText->SetInsertionPoint(0);
 }
 
-void MyFrame::updateErrorText()
+void Frame::updateErrorText()
 {
 	errorText->Clear();
 	int numErrors = processor->getNumberOfErrors();
@@ -424,11 +425,11 @@ void MyFrame::updateErrorText()
 	}
 }
 
-void MyFrame::updateDataList(bool initialCall, bool selectInstruction)
+void Frame::updateDataList(bool initialCall, bool selectInstruction)
 {
-	for(map<uint, MyDatalist*>::iterator i = dataList.begin(); i != dataList.end(); ++i)
+	for(auto i = dataList.begin(); i != dataList.end(); ++i)
 	{
-		MyDatalist* list = (*i).second;
+		Datalist* list = (*i).second;
 		uint cMem = (*i).first;
 		// For complete redraw, completely empty datalist then refill with columns.
 		if(initialCall)
@@ -485,7 +486,7 @@ void MyFrame::updateDataList(bool initialCall, bool selectInstruction)
 	updateDataListHighlighting();
 }
 
-void MyFrame::updateDataListHighlighting()
+void Frame::updateDataListHighlighting()
 {
 	processor->setHighlightInstruction(dataList[ID_INSTRUCTION_LIST]->getSelectedIndex(), dataList[ID_INSTRUCTION_LIST]->isSelectedIndexValid());
 	uint curPos = 0;
@@ -505,7 +506,7 @@ void MyFrame::updateDataListHighlighting()
 	}
 }
 
-void MyFrame::setInitialMemoryVals(bool fromParser)
+void Frame::setInitialMemoryVals(bool fromParser)
 {
 	if(fromParser)
 	{
@@ -556,20 +557,20 @@ void MyFrame::setInitialMemoryVals(bool fromParser)
 	}
 }
 
-void MyFrame::MemoryGridChanged(wxGridEvent& WXUNUSED(event))
+void Frame::MemoryGridChanged(wxGridEvent& WXUNUSED(event))
 {
 	setInitialMemoryVals();
 	updateDataList();
 }
 
-void MyFrame::StepButtonClicked(wxCommandEvent& WXUNUSED(event))
+void Frame::StepButtonClicked(wxCommandEvent& WXUNUSED(event))
 {
 	processor->step();
 	updateDataList();
 	canvas->Render();
 }
 
-void MyFrame::ResetButtonClicked(wxCommandEvent& WXUNUSED(event))
+void Frame::ResetButtonClicked(wxCommandEvent& WXUNUSED(event))
 {
 	processor->resetup();
 	setInitialMemoryVals();
@@ -578,7 +579,7 @@ void MyFrame::ResetButtonClicked(wxCommandEvent& WXUNUSED(event))
 	canvas->Render();
 }
 
-void MyFrame::SetSimpleLayout(wxCommandEvent& WXUNUSED(event))
+void Frame::SetSimpleLayout(wxCommandEvent& WXUNUSED(event))
 {
 	processor->resetup(LAYOUT_SIMPLE);
 	Config* c = Config::Instance();
@@ -591,7 +592,7 @@ void MyFrame::SetSimpleLayout(wxCommandEvent& WXUNUSED(event))
 	updateDataList();
 }
 
-void MyFrame::SetPipelineLayout(wxCommandEvent& WXUNUSED(event))
+void Frame::SetPipelineLayout(wxCommandEvent& WXUNUSED(event))
 {
 	processor->resetup(LAYOUT_PIPELINE);
 	Config* c = Config::Instance();
@@ -604,7 +605,7 @@ void MyFrame::SetPipelineLayout(wxCommandEvent& WXUNUSED(event))
 	updateDataList();
 }
 
-void MyFrame::SetForwardingLayout(wxCommandEvent& WXUNUSED(event))
+void Frame::SetForwardingLayout(wxCommandEvent& WXUNUSED(event))
 {
 	processor->resetup(LAYOUT_FORWARDING);
 	Config* c = Config::Instance();
@@ -617,7 +618,7 @@ void MyFrame::SetForwardingLayout(wxCommandEvent& WXUNUSED(event))
 	updateDataList();
 }
 
-void MyFrame::SetFormatBin(wxCommandEvent& WXUNUSED(event))
+void Frame::SetFormatBin(wxCommandEvent& WXUNUSED(event))
 {
 	Maths::setFormat(FORMAT_BINARY);
 	Config* c = Config::Instance();
@@ -629,7 +630,7 @@ void MyFrame::SetFormatBin(wxCommandEvent& WXUNUSED(event))
 	resetLeftPanelSizes();
 }
 
-void MyFrame::SetFormatDec(wxCommandEvent& WXUNUSED(event))
+void Frame::SetFormatDec(wxCommandEvent& WXUNUSED(event))
 {
 	Maths::setFormat(FORMAT_DECIMAL);
 	Config* c = Config::Instance();
@@ -641,7 +642,7 @@ void MyFrame::SetFormatDec(wxCommandEvent& WXUNUSED(event))
 	resetLeftPanelSizes();
 }
 
-void MyFrame::SetFormatHex(wxCommandEvent& WXUNUSED(event))
+void Frame::SetFormatHex(wxCommandEvent& WXUNUSED(event))
 {
 	Maths::setFormat(FORMAT_HEX);
 	Config* c = Config::Instance();
@@ -653,7 +654,7 @@ void MyFrame::SetFormatHex(wxCommandEvent& WXUNUSED(event))
 	resetLeftPanelSizes();
 }
 
-void MyFrame::showHideLeftPanel(bool showLeftPanel, bool justSwitch)
+void Frame::showHideLeftPanel(bool showLeftPanel, bool justSwitch)
 {
 	Config *c = Config::Instance();
 	if(mainSplitter->IsSplit() && (!showLeftPanel || justSwitch))
@@ -670,9 +671,9 @@ void MyFrame::showHideLeftPanel(bool showLeftPanel, bool justSwitch)
 	c->save();
 }
 
-void MyFrame::EditOptions(wxCommandEvent& WXUNUSED(event))
+void Frame::EditOptions(wxCommandEvent& WXUNUSED(event))
 {
-	MyDialog *dlg = new MyDialog(this, wxID_ANY, ico, processor, _T("Options"), mainSplitter->IsSplit(), processor->getBool(SHOW_INSTRUCTION_FIELDS));
+	Dialog *dlg = new Dialog(this, wxID_ANY, ico, processor, _T("Options"), mainSplitter->IsSplit(), processor->getBool(SHOW_INSTRUCTION_FIELDS));
 	Config *c = Config::Instance();
 		
 	if(dlg->ShowModal() == wxID_OK)
@@ -710,7 +711,7 @@ void MyFrame::EditOptions(wxCommandEvent& WXUNUSED(event))
 	c->save();
 }
 
-void MyFrame::LoadFile(wxCommandEvent& event)
+void Frame::LoadFile(wxCommandEvent& event)
 {
 	wxFileDialog openDlg(this, _T("Load Instruction File"), _T(""), _T(""), _T("Definition files (*.def)|*.def"), wxFD_OPEN);
 	if(openDlg.ShowModal() == wxID_OK)
@@ -731,7 +732,7 @@ void MyFrame::LoadFile(wxCommandEvent& event)
 	}
 }
 
-void MyFrame::SaveFile(wxCommandEvent& event)
+void Frame::SaveFile(wxCommandEvent& event)
 {
 	Parse(event);
 	wxFileDialog saveDlg(this, _T("Save Instruction File"), _T(""), _T(""), _T("Definition files (*.def)|*.def"), wxFD_SAVE);
@@ -745,7 +746,7 @@ void MyFrame::SaveFile(wxCommandEvent& event)
 				path += _T(".def");
 			}
 			// Check to see if the file exists. If it does, warn about overwriting it.
-			ifstream checkfile(path.fn_str());
+			std::ifstream checkfile(path.fn_str());
 			checkfile.close();
 			if(!checkfile.fail())
 			{
@@ -763,17 +764,17 @@ void MyFrame::SaveFile(wxCommandEvent& event)
 	}
 }
 
-void MyFrame::ShowContents(wxCommandEvent& WXUNUSED(event))
+void Frame::ShowContents(wxCommandEvent& WXUNUSED(event))
 {
 	help->DisplayContents();
 }
 
-void MyFrame::ShowIndex(wxCommandEvent& WXUNUSED(event))
+void Frame::ShowIndex(wxCommandEvent& WXUNUSED(event))
 {
 	help->DisplayIndex();
 }
 
-void MyFrame::ShowAbout(wxCommandEvent& WXUNUSED(event))
+void Frame::ShowAbout(wxCommandEvent& WXUNUSED(event))
 {
 	wxAboutDialogInfo info;
 	info.SetName(_T("MIPS-Datapath"));
@@ -783,7 +784,7 @@ void MyFrame::ShowAbout(wxCommandEvent& WXUNUSED(event))
 	wxAboutBox(info);
 }
 
-void MyFrame::Parse(wxCommandEvent& WXUNUSED(event))
+void Frame::Parse(wxCommandEvent& WXUNUSED(event))
 {
 	wxString str = editorText->GetValue();
 	processor->parse(str);
@@ -796,7 +797,7 @@ void MyFrame::Parse(wxCommandEvent& WXUNUSED(event))
 	resetLeftPanelSizes();
 }
 
-void MyFrame::resetLeftPanelSizes()
+void Frame::resetLeftPanelSizes()
 {
 	Config* c = Config::Instance();
 	if(!init || !(c->getBool(SHOW_LEFT_PANEL)))
@@ -833,18 +834,18 @@ void MyFrame::resetLeftPanelSizes()
 	initSize = true;
 }
 
-void MyFrame::OnSplitterSizeChanged(wxSplitterEvent& WXUNUSED(event))
+void Frame::OnSplitterSizeChanged(wxSplitterEvent& WXUNUSED(event))
 {
 	resetLeftPanelSizes();
 }
 
-void MyFrame::OnSelectInstruction(wxListEvent& WXUNUSED(event))
+void Frame::OnSelectInstruction(wxListEvent& WXUNUSED(event))
 {
 	processor->setHighlightInstruction(dataList[ID_INSTRUCTION_LIST]->getSelectedIndex(), dataList[ID_INSTRUCTION_LIST]->isSelectedIndexValid());
 	canvas->Render();
 }
 
-void MyFrame::OnZoomSliderChanged(wxCommandEvent& event)
+void Frame::OnZoomSliderChanged(wxCommandEvent& event)
 {
 	canvas->SetZoom(-event.GetInt());
 	double scale = std::pow(0.98, static_cast<double>(-event.GetInt()));

@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ Data::Data(int numBits)
 
 Data::Data(const Data& newData)
 {
-	int minLength = min(numBits, newData.size());
+	int minLength = std::min(numBits, newData.size());
 	for(int i = 0; i < minLength; i++)
 	{
 		bits[i] = newData.get(i);

@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,18 +23,20 @@
 #ifndef MODEL_H_
 #define MODEL_H_
 
-#include "Enums.h"
-#include "Types.h"
-#include "Config.h"
 #include <list>
 #include <iostream>
+#include <limits>
+#include <cmath>
+#include <map>
+
 #include <wx/gdicmn.h>
 #include <wx/utils.h>
 #include <wx/string.h>
 #include <wx/colour.h>
-#include <limits>
-#include <cmath>
-#include <map>
+
+#include "Enums.h"
+#include "Types.h"
+#include "Config.h"
 
 class Component;
 class Link;
@@ -69,15 +71,6 @@ class Model
 		void step();
 		void reset();
 		void draw(wxPoint mousePos);
-//		void printAllData();
-//		bool isCreatingConnection(){ return creatingConnection; };
-//		void findInput(wxPoint mouseLocation);
-//		void findOutput(wxPoint mouseLocation);
-//		void cancelCreatingConnection();
-//		void startMovingComponent(wxPoint mousePos);
-//		void moveComponent(wxPoint mousePos);
-//		void finishMovingComponent(wxPoint mousePos);
-//		bool isMovingComponent(){ return movingComponent; };
 		void addVertex(wxPoint mousePos);
 		Component* findComponent(wxPoint mousePos);
 		Link* findLink(wxPoint mousePos);

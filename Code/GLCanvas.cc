@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -29,22 +29,22 @@
 
 #include "GLCanvas.h"
 
-BEGIN_EVENT_TABLE(MyGLCanvas, wxGLCanvas)
-  EVT_SIZE(MyGLCanvas::OnSize)
-  EVT_PAINT(MyGLCanvas::OnPaint)
-  EVT_LEFT_UP(MyGLCanvas::OnLeftClick)
-  EVT_RIGHT_UP(MyGLCanvas::OnRightClick)
-  EVT_MOTION(MyGLCanvas::OnMouseMotion)
-  EVT_ERASE_BACKGROUND(MyGLCanvas::OnEraseBackground)
+BEGIN_EVENT_TABLE(GLCanvas, wxGLCanvas)
+  EVT_SIZE(GLCanvas::OnSize)
+  EVT_PAINT(GLCanvas::OnPaint)
+  EVT_LEFT_UP(GLCanvas::OnLeftClick)
+  EVT_RIGHT_UP(GLCanvas::OnRightClick)
+  EVT_MOTION(GLCanvas::OnMouseMotion)
+  EVT_ERASE_BACKGROUND(GLCanvas::OnEraseBackground)
 END_EVENT_TABLE()
 
-const double MyGLCanvas::defaultWidth = 250.0;
-const double MyGLCanvas::defaultHeight = 174.0;
-const GLint MyGLCanvas::canvasWidth = 1150;
-const GLint MyGLCanvas::canvasHeight = 870;
-wxTipWindow* MyGLCanvas::tipWin = NULL;
+const double GLCanvas::defaultWidth = 250.0;
+const double GLCanvas::defaultHeight = 174.0;
+const GLint GLCanvas::canvasWidth = 1150;
+const GLint GLCanvas::canvasHeight = 870;
+wxTipWindow* GLCanvas::tipWin = NULL;
 
-MyGLCanvas::MyGLCanvas(Model* proc, wxWindow* parent, MyFrame* frame, wxWindowID id, const wxPoint& pos, 
+GLCanvas::GLCanvas(Model* proc, wxWindow* parent, Frame* frame, wxWindowID id, const wxPoint& pos, 
 	const wxSize& size, long style, const wxString& name, int* attribList, 
 	const wxPalette& palette):
 	wxGLCanvas(parent, id, attribList, pos, wxSize(canvasWidth, canvasHeight)),
@@ -58,7 +58,7 @@ MyGLCanvas::MyGLCanvas(Model* proc, wxWindow* parent, MyFrame* frame, wxWindowID
 	processor->setup();
 }
 
-void MyGLCanvas::Render()
+void GLCanvas::Render()
 {
 	SetCurrent(glContext);
   	if (!init) {
@@ -80,18 +80,18 @@ void MyGLCanvas::Render()
   	SwapBuffers();
 }
 
-void MyGLCanvas::SetZoom(int zoom)
+void GLCanvas::SetZoom(int zoom)
 {
 	scale = std::pow(0.98, static_cast<double>(zoom));
 	Render();
 }
 
-wxSize MyGLCanvas::GetCanvasSize()
+wxSize GLCanvas::GetCanvasSize()
 {
 	return wxSize(canvasWidth, canvasHeight);
 }
 
-void MyGLCanvas::InitGL()
+void GLCanvas::InitGL()
 {
   	SetCurrent(glContext);
   	glDrawBuffer(GL_BACK);
@@ -109,13 +109,13 @@ void MyGLCanvas::InitGL()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void MyGLCanvas::OnPaint(wxPaintEvent& event)
+void GLCanvas::OnPaint(wxPaintEvent& event)
 {
   wxPaintDC dc(this); // required for correct refreshing under MS windows
   Render();
 }
 
-void MyGLCanvas::OnSize(wxSizeEvent& event)
+void GLCanvas::OnSize(wxSizeEvent& event)
 {
   	size = this->GetSize();
   	Refresh(); // required by some buggy nvidia graphics drivers,
@@ -123,7 +123,7 @@ void MyGLCanvas::OnSize(wxSizeEvent& event)
 	event.Skip();
 }
 
-wxPoint MyGLCanvas::GetMousePosition()
+wxPoint GLCanvas::GetMousePosition()
 {
 	wxPoint mousePos = wxGetMousePosition();
 	wxPoint scaledPos;
@@ -132,7 +132,7 @@ wxPoint MyGLCanvas::GetMousePosition()
 	return scaledPos;
 }
 
-wxPoint MyGLCanvas::convertScreenToMouseCoord(wxPoint pos)
+wxPoint GLCanvas::convertScreenToMouseCoord(wxPoint pos)
 {
 	wxPoint scaledPos;
 	scaledPos.x = (int)(pos.x * canvasWidth / defaultWidth * scale + GetScreenPosition().x);
@@ -140,20 +140,20 @@ wxPoint MyGLCanvas::convertScreenToMouseCoord(wxPoint pos)
 	return scaledPos;
 }
 
-void MyGLCanvas::OnLeftClick(wxMouseEvent& event)
+void GLCanvas::OnLeftClick(wxMouseEvent& event)
 {
 	processor->step();
 	frame->updateDataList();
  	Render();
 }
 
-void MyGLCanvas::OnRightClick(wxMouseEvent& event)
+void GLCanvas::OnRightClick(wxMouseEvent& event)
 {
 	frame->showHideLeftPanel(true, true);
 	Render();
 }
 
-void MyGLCanvas::OnMouseMotion(wxMouseEvent& event)
+void GLCanvas::OnMouseMotion(wxMouseEvent& event)
 {
 	popUpString.Clear();
 	if(Model::getBool(SHOW_POPUPS))
@@ -279,7 +279,7 @@ void MyGLCanvas::OnMouseMotion(wxMouseEvent& event)
 	event.Skip();
 }
 
-void MyGLCanvas::OnEraseBackground(wxEraseEvent &event)
+void GLCanvas::OnEraseBackground(wxEraseEvent &event)
 {
 	/* Do nothing to prevent flicker. */
 }

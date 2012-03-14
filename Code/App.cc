@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,25 +22,27 @@
 
 #include <GL/glut.h>
 
+#include "Enums.h"
 #include "Frame.h"
-#include "Config.h" 
+#include "Config.h"
 
 #include "App.h"
 
-MyApp::MyApp()
+App::App()
 {
-	
+	/* Nothing to do. */
 }
 
-MyApp::~MyApp()
+App::~App()
 {
+	/* Nothing to do. */
 }
  
-bool MyApp::OnInit()
+bool App::OnInit()
 {
 #ifndef DEBUG_BUILD
 	glutInit(&argc, (char**)argv);
-	frame = new MyFrame( _T("MIPS-Datapath"), wxPoint(50,50), wxSize(450,340) );
+	frame = new Frame( _T("MIPS-Datapath"), wxPoint(50,50), wxSize(450,340) );
     frame->Show(TRUE);
  	SetTopWindow(frame);
  	frame->finishInit();

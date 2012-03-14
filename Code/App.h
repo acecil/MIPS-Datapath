@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,26 +20,25 @@
  * 
  */
  
-#ifndef MYAPP_H_
-#define MYAPP_H_
+#ifndef APP_H_
+#define APP_H_
 
 #include <wx/wx.h>
-#include "Enums.h"
 
-class MyFrame;
+class Frame;
 
-class MyApp : public wxApp
+class App : public wxApp
 {
-	public:
-		MyApp();
-		virtual ~MyApp();
-		virtual bool OnInit();
-	private:
-		MyFrame *frame;
+public:
+	App();
+	virtual ~App();
+	virtual bool OnInit();
+private:
+	Frame *frame;
 };
 #ifndef DEBUG_BUILD
-IMPLEMENT_APP(MyApp)
+IMPLEMENT_APP(App)
 #endif
 
-#endif /*MYAPP_H_*/
+#endif /*APP_H_*/
 

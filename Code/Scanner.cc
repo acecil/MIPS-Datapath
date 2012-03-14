@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ Scanner::Scanner(wxString defname)
 	  	  	
 	  	if (!deffile) 
 	    {
-	      	cout << "File Error" << endl;
+	      	std::cout << "File Error" << std::endl;
 	    }
 	  	else 
 	    {
@@ -213,7 +213,7 @@ void Scanner::getNumber(int &num)
 // Gets the name from the definition file until non-alpha or non-digit character found
 Symbol Scanner::getName()
 {
-  	string tempName;
+  	std::string tempName;
   
   	while((!eofile ) && ((!isalpha(curch)==0) || (!isdigit(curch)==0)))
     {

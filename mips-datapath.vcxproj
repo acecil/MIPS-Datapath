@@ -100,7 +100,6 @@
     <ClInclude Include="Code\Coord.h" />
     <ClInclude Include="Code\Data.h" />
     <ClInclude Include="Code\Enums.h" />
-    <ClInclude Include="Code\Exceptions.h" />
     <ClInclude Include="Code\Icons.h" />
     <ClInclude Include="Code\Link.h" />
     <ClInclude Include="Code\Maths.h" />
@@ -119,7 +118,6 @@
     <ClCompile Include="Code\Component.cc" />
     <ClCompile Include="Code\Config.cc" />
     <ClCompile Include="Code\Data.cc" />
-    <ClCompile Include="Code\Exceptions.cc" />
     <ClCompile Include="Code\Icons.cc" />
     <ClCompile Include="Code\Link.cc" />
     <ClCompile Include="Code\Maths.cc" />

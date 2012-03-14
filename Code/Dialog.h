@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,8 +20,10 @@
  * 
  */
  
-#ifndef MYDIALOG_H_
-#define MYDIALOG_H_
+#ifndef DIALOG_H_
+#define DIALOG_H_
+
+#include <iostream>
 
 #include <wx/wx.h>
 #include <wx/dialog.h>
@@ -35,18 +37,17 @@
 #include <wx/bitmap.h>
 #include <wx/bmpbuttn.h>
 #include <wx/image.h>
-#include "Component.h"
-#include "Model.h"
+
 #include "Color.h"
 #include "Config.h"
 
-#include <iostream>
+class Model;
 
-class MyDialog : public wxDialog
+class Dialog : public wxDialog
 {
 	public:
-	    MyDialog(wxWindow* parent, wxWindowID id, wxIconBundle *ico, Model* proc, const wxString& title, bool mainSplitterSplit, bool instructionsInFields, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE, const wxString& name = _T("dialogBox"));
-		virtual ~MyDialog();
+	    Dialog(wxWindow* parent, wxWindowID id, wxIconBundle *ico, Model* proc, const wxString& title, bool mainSplitterSplit, bool instructionsInFields, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE, const wxString& name = _T("dialogBox"));
+		virtual ~Dialog();
 		bool getBool(configName name){ return checkBoxes[name]->GetValue(); };
 		wxColour getColour(configName colour){ return colours[colour]; };
 	private:
@@ -54,11 +55,11 @@ class MyDialog : public wxDialog
 		void showColourPicker(configName id);
     	void EditColour(wxCommandEvent& event);
 		Model *proc;
-		map<configName, wxCheckBox*> checkBoxes;
-		map<configName, wxColour> colours;
-		map<configName, wxBitmapButton*> buttons;
+		std::map<configName, wxCheckBox*> checkBoxes;
+		std::map<configName, wxColour> colours;
+		std::map<configName, wxBitmapButton*> buttons;
 		wxIconBundle *ico;
 		DECLARE_EVENT_TABLE()
 };
 
-#endif /*MYDIALOG_H_*/
+#endif /*DIALOG_H_*/

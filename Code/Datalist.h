@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,21 +20,20 @@
  * 
  */
  
-#ifndef MYDATALIST_H_
-#define MYDATALIST_H_
+#ifndef DATALIST_H_
+#define DATALIST_H_
 
 #include <iostream>
 #include <wx/wx.h>
 #include <wx/listctrl.h>
+
 #include "Types.h"
 #include "Enums.h"
 
-using namespace std;
-
-class MyDatalist : public wxListCtrl
+class Datalist : public wxListCtrl
 {
 	public:
-		MyDatalist(uint multiplier, uint maxVals, wxString firstColTitle, wxWindow* parent, wxWindowID id);
+		Datalist(uint multiplier, uint maxVals, wxString firstColTitle, wxWindow* parent, wxWindowID id);
 		void InsertFirstColumn();
 		uint getMultiplier(){ return multiplier; };
 		uint getMaxVals(){ return maxVals; };
@@ -50,4 +49,4 @@ class MyDatalist : public wxListCtrl
 	DECLARE_EVENT_TABLE()
 };
 
-#endif /*MYDATALIST_H_*/
+#endif /*DATALIST_H_*/

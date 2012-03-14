@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,8 +26,6 @@
 #include <vector>
 #include <algorithm>
 
-using namespace std;
-
 class Data
 {
 	public:
@@ -37,7 +35,7 @@ class Data
 		int size() const { return bits.size(); };
 		bool get(int i) const;
 	private:
-		vector<bool> bits;
+		std::vector<bool> bits;
 		int numBits;
 };
 

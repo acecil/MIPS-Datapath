@@ -1,7 +1,7 @@
 /*
  *  
  *  MIPS-Datapath - Graphical MIPS CPU Simulator.
- *  Copyright 2008 Andrew Gascoyne-Cecil.
+ *  Copyright 2008, 2012 Andrew Gascoyne-Cecil.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -175,7 +175,7 @@ void Model::saveFile(wxString file)
 		wxString curLine;
 		uint address = 0;
 		bool err;
-		ofstream sfile(file.fn_str());
+		std::ofstream sfile(file.fn_str());
 		do
 		{
 			pmz->getInstructionString(address, curLine, err);
@@ -1595,7 +1595,7 @@ void Model::draw(wxPoint mousePos)
 		glColor3f(0.0, 0.0, 0.0);
 		glBegin(GL_LINE_STRIP);
 		glVertex2f(newX, newY);
-		for(list<Coord*>::iterator iVertex = vertices.begin(); iVertex != vertices.end(); ++iVertex)
+		for(auto iVertex = vertices.begin(); iVertex != vertices.end(); ++iVertex)
 		{
 			Coord *vertex = *iVertex;
 			glVertex2f(vertex->x, vertex->y);
@@ -1608,7 +1608,7 @@ void Model::draw(wxPoint mousePos)
 
 Component* Model::findComponent(wxPoint mousePos)
 {
-	for(list<Component*>::iterator i = components.begin(); i != components.end(); ++i)
+	for(auto i = components.begin(); i != components.end(); ++i)
 	{
 		Component *comp = (*i);
 		if(comp->getX() < mousePos.x && comp->getX() + comp->getW() > mousePos.x)
@@ -1626,7 +1626,7 @@ Component* Model::findComponent(wxPoint mousePos)
 Link* Model::findLink(wxPoint mousePos)
 {
 	uint slot;
-	for(list<Component*>::iterator i = components.begin(); i != components.end(); ++i)
+	for(auto i = components.begin(); i != components.end(); ++i)
 	{
 		Component *comp = (*i);
 		if(comp->getType() != NODE_TYPE)
