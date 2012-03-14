@@ -48,14 +48,25 @@ void ScrolledWindow::SetCanvas(MyGLCanvas *canvas)
 
 void ScrolledWindow::OnScroll(wxScrollWinEvent &event)
 {
+	/* Pass on event to base class. */
+	//event.Skip();
+	wxSize size = GetVirtualSize();
+	wxPoint start = GetViewStart();
+	if( event.GetOrientation() == wxHORIZONTAL )
+	{
+		start.x = event.GetPosition();
+	}
+	else
+	{
+		start.y = event.GetPosition();
+	}
+	SetScrollbars(1, 1, size.GetWidth(), size.GetHeight(), start.x, start.y);
+
 	if( glCanvas )
 	{
 		/* Force GL canvas to redraw. */
 		glCanvas->Render();
 	}
-
-	/* Pass on event to base class. */
-	event.Skip();
 }
 
 void ScrolledWindow::OnEraseBackground(wxEraseEvent &event)

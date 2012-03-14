@@ -161,7 +161,7 @@ void MyFrame::setupSimulatorPage(wxNotebook *notebook)
 	GLSizer = new wxBoxSizer(wxHORIZONTAL);
 	GLWindow = new ScrolledWindow(mainSplitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, _T("GLWindow"));
 	GLWindow->SetMinSize(wxSize(400, 200));
-	GLWindow->SetScrollRate(5, 5);
+	GLWindow->SetScrollRate(1, 1);
 	wxBoxSizer *leftSizer = new wxBoxSizer(wxVERTICAL);
     
     // Set up Left panel.
