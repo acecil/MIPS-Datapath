@@ -113,6 +113,7 @@
     <ClInclude Include="Code\Scanner.h" />
     <ClInclude Include="Code\ScrolledWindow.h" />
     <ClInclude Include="Code\Side.h" />
+    <ClInclude Include="Code\Types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component.cc" />
