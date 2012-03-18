@@ -245,7 +245,8 @@ void Frame::setupEditorPage(wxNotebook *notebook)
     buttonSizer->Add(new wxButton(parserPane, ID_SAVE_INSTRUCTIONS, _T("&Save")), 1, wxEXPAND | wxALL, 0);
     buttonSizer->Add(new wxButton(parserPane, ID_PARSE_INSTRUCTIONS, _T("&Parse")), 1, wxEXPAND | wxALL, 0);
     
-	editorText = new wxTextCtrl(parserPane, wxID_ANY, _T(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
+	// Require wxTE_RICH style for editor text control to allow styling under Windows.
+	editorText = new wxTextCtrl(parserPane, wxID_ANY, _T(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_RICH);
 	errorText = new wxTextCtrl(parserPane, wxID_ANY, _T(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
 	
 	parserSizer->Add(buttonSizer, 0, wxEXPAND | wxALL, 3);

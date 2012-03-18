@@ -58,7 +58,7 @@ enum Layout
 	LAYOUT_MAX = 2
 };
 
-enum _MainControlInputOutputs
+enum MainControlInputOutputs
 {
 	MAINCONTROL_MIN = 0,
 	MAINCONTROL_INPUT = 0,
@@ -73,7 +73,7 @@ enum _MainControlInputOutputs
 	MAINCONTROL_MAX = 8
 };
 
-enum _MainControlPipelinedInputOutputs
+enum MainControlPipelinedInputOutputs
 {
 	MAINCONTROLPIPELINED_MIN = 0,
 	MAINCONTROLPIPELINED_INPUT = 0,
@@ -83,7 +83,7 @@ enum _MainControlPipelinedInputOutputs
 	MAINCONTROLPIPELINED_MAX = 3
 };
 
-enum _ForwardingInputsOutputs
+enum ForwardingInputsOutputs
 {
 	FORWARDING_MIN = 0,
 	FORWARDING_READREG1 = 1,
@@ -95,7 +95,7 @@ enum _ForwardingInputsOutputs
 	FORWARDING_MAX = 5
 };
 
-enum _DataLists
+enum DataLists
 {
 	ID_INSTRUCTION_LIST,
     ID_REGISTER_LIST,
