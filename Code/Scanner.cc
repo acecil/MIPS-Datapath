@@ -220,8 +220,14 @@ Symbol Scanner::getName()
       	tempName += tolower(curch);
       	getChar();
     }
+
+	auto nameIt = names.find(tempName);
+	if( nameIt == names.end() )
+	{
+		return SYM_BAD;
+	}
      
-  	return names.find(tempName)->second;
+  	return nameIt->second;
 }
 
 
