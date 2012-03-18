@@ -60,6 +60,12 @@ GLCanvas::GLCanvas(Model* proc, wxWindow* parent, Frame* frame, wxWindowID id, c
 
 void GLCanvas::Render()
 {
+	if( !IsShownOnScreen() )
+	{
+		/* Cannot render to hidden GL canvas. */
+		return;
+	}
+
 	SetCurrent(glContext);
   	if (!init) {
     	InitGL();
