@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -10,24 +10,23 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <PropertyGroup Label="Globals">
-    <VCTargetsPath Condition="'$(VCTargetsPath11)' != '' and '$(VSVersion)' == '' and '$(VisualStudioVersion)' == ''">$(VCTargetsPath11)</VCTargetsPath>
-  </PropertyGroup>
+  <PropertyGroup Label="Globals" />
   <PropertyGroup Label="Globals">
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>mipsdatapath</RootNamespace>
+    <ProjectGuid>{E658833F-5D00-4697-BE43-2AD509F1CC14}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -55,15 +54,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;WINVER=0x0400;__WXMSW__;wxUSE_GUI=1;_DEBUG;__WXDEBUG__;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\wxWidgets-2.9.3\include;C:\wxWidgets-2.9.3\contrib\include;C:\wxWidgets-2.9.3\lib\mswud</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(WX_WIDGETS)\include;$(WX_WIDGETS)\include\msvc;$(WX_WIDGETS)\contrib\include;$(GLUT)\include;$(WX_WIDGETS)\lib\mswud</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;ws2_32.lib;winmm.lib;wxmsw29ud_core.lib;wxbase29ud.lib;wxpngd.lib;wxzlibd.lib;wxjpegd.lib;wxtiffd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;ws2_32.lib;winmm.lib;wxmsw30ud_core.lib;wxbase30ud.lib;wxpngd.lib;wxzlibd.lib;wxjpegd.lib;wxtiffd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcd.lib;libcid.lib;msvcrt.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalLibraryDirectories>C:\wxWidgets-2.9.3\lib\vc_lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WX_WIDGETS)\lib\vc_lib;$(GLUT)\lib</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
@@ -75,17 +74,17 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;WINVER=0x0400;__WXMSW__;wxUSE_GUI=1;NDEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\wxWidgets-2.9.3\include;C:\wxWidgets-2.9.3\contrib\include;C:\wxWidgets-2.9.3\lib\mswu</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(WX_WIDGETS)\include;$(WX_WIDGETS)\include\msvc;$(WX_WIDGETS)\contrib\include;$(GLUT)\include;$(WX_WIDGETS)\lib\mswu</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;ws2_32.lib;winmm.lib;wxmsw29u_core.lib;wxbase29u.lib;wxpng.lib;wxzlib.lib;wxjpeg.lib;wxtiff.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;ws2_32.lib;winmm.lib;wxmsw30u_core.lib;wxbase30u.lib;wxpng.lib;wxzlib.lib;wxjpeg.lib;wxtiff.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcd.lib;libci.lib;msvcrtd.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalLibraryDirectories>C:\wxWidgets-2.9.3\lib\vc_lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WX_WIDGETS)\lib\vc_lib;$(GLUT)\lib</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>

@@ -24,6 +24,7 @@
 #define COLOR_H_
 
 #include <GL/glut.h>
+#include <wx/msw/winundef.h>
 
 struct Color
 {

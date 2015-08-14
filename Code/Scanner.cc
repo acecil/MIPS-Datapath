@@ -153,7 +153,7 @@ void Scanner::getChar(bool fromFile)
 {
 	if(fromFile)
 	{
-	  	eofile = (deffile.get(curch)==0);
+	  	eofile = deffile.get(curch).eof();
 	}
 	else
 	{

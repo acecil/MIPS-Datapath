@@ -349,7 +349,7 @@ void Config::getName(configName &name)
 // If character is '\n' (end of line), sets eoline to true to keep current character position correct
 void Config::getChar()
 {
-	eofile = (configFile.get(curch)==0);
+	eofile = configFile.get(curch).eof();
 }
 
 void Config::save()

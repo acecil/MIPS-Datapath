@@ -7,3 +7,4 @@ mips-datapath.v11.suo
 mips-datapath.vcxproj.filters
 mips-datapath.vcxproj.user
 small.ico
+*.suo

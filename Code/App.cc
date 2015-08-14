@@ -21,6 +21,7 @@
  */
 
 #include <GL/glut.h>
+#include <wx/msw/winundef.h>
 
 #include "Enums.h"
 #include "Frame.h"
