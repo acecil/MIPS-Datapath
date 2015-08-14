@@ -115,7 +115,7 @@ void Component::preStep()
 	// Darken link color for this component
 	if(isActive())
 	{
-		oldActiveLinkColor = 0.7;
+		oldActiveLinkColor = 0.7F;
 	}
 	if(type != NODE_TYPE)
 	{
@@ -1209,7 +1209,7 @@ void AndGate::draw(bool showControl, bool showPC, Symbol* currInstr, bool simple
 	glPushMatrix();
 	position(); 
 	drawShadedRectangle();
-	glScalef(0.67, 1.0, 1.0);
+	glScalef(0.67F, 1.0F, 1.0F);
 	// Hide shaded areas outside shape.
 	glBegin(GL_TRIANGLE_STRIP);
 		glColor4fv(colours[BACKGROUND_COLOUR].c);
@@ -1250,28 +1250,28 @@ void ALU::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayo
 	position(); 
 	glBegin(GL_TRIANGLE_STRIP);
 		glColor4fv(colours[FADE_COLOUR].c);
-  		glVertex2f(0.0, 0.0); 
+  		glVertex2f(0.0F, 0.0F); 
   		glColor4fv(scaleColors(fillColorMin, colours[FADE_COLOUR], 0.67).c);
-  		glVertex2f(0.0, 0.33);
+  		glVertex2f(0.0F, 0.33F);
   		glColor4fv(scaleColors(fillColorMin, colours[FADE_COLOUR], 0.33).c);
-  		glVertex2f(1.0, 0.33);	
-  		glVertex2f(0.45, 0.5);
+  		glVertex2f(1.0F, 0.33F);	
+  		glVertex2f(0.45F, 0.5F);
   		glColor4fv(fillColorMin.c);
-  		glVertex2f(1.0, 0.67);
+  		glVertex2f(1.0F, 0.67F);
   		glColor4fv(scaleColors(fillColorMin, colours[FADE_COLOUR], 0.33).c);
-  		glVertex2f(0.0, 0.67);
+  		glVertex2f(0.0F, 0.67F);
   		glColor4fv(fillColorMin.c);
-  		glVertex2f(0.0, 1.0); 			
+  		glVertex2f(0.0F, 1.0F); 			
   	glEnd();
   	glBegin(GL_LINE_LOOP);
 		glColor4fv(colours[BORDER_COLOUR].c);
-  		glVertex2f(0.0, 0.0); 
-  		glVertex2f(1.0, 0.33);
-  		glVertex2f(1.0, 0.67);
-  		glVertex2f(0.0, 1.0);
-  		glVertex2f(0.0, 0.67);
-  		glVertex2f(0.45, 0.5);
-  		glVertex2f(0.0, 0.33);	
+  		glVertex2f(0.0F, 0.0F); 
+  		glVertex2f(1.0F, 0.33F);
+  		glVertex2f(1.0F, 0.67F);
+  		glVertex2f(0.0F, 1.0F);
+  		glVertex2f(0.0F, 0.67F);
+  		glVertex2f(0.45F, 0.5F);
+  		glVertex2f(0.0F, 0.33F);	
 	glEnd();
   	drawName(showControl, showPC);
   	glPopMatrix();
