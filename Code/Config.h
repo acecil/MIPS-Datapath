@@ -67,8 +67,7 @@ enum configName
 class Config
 {
 	public:
-
-		static Config* Instance();
+		static Config& Instance();
 		wxColour getColour(configName name);
 		bool getBool(configName name);
 		unsigned int getNumber(configName name);
@@ -79,8 +78,8 @@ class Config
 		void save();
 	protected:
 		Config();
-		Config(const Config&);
-		Config& operator=(const Config&);
+		Config(const Config&) = delete;
+		Config& operator=(const Config&) = delete;
 	private:
 					
 		enum Symbol
@@ -103,7 +102,6 @@ class Config
 		void getNumber(unsigned int & num);
 		void getName(configName & name);
 		void getChar();
-		static Config* pinstance;
 		std::map<configName, wxColour> colours;
 		std::map<configName, bool> bools;
 		std::map<configName, unsigned int> numbers;

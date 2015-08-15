@@ -88,12 +88,12 @@ Dialog::Dialog(wxWindow* parent, wxWindowID id, wxIconBundle *ico, Model *proc, 
 	checkBoxes[HIGHLIGHT_SINGLE_INSTRUCTION] = new wxCheckBox(this, wxID_ANY, _T("Highlight single instruction on pipelined layouts"));
 	checkBoxes[SHOW_BOLD_DATA_LINES] = new wxCheckBox(this, wxID_ANY, _T("Show bold data lines at all times"));
 	
-	Config* c = Config::Instance();
+	Config& c = Config::Instance();
 	// Get default values for all the checkboxes & add then to the dialog.
-	for(auto i = checkBoxes.begin(); i != checkBoxes.end(); ++i)
+	for(auto &i : checkBoxes)
 	{
-		optionsSizer->Add((*i).second, 0, wxEXPAND | wxALL, 3);
-		((*i).second)->SetValue(c->getBool((*i).first));
+		optionsSizer->Add(i.second, 0, wxEXPAND | wxALL, 3);
+		i.second->SetValue(c.getBool(i.first));
 	}
 
 	wxSizer *buttonSizer = CreateButtonSizer(wxOK | wxCANCEL);
@@ -110,8 +110,8 @@ void Dialog::createColourButton(wxFlexGridSizer *parent, wxString caption, confi
 	// Create the colour button with the specified caption
 	// Also get the default colour from the config file.
 		
-	Config* c = Config::Instance();
-	colours[id] = c->getColour(id);
+	Config& c = Config::Instance();
+	colours[id] = c.getColour(id);
 	
 	unsigned char data[1200];
 	for(uint i = 0; i < 1200; i += 3)

@@ -165,25 +165,25 @@ Component::Component(double x, double y, double w, double h, wxString name, Comp
 	ID = count++;	
 	pipelineStage = 0;
 	
-	Config* c = Config::Instance();
-	setColour(COMPONENT_COLOUR, c->getColour(COMPONENT_COLOUR));
-	setColour(PIPEREG_COLOUR, c->getColour(PIPEREG_COLOUR));
-	setColour(STAGE1_COLOUR, c->getColour(STAGE1_COLOUR));
-	setColour(STAGE2_COLOUR, c->getColour(STAGE2_COLOUR));
-	setColour(STAGE3_COLOUR, c->getColour(STAGE3_COLOUR));
-	setColour(STAGE4_COLOUR, c->getColour(STAGE4_COLOUR));
-	setColour(STAGE5_COLOUR, c->getColour(STAGE5_COLOUR));
-	setColour(TEXT_COLOUR, c->getColour(TEXT_COLOUR));
-	setColour(BORDER_COLOUR, c->getColour(BORDER_COLOUR));
-	setColour(BACKGROUND_COLOUR, c->getColour(BACKGROUND_COLOUR));
-	setColour(LINK_COLOUR, c->getColour(LINK_COLOUR));
-	setColour(FADE_COLOUR, c->getColour(FADE_COLOUR));
+	Config &c = Config::Instance();
+	setColour(COMPONENT_COLOUR, c.getColour(COMPONENT_COLOUR));
+	setColour(PIPEREG_COLOUR, c.getColour(PIPEREG_COLOUR));
+	setColour(STAGE1_COLOUR, c.getColour(STAGE1_COLOUR));
+	setColour(STAGE2_COLOUR, c.getColour(STAGE2_COLOUR));
+	setColour(STAGE3_COLOUR, c.getColour(STAGE3_COLOUR));
+	setColour(STAGE4_COLOUR, c.getColour(STAGE4_COLOUR));
+	setColour(STAGE5_COLOUR, c.getColour(STAGE5_COLOUR));
+	setColour(TEXT_COLOUR, c.getColour(TEXT_COLOUR));
+	setColour(BORDER_COLOUR, c.getColour(BORDER_COLOUR));
+	setColour(BACKGROUND_COLOUR, c.getColour(BACKGROUND_COLOUR));
+	setColour(LINK_COLOUR, c.getColour(LINK_COLOUR));
+	setColour(FADE_COLOUR, c.getColour(FADE_COLOUR));
 	
-	setActiveLinkColour(c->getColour(STAGE1_COLOUR), 0);
-	setActiveLinkColour(c->getColour(STAGE2_COLOUR), 1);
-	setActiveLinkColour(c->getColour(STAGE3_COLOUR), 2);
-	setActiveLinkColour(c->getColour(STAGE4_COLOUR), 3);
-	setActiveLinkColour(c->getColour(STAGE5_COLOUR), 4);
+	setActiveLinkColour(c.getColour(STAGE1_COLOUR), 0);
+	setActiveLinkColour(c.getColour(STAGE2_COLOUR), 1);
+	setActiveLinkColour(c.getColour(STAGE3_COLOUR), 2);
+	setActiveLinkColour(c.getColour(STAGE4_COLOUR), 3);
+	setActiveLinkColour(c.getColour(STAGE5_COLOUR), 4);
 	if(!(fillColorMin.init))
 	{
 		this->fillColorMin = colours[COMPONENT_COLOUR];

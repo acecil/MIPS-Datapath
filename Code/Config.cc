@@ -22,16 +22,11 @@
  
 #include "Config.h"
 
-Config* Config::pinstance = 0;// initialize pointer
-
-Config* Config::Instance () 
+Config &Config::Instance () 
 {
-	if (pinstance == 0)  // is it the first call?
-	{  
-		pinstance = new Config(); // create sole instance
-	}
+	static Config instance;
 	
-	return pinstance; // address of sole instance
+	return instance;
 }
 
 Config::Config() 

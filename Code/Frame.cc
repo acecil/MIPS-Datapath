@@ -63,8 +63,8 @@ Frame::Frame(const wxString& title, const wxPoint& pos, const wxSize& size)
 	initSize = false;
 	setupMenubar();
 	
-	Config* c = Config::Instance();
-	c->save();
+	Config& c = Config::Instance();
+	c.save();
 	
 	wxSizer *mainSizer = new wxBoxSizer(wxHORIZONTAL);
 	wxNotebook *notebook = new wxNotebook(this, wxID_ANY);
@@ -76,38 +76,38 @@ Frame::Frame(const wxString& title, const wxPoint& pos, const wxSize& size)
     mainSizer->SetMinSize(wxSize(400, 200));
     SetSizer(mainSizer);
     
-	if(c->getBool(SHOW_SIMPLE_LAYOUT))
+	if(c.getBool(SHOW_SIMPLE_LAYOUT))
 	{
 		processor->resetup(LAYOUT_SIMPLE);
 	}
-	else if(c->getBool(SHOW_PIPELINE_LAYOUT))
+	else if(c.getBool(SHOW_PIPELINE_LAYOUT))
 	{
 		processor->resetup(LAYOUT_PIPELINE);
 	}
-	else if(c->getBool(SHOW_FORWARDING_LAYOUT))
+	else if(c.getBool(SHOW_FORWARDING_LAYOUT))
 	{
 		processor->resetup(LAYOUT_FORWARDING);
 	}
 	
-	if(c->getBool(SHOW_FORMAT_BIN))
+	if(c.getBool(SHOW_FORMAT_BIN))
 	{
 		Maths::setFormat(FORMAT_BINARY);
 	}
-	else if(c->getBool(SHOW_FORMAT_DEC))
+	else if(c.getBool(SHOW_FORMAT_DEC))
 	{
 		Maths::setFormat(FORMAT_DECIMAL);
 	}
-	else if(c->getBool(SHOW_FORMAT_HEX))
+	else if(c.getBool(SHOW_FORMAT_HEX))
 	{
 		Maths::setFormat(FORMAT_HEX);
 	}
 
-	processor->setBool(SHOW_INSTRUCTION_FIELDS, c->getBool(SHOW_INSTRUCTION_FIELDS));
-	processor->setBool(SHOW_CONTROL_LINES, c->getBool(SHOW_CONTROL_LINES));
-	processor->setBool(SHOW_PC_LINES, c->getBool(SHOW_PC_LINES));
-	processor->setBool(SHOW_POPUPS, c->getBool(SHOW_POPUPS));
-	Component::setAreDataLinesBold(c->getBool(SHOW_BOLD_DATA_LINES));
-	Component::setHighlightSingleInstruction(c->getBool(HIGHLIGHT_SINGLE_INSTRUCTION));
+	processor->setBool(SHOW_INSTRUCTION_FIELDS, c.getBool(SHOW_INSTRUCTION_FIELDS));
+	processor->setBool(SHOW_CONTROL_LINES, c.getBool(SHOW_CONTROL_LINES));
+	processor->setBool(SHOW_PC_LINES, c.getBool(SHOW_PC_LINES));
+	processor->setBool(SHOW_POPUPS, c.getBool(SHOW_POPUPS));
+	Component::setAreDataLinesBold(c.getBool(SHOW_BOLD_DATA_LINES));
+	Component::setHighlightSingleInstruction(c.getBool(HIGHLIGHT_SINGLE_INSTRUCTION));
 	
 	// Initialise help
 	help = new wxHtmlHelpController(wxHF_CONTENTS | wxHF_SEARCH, this);
@@ -145,8 +145,8 @@ Frame::Frame(const wxString& title, const wxPoint& pos, const wxSize& size)
 void Frame::finishInit()
 { 
 	init = true; 
-	Config* c = Config::Instance();
-	if(!c->getBool(SHOW_LEFT_PANEL) && mainSplitter->IsSplit())
+	Config& c = Config::Instance();
+	if(!c.getBool(SHOW_LEFT_PANEL) && mainSplitter->IsSplit())
 	{
 		mainSplitter->Unsplit(leftPanel);
 	}
@@ -166,7 +166,7 @@ void Frame::setupSimulatorPage(wxNotebook *notebook)
 	wxBoxSizer *leftSizer = new wxBoxSizer(wxVERTICAL);
     
     // Set up Left panel.
-    Config *c = Config::Instance();
+    Config &c = Config::Instance();
     leftPanel = new wxPanel(mainSplitter, wxID_ANY);
     leftPanel->SetMinSize(wxSize(LEFT_PANEL_MIN_WIDTH, LEFT_PANEL_MIN_HEIGHT));
     leftPanel->SetSizer(leftSizer);
@@ -208,7 +208,7 @@ void Frame::setupSimulatorPage(wxNotebook *notebook)
    	GLSizer->Add(canvas, 1, wxEXPAND | wxALL, 0);
    
    	mainSplitter->SetMinimumPaneSize(20);
-    mainSplitter->SplitVertically(leftPanel, GLWindow, c->getNumber(SIMULATOR_SASH_POS));
+    mainSplitter->SplitVertically(leftPanel, GLWindow, c.getNumber(SIMULATOR_SASH_POS));
  
    	wxBoxSizer *simulatorSizer = new wxBoxSizer(wxHORIZONTAL);
    	simulatorSizer->Add(mainSplitter, 1, wxEXPAND | wxALL, 0);
@@ -230,8 +230,8 @@ void Frame::setupEditorPage(wxNotebook *notebook)
 	wxSizer *memorySizer = new wxBoxSizer(wxVERTICAL);
 	editorSizer->Add(editorSplitter, 1, wxEXPAND | wxALL, 3);
 	editorSplitter->SetMinimumPaneSize(20);
-	Config* c = Config::Instance();
-	memoryPane = new wxPanel(editorSplitter, wxID_ANY, wxDefaultPosition, wxSize(c->getNumber(EDITOR_SASH_POS), 300));
+	Config& c = Config::Instance();
+	memoryPane = new wxPanel(editorSplitter, wxID_ANY, wxDefaultPosition, wxSize(c.getNumber(EDITOR_SASH_POS), 300));
 	memoryPane->SetSizer(memorySizer);
 	memoryPane->SetMinSize(wxSize(200, 300));
 	wxPanel* parserPane = new wxPanel(editorSplitter, wxID_ANY, wxDefaultPosition, wxSize(200, 300));
@@ -299,16 +299,16 @@ void Frame::setupMenubar()
 	layoutMenu->AppendRadioItem(ID_MENU_LAYOUT_SIMPLE, _T("&Simple"));
 	layoutMenu->AppendRadioItem(ID_MENU_LAYOUT_PIPELINE, _T("&Pipelined"));
 	layoutMenu->AppendRadioItem(ID_MENU_LAYOUT_FORWARDING, _T("&Data Forwarding"));
-	Config* c = Config::Instance();
-	if(c->getBool(SHOW_SIMPLE_LAYOUT))
+	Config& c = Config::Instance();
+	if(c.getBool(SHOW_SIMPLE_LAYOUT))
 	{
 		layoutMenu->Check(ID_MENU_LAYOUT_SIMPLE, true);
 	}
-	else if(c->getBool(SHOW_PIPELINE_LAYOUT))
+	else if(c.getBool(SHOW_PIPELINE_LAYOUT))
 	{
 		layoutMenu->Check(ID_MENU_LAYOUT_PIPELINE, true);
 	}
-	else if(c->getBool(SHOW_FORWARDING_LAYOUT))
+	else if(c.getBool(SHOW_FORWARDING_LAYOUT))
 	{
 		layoutMenu->Check(ID_MENU_LAYOUT_FORWARDING, true);
 	}
@@ -326,15 +326,15 @@ void Frame::setupMenubar()
 	NumFormatMenu->AppendRadioItem(ID_MENU_FORMAT_BIN, _T("&Binary"));
 	NumFormatMenu->AppendRadioItem(ID_MENU_FORMAT_DEC, _T("&Decimal"));
 	NumFormatMenu->AppendRadioItem(ID_MENU_FORMAT_HEX, _T("&Hexadecimal"));
-	if(c->getBool(SHOW_FORMAT_BIN))
+	if(c.getBool(SHOW_FORMAT_BIN))
 	{
 		NumFormatMenu->Check(ID_MENU_FORMAT_BIN, true);
 	}
-	else if(c->getBool(SHOW_FORMAT_DEC))
+	else if(c.getBool(SHOW_FORMAT_DEC))
 	{
 		NumFormatMenu->Check(ID_MENU_FORMAT_DEC, true);
 	}
-	else if(c->getBool(SHOW_FORMAT_HEX))
+	else if(c.getBool(SHOW_FORMAT_HEX))
 	{
 		NumFormatMenu->Check(ID_MENU_FORMAT_HEX, true);
 	}
@@ -583,11 +583,11 @@ void Frame::ResetButtonClicked(wxCommandEvent& WXUNUSED(event))
 void Frame::SetSimpleLayout(wxCommandEvent& WXUNUSED(event))
 {
 	processor->resetup(LAYOUT_SIMPLE);
-	Config* c = Config::Instance();
-	c->setBool(SHOW_SIMPLE_LAYOUT, true);
-	c->setBool(SHOW_PIPELINE_LAYOUT, false);
-	c->setBool(SHOW_FORWARDING_LAYOUT, false);
-	c->save();
+	Config& c = Config::Instance();
+	c.setBool(SHOW_SIMPLE_LAYOUT, true);
+	c.setBool(SHOW_PIPELINE_LAYOUT, false);
+	c.setBool(SHOW_FORWARDING_LAYOUT, false);
+	c.save();
 	setInitialMemoryVals();
 	canvas->Render();
 	updateDataList();
@@ -596,11 +596,11 @@ void Frame::SetSimpleLayout(wxCommandEvent& WXUNUSED(event))
 void Frame::SetPipelineLayout(wxCommandEvent& WXUNUSED(event))
 {
 	processor->resetup(LAYOUT_PIPELINE);
-	Config* c = Config::Instance();
-	c->setBool(SHOW_SIMPLE_LAYOUT, false);
-	c->setBool(SHOW_PIPELINE_LAYOUT, true);
-	c->setBool(SHOW_FORWARDING_LAYOUT, false);
-	c->save();
+	Config& c = Config::Instance();
+	c.setBool(SHOW_SIMPLE_LAYOUT, false);
+	c.setBool(SHOW_PIPELINE_LAYOUT, true);
+	c.setBool(SHOW_FORWARDING_LAYOUT, false);
+	c.save();
 	setInitialMemoryVals();
 	canvas->Render();
 	updateDataList();
@@ -609,11 +609,11 @@ void Frame::SetPipelineLayout(wxCommandEvent& WXUNUSED(event))
 void Frame::SetForwardingLayout(wxCommandEvent& WXUNUSED(event))
 {
 	processor->resetup(LAYOUT_FORWARDING);
-	Config* c = Config::Instance();
-	c->setBool(SHOW_SIMPLE_LAYOUT, false);
-	c->setBool(SHOW_PIPELINE_LAYOUT, false);
-	c->setBool(SHOW_FORWARDING_LAYOUT, true);
-	c->save();
+	Config& c = Config::Instance();
+	c.setBool(SHOW_SIMPLE_LAYOUT, false);
+	c.setBool(SHOW_PIPELINE_LAYOUT, false);
+	c.setBool(SHOW_FORWARDING_LAYOUT, true);
+	c.save();
 	setInitialMemoryVals();
 	canvas->Render();
 	updateDataList();
@@ -622,11 +622,11 @@ void Frame::SetForwardingLayout(wxCommandEvent& WXUNUSED(event))
 void Frame::SetFormatBin(wxCommandEvent& WXUNUSED(event))
 {
 	Maths::setFormat(FORMAT_BINARY);
-	Config* c = Config::Instance();
-	c->setBool(SHOW_FORMAT_BIN, true);
-	c->setBool(SHOW_FORMAT_DEC, false);
-	c->setBool(SHOW_FORMAT_HEX, false);
-	c->save();
+	Config& c = Config::Instance();
+	c.setBool(SHOW_FORMAT_BIN, true);
+	c.setBool(SHOW_FORMAT_DEC, false);
+	c.setBool(SHOW_FORMAT_HEX, false);
+	c.save();
 	updateDataList(true);
 	resetLeftPanelSizes();
 }
@@ -634,11 +634,11 @@ void Frame::SetFormatBin(wxCommandEvent& WXUNUSED(event))
 void Frame::SetFormatDec(wxCommandEvent& WXUNUSED(event))
 {
 	Maths::setFormat(FORMAT_DECIMAL);
-	Config* c = Config::Instance();
-	c->setBool(SHOW_FORMAT_BIN, false);
-	c->setBool(SHOW_FORMAT_DEC, true);
-	c->setBool(SHOW_FORMAT_HEX, false);
-	c->save();
+	Config& c = Config::Instance();
+	c.setBool(SHOW_FORMAT_BIN, false);
+	c.setBool(SHOW_FORMAT_DEC, true);
+	c.setBool(SHOW_FORMAT_HEX, false);
+	c.save();
 	updateDataList(true);
 	resetLeftPanelSizes();
 }
@@ -646,58 +646,58 @@ void Frame::SetFormatDec(wxCommandEvent& WXUNUSED(event))
 void Frame::SetFormatHex(wxCommandEvent& WXUNUSED(event))
 {
 	Maths::setFormat(FORMAT_HEX);
-	Config* c = Config::Instance();
-	c->setBool(SHOW_FORMAT_BIN, false);
-	c->setBool(SHOW_FORMAT_DEC, false);
-	c->setBool(SHOW_FORMAT_HEX, true);
-	c->save();
+	Config& c = Config::Instance();
+	c.setBool(SHOW_FORMAT_BIN, false);
+	c.setBool(SHOW_FORMAT_DEC, false);
+	c.setBool(SHOW_FORMAT_HEX, true);
+	c.save();
 	updateDataList(true);
 	resetLeftPanelSizes();
 }
 
 void Frame::showHideLeftPanel(bool showLeftPanel, bool justSwitch)
 {
-	Config *c = Config::Instance();
+	Config &c = Config::Instance();
 	if(mainSplitter->IsSplit() && (!showLeftPanel || justSwitch))
 	{
 		mainSplitter->Unsplit(leftPanel);
-		c->setBool(SHOW_LEFT_PANEL, false); 
+		c.setBool(SHOW_LEFT_PANEL, false); 
 	}
 	else if(!mainSplitter->IsSplit() && (showLeftPanel || justSwitch))
 	{
-		mainSplitter->SplitVertically(leftPanel, GLWindow, c->getNumber(SIMULATOR_SASH_POS));
-		c->setBool(SHOW_LEFT_PANEL, true); 
+		mainSplitter->SplitVertically(leftPanel, GLWindow, c.getNumber(SIMULATOR_SASH_POS));
+		c.setBool(SHOW_LEFT_PANEL, true); 
 	}
 	resetLeftPanelSizes();
-	c->save();
+	c.save();
 }
 
 void Frame::EditOptions(wxCommandEvent& WXUNUSED(event))
 {
 	Dialog *dlg = new Dialog(this, wxID_ANY, ico, processor, _T("Options"), mainSplitter->IsSplit(), processor->getBool(SHOW_INSTRUCTION_FIELDS));
-	Config *c = Config::Instance();
+	Config &c = Config::Instance();
 		
 	if(dlg->ShowModal() == wxID_OK)
 	{
 		showHideLeftPanel(dlg->getBool(SHOW_LEFT_PANEL));
 		processor->setBool(SHOW_INSTRUCTION_FIELDS, dlg->getBool(SHOW_INSTRUCTION_FIELDS));
-		c->setBool(SHOW_INSTRUCTION_FIELDS, dlg->getBool(SHOW_INSTRUCTION_FIELDS));
+		c.setBool(SHOW_INSTRUCTION_FIELDS, dlg->getBool(SHOW_INSTRUCTION_FIELDS));
 		processor->setBool(SHOW_CONTROL_LINES, dlg->getBool(SHOW_CONTROL_LINES));
-		c->setBool(SHOW_CONTROL_LINES, dlg->getBool(SHOW_CONTROL_LINES));
+		c.setBool(SHOW_CONTROL_LINES, dlg->getBool(SHOW_CONTROL_LINES));
 		processor->setBool(SHOW_PC_LINES, dlg->getBool(SHOW_PC_LINES));
-		c->setBool(SHOW_PC_LINES, dlg->getBool(SHOW_PC_LINES));
+		c.setBool(SHOW_PC_LINES, dlg->getBool(SHOW_PC_LINES));
 		processor->setBool(SHOW_POPUPS, dlg->getBool(SHOW_POPUPS));
-		c->setBool(SHOW_POPUPS, dlg->getBool(SHOW_POPUPS));
+		c.setBool(SHOW_POPUPS, dlg->getBool(SHOW_POPUPS));
 		Component::setAreDataLinesBold(dlg->getBool(SHOW_BOLD_DATA_LINES));
-		c->setBool(SHOW_BOLD_DATA_LINES, dlg->getBool(SHOW_BOLD_DATA_LINES));
+		c.setBool(SHOW_BOLD_DATA_LINES, dlg->getBool(SHOW_BOLD_DATA_LINES));
 		Component::setHighlightSingleInstruction(dlg->getBool(HIGHLIGHT_SINGLE_INSTRUCTION));
-		c->setBool(HIGHLIGHT_SINGLE_INSTRUCTION, dlg->getBool(HIGHLIGHT_SINGLE_INSTRUCTION));
+		c.setBool(HIGHLIGHT_SINGLE_INSTRUCTION, dlg->getBool(HIGHLIGHT_SINGLE_INSTRUCTION));
 
 		for(uint n = CONFIG_MIN_NAME; n < CONFIG_MAX_NAME; ++n)
 		{
-			if(c->isNameAColour((configName)n))
+			if(c.isNameAColour((configName)n))
 			{
-				c->setColour((configName)n, dlg->getColour((configName)n));
+				c.setColour((configName)n, dlg->getColour((configName)n));
 				Component::setColour((configName)n, dlg->getColour((configName)n));
 			}
 		}
@@ -709,7 +709,7 @@ void Frame::EditOptions(wxCommandEvent& WXUNUSED(event))
 	}
 	
 	dlg->Destroy();
-	c->save();
+	c.save();
 }
 
 void Frame::LoadFile(wxCommandEvent& event)
@@ -800,8 +800,8 @@ void Frame::Parse(wxCommandEvent& WXUNUSED(event))
 
 void Frame::resetLeftPanelSizes()
 {
-	Config* c = Config::Instance();
-	if(!init || !(c->getBool(SHOW_LEFT_PANEL)))
+	Config& c = Config::Instance();
+	if(!init || !(c.getBool(SHOW_LEFT_PANEL)))
 	{
 		return;
 	}
@@ -810,16 +810,16 @@ void Frame::resetLeftPanelSizes()
 	uint edSashPosition = editorSplitter->GetSashPosition();
 	if(!initSize)
 	{
-		sashPosition = c->getNumber(SIMULATOR_SASH_POS);
-		edSashPosition = c->getNumber(EDITOR_SASH_POS);
+		sashPosition = c.getNumber(SIMULATOR_SASH_POS);
+		edSashPosition = c.getNumber(EDITOR_SASH_POS);
 		mainSplitter->SetSashPosition(sashPosition);
 		editorSplitter->SetSashPosition(edSashPosition);
 	}
 	else
 	{
-		c->setNumber(EDITOR_SASH_POS, edSashPosition);
-		c->setNumber(SIMULATOR_SASH_POS, sashPosition);
-		c->save();
+		c.setNumber(EDITOR_SASH_POS, edSashPosition);
+		c.setNumber(SIMULATOR_SASH_POS, sashPosition);
+		c.save();
 	}
 
 	uint newColWidth = 0;
