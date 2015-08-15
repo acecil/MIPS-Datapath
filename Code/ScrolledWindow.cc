@@ -25,8 +25,7 @@
 #include "GLCanvas.h"
 
 BEGIN_EVENT_TABLE(ScrolledWindow, wxScrolledWindow)
-	EVT_SCROLLWIN(ScrolledWindow::OnScroll)
-	EVT_SIZE(ScrolledWindow::OnSize)
+	EVT_SCROLL(ScrolledWindow::OnScroll)
 	EVT_ERASE_BACKGROUND(ScrolledWindow::OnEraseBackground)
 END_EVENT_TABLE()
 
@@ -45,43 +44,17 @@ ScrolledWindow::ScrolledWindow(wxWindow *parent,
 void ScrolledWindow::SetCanvas(GLCanvas *canvas)
 {
 	glCanvas = canvas;
+	sizer = new wxBoxSizer(wxVERTICAL);
+	sizer->Add(glCanvas);
+	SetSizer(sizer);
 }
 
-void ScrolledWindow::OnScroll(wxScrollWinEvent &event)
+void ScrolledWindow::OnScroll(wxScrollEvent &event)
 {
-	/* Manually update the scroll position. */
-	wxSize size = GetVirtualSize();
-	wxPoint start = GetViewStart();
-	if( event.GetOrientation() == wxHORIZONTAL )
-	{
-		start.x = event.GetPosition();
-	}
-	else
-	{
-		start.y = event.GetPosition();
-	}
-	updateScrollbars(size, start);
-}
-
-void ScrolledWindow::OnSize(wxSizeEvent &event)
-{
-	wxSize size = glCanvas->GetCanvasSize();
-	SetVirtualSize(size.GetWidth() * glCanvas->GetScale(), size.GetHeight() * glCanvas->GetScale());
-	updateScrollbars(GetVirtualSize(), GetViewStart());
+	glCanvas->Render();
 }
 
 void ScrolledWindow::OnEraseBackground(wxEraseEvent &event)
 {
 	/* Do nothing to prevent flicker. */
-}
-
-void ScrolledWindow::updateScrollbars(const wxSize& size, const wxPoint& start)
-{
-	SetScrollbars(1, 1, size.GetWidth(), size.GetHeight(), start.x, start.y);
-
-	if( glCanvas )
-	{
-		/* Force GL canvas to redraw. */
-		glCanvas->Render();
-	}
 }

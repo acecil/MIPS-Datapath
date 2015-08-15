@@ -89,7 +89,7 @@ void GLCanvas::Render()
 void GLCanvas::SetZoom(int zoom)
 {
 	scale = std::pow(0.98, static_cast<double>(zoom));
-	Render();
+	SetSize(canvasWidth * scale, canvasHeight * scale);
 }
 
 wxSize GLCanvas::GetCanvasSize()
@@ -116,16 +116,14 @@ void GLCanvas::InitGL()
 }
 
 void GLCanvas::OnPaint(wxPaintEvent& event)
-{
-  wxPaintDC dc(this); // required for correct refreshing under MS windows
-  Render();
+{		
+	wxPaintDC dc(this); // required for correct refreshing under MS windows
+	Render();
 }
 
 void GLCanvas::OnSize(wxSizeEvent& event)
 {
   	size = this->GetSize();
-  	Refresh(); // required by some buggy nvidia graphics drivers,
-  	Update();  // harmless on other platforms!
 	event.Skip();
 }
 

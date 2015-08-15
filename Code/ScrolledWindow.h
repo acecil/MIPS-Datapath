@@ -40,12 +40,11 @@ public:
 		const wxString& name = wxPanelNameStr);
 	void SetCanvas(GLCanvas *canvas);
 
-	void OnScroll(wxScrollWinEvent &event);
-	void OnSize(wxSizeEvent &event);
+	void OnScroll(wxScrollEvent &event);
 	void OnEraseBackground(wxEraseEvent &event);
 private:
 	GLCanvas *glCanvas;
-	void updateScrollbars(const wxSize& size, const wxPoint& start);
+	wxBoxSizer *sizer;
 
 
 	DECLARE_EVENT_TABLE()
