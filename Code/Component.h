@@ -30,6 +30,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <memory>
 #include <list>
 #include <iostream>
 #include <limits>
@@ -47,6 +48,7 @@
 #include "Side.h"
 #include "Color.h"
 #include "Coord.h"
+#include "Link.h"
 
 class Link;
 class InputLink;
@@ -161,7 +163,7 @@ class Component
 		float oldActiveLinkColor;
 		Color fillColorMin;
 		static Color scaleColors(Color c1, Color c2, double proportion);
-		std::map<int, Link*> linkList;
+		std::map<int, std::unique_ptr<Link>> linkList;
 		uint pipelineStage; // What pipiline stage is this component in?
 		static uint pipelineCycle; // What pipeline stage is the program in?
 		static bool dataLinesBold;

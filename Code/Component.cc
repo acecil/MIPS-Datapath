@@ -121,10 +121,10 @@ void Component::preStep()
 	{
 		for(auto i = linkList.begin(); i != linkList.end(); ++i)
 		{
-			Link* currLink = (*i).second;
+			auto& currLink = i->second;
 			if(!(currLink->isOutput()))
 			{
-				InputLink* iLink = (InputLink*)currLink;
+				InputLink* iLink = static_cast<InputLink*>(currLink.get());
 				iLink->getValFromOutput();
 			}
 		}	
@@ -204,19 +204,19 @@ wxString Component::getMainInfo()
 	wxString inInfo, outInfo;
 	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
-		Link* currLink = (*i).second;
+		auto& currLink = i->second;
 		if(!(currLink->isOutput()))
 		{
 			if(i != linkList.begin())
 			{
 				inInfo += _T("\n");
 			}
-			inInfo += getLinkInfo((*i).first, currLink);
+			inInfo += getLinkInfo((*i).first, currLink.get());
 		}
 		else
 		{
 			outInfo += _T("\n");
-			outInfo += getLinkInfo((*i).first, currLink);
+			outInfo += getLinkInfo((*i).first, currLink.get());
 		}
 	}
 	return inInfo + outInfo;
@@ -259,11 +259,10 @@ int Component::findOutput(wxPoint mouseLocation)
 int Component::findNearestLink(wxPoint mouseLocation, bool isOutput)
 {
 	int nearest = std::numeric_limits<int>::max();
-	Link* currLink;
 	
 	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
-		currLink = (*i).second;
+		auto &currLink = i->second;
 		bool output = currLink->isOutput() && isOutput;
 		bool input = !(currLink->isOutput()) && !(isOutput);
 		if(input || output)
@@ -276,7 +275,7 @@ int Component::findNearestLink(wxPoint mouseLocation, bool isOutput)
 			if(dist < nearest)
 			{
 				nearest = (int)dist;
-				this->currentLink = currLink;
+				this->currentLink = currLink.get();
 			}
 		}
 	}
@@ -333,7 +332,7 @@ void Component::drawName(bool showControl, bool showPC)
 	glPopMatrix();
 	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
-		Link* currLink = (*i).second;
+		auto &currLink = i->second;
 		if(currLink->isShowText())
 		{
 			if(showControl || !(currLink->getIsControl()))
@@ -366,7 +365,7 @@ void Component::drawConnections(bool showControl, bool showPC, Symbol* instr, bo
 		if(((*i).second)->isOutput())
 		{
 
-			OutputLink* oLink = (OutputLink*)((*i).second);
+			OutputLink* oLink = static_cast<OutputLink*>(i->second.get());
 			if(showControl || !(oLink->getIsControl()))
 			{
 				if(showPC || !(oLink->getIsPC()))
@@ -467,7 +466,7 @@ void Component::drawConnectors(bool showControl, bool showPC, Symbol* instr, boo
 		large = false;
 		if(!(((*i).second)->isOutput()))
 		{
-			InputLink* iLink = (InputLink*)((*i).second);
+			InputLink* iLink = static_cast<InputLink*>(i->second.get());
 			if(iLink->isConnected())
 			{
 				OutputLink* oLink = iLink->getOutput();
@@ -555,14 +554,14 @@ void Component::drawLinkTriangle(Side edge, bool large)
 
 Link* Component::createInput(int slot, double x, double y, Side edge, wxString name, bool control, bool PC, bool showText, double textX, double textY, int startBit, int bitLength)
 {
-	linkList[slot] = new InputLink(slot, this, x, y, edge, name, control, PC, showText, startBit, bitLength, textX, textY);
-	return linkList[slot];
+	linkList[slot] = std::unique_ptr<Link>(std::make_unique<InputLink>(slot, this, x, y, edge, name, control, PC, showText, startBit, bitLength, textX, textY));
+	return linkList[slot].get();
 }
 
 Link* Component::createOutput(int slot, double x, double y, Side edge, wxString name, bool control, bool PC, bool showText, double textX, double textY)
 {
-	linkList[slot] = new OutputLink(slot, this, x, y, edge, name, control, PC, showText, textX, textY);
-	return linkList[slot];
+	linkList[slot] = std::unique_ptr<Link>(std::make_unique<OutputLink>(slot, this, x, y, edge, name, control, PC, showText, textX, textY));
+	return linkList[slot].get();
 }
 
 void Component::addLinkVertex(uint linkNum, double x, double y)
@@ -583,7 +582,7 @@ void Component::connect(int outSlot, Component *comp, int inSlot)
 	if(!(linkList[outSlot]->isOutput()))
 		return;
 		
-	OutputLink* oLink = (OutputLink*)(linkList[outSlot]);
+	OutputLink* oLink = static_cast<OutputLink*>(linkList[outSlot].get());
 	oLink->connect(comp->getLink(inSlot));
 }
 
@@ -592,7 +591,7 @@ void Component::printLinkData()
 	std::cout << this->getName() << ": " << std::endl;
 	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
-		Link* aLink = (*i).second;
+		auto& aLink = i->second;
 		if(aLink->isOutput())
 		{
 			std::cout << "	" << (*i).first << ": " << aLink->getVal() << std::endl;
@@ -647,7 +646,7 @@ Link* Component::getLink(uint slot)
 	// creation of null link.
 	if(slot < linkList.size())
 	{
-		return linkList[slot];
+		return linkList[slot].get();
 	}
 	else
 	{
@@ -684,7 +683,7 @@ bool Component::allInputsActive()
 	// Make sure all inputs are active.
 	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
-		Link* curLink = (*i).second;
+		auto &curLink = i->second;
 		if(!(curLink->isOutput()))
 		{
 			if(!(curLink->isActive()))
@@ -1010,10 +1009,10 @@ wxString PipelineRegister::getMainInfo(wxPoint mousePos)
 	std::map<double, Link*> yposList;
 	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
-		Link* ln = (*i).second;
+		auto &ln = i->second;
 		if((findInputs && !ln->isOutput()) || (!findInputs && ln->isOutput()))
 		{
-			yposList[1.0 - ln->getY()] = ln;
+			yposList[1.0 - ln->getY()] = ln.get();
 		}
 	}
 	for(auto i = yposList.begin(); i != yposList.end(); ++i)
@@ -1030,7 +1029,7 @@ void PipelineRegister::reset()
 {
 	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
-		Link* link= (*i).second;
+		auto &link= i->second;
 		if(link->isOutput())
 		{
 			link->setVal(0);
@@ -1416,10 +1415,10 @@ void Node::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLay
 		Component* nComp;
 		for(auto i = linkList.begin(); i != linkList.end(); ++i)
 		{
-			Link* link= (*i).second;
+			auto &link= i->second;
 			if(link->isOutput())
 			{
-				oLink = (OutputLink*)(link);
+				oLink = static_cast<OutputLink*>(link.get());
 				
 				std::vector<Link*> oLinkList = oLink->getLinkList();
 				for(auto j = oLinkList.begin(); j != oLinkList.end(); ++j)
@@ -1439,7 +1438,7 @@ void Node::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLay
 			}
 			else
 			{
-				iLink = (InputLink*)(link);
+				iLink = static_cast<InputLink*>(link.get());
 				
 				if(iLink->isConnected())
 				{
@@ -1505,10 +1504,10 @@ bool Node::isActive()
 {
 	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
-		Link* link= (*i).second;
+		auto &link= i->second;
 		if(!(link->isOutput()))
 		{
-			InputLink* iLink = (InputLink*)(link);
+			InputLink* iLink = static_cast<InputLink*>(link.get());
 			
 			if(iLink->isConnected())
 			{
@@ -1536,10 +1535,10 @@ bool Node::isActiveValid(Symbol instr)
 {
 	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
-		Link* link= (*i).second;
+		auto &link= i->second;
 		if(!(link->isOutput()))
 		{
-			InputLink* iLink = (InputLink*)(link);
+			InputLink* iLink = static_cast<InputLink*>(link.get());
 			
 			if(iLink->isConnected())
 			{
@@ -1556,10 +1555,10 @@ luint Node::getVal()
 {
 	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
-		Link* link= (*i).second;
+		auto &link= i->second;
 		if(!(link->isOutput()))
 		{
-			InputLink* iLink = (InputLink*)(link);
+			InputLink* iLink = static_cast<InputLink*>(link.get());
 			
 			if(iLink->isConnected())
 			{
@@ -1576,10 +1575,10 @@ bool Node::getIsControl()
 {
 	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
-		Link* link= (*i).second;
+		auto &link= i->second;
 		if(!(link->isOutput()))
 		{
-			InputLink* iLink = (InputLink*)(link);
+			InputLink* iLink = static_cast<InputLink*>(link.get());
 			
 			if(iLink->isConnected())
 			{
@@ -1597,10 +1596,10 @@ bool Node::getIsPC()
 {
 	for(auto i = linkList.begin(); i != linkList.end(); ++i)
 	{
-		Link* link= (*i).second;
+		auto &link= i->second;
 		if(!(link->isOutput()))
 		{
-			InputLink* iLink = (InputLink*)(link);
+			InputLink* iLink = static_cast<InputLink*>(link.get());
 			
 			if(iLink->isConnected())
 			{
@@ -1616,7 +1615,7 @@ bool Node::getIsPC()
 
 void Mux::step()
 {
-	((InputLink*)linkList[0])->getValFromOutput();
+	(static_cast<InputLink*>(linkList[0].get()))->getValFromOutput();
 	// Set output based on inputs.
 	if(linkList[2]->getVal())
 	{
