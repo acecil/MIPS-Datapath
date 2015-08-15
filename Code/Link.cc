@@ -76,27 +76,23 @@ OutputLink::OutputLink(int slot, Component* comp, double x, double y, Side edge,
 
 void Link::addVertex(double x, double y)
 { 
-	this->vertices.push_back(new Coord(x, y)); 
+	this->vertices.push_back(Coord(x, y)); 
 }
 
-void Link::setVertexList(std::list<Coord*> *vertices)
+void Link::setVertexList(const std::vector<Coord> &newVertices)
 {
-	this->vertices.clear();
-	for(auto i = vertices->begin(); i != vertices->end(); ++i)
+	vertices.clear();
+	vertices.insert(vertices.end(), newVertices.begin(), newVertices.end());
+	if(!vertices.empty())
 	{
-		Coord *vertex = *i;
-		this->vertices.push_back(new Coord(vertex->x, vertex->y));
-	}
-	if(!(this->vertices.empty()))
-	{
-		Coord* backVertex = this->vertices.back();
-		if(this->edge == TOP || this->edge == BOTTOM)
+		Coord& backVertex = vertices.back();
+		if(edge == TOP || edge == BOTTOM)
 		{
-			backVertex->x = getAbsX();
+			backVertex.x = getAbsX();
 		}
 		else
 		{
-			backVertex->y = getAbsY();
+			backVertex.y = getAbsY();
 		}
 	}
 }

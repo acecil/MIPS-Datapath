@@ -23,8 +23,9 @@
 #ifndef FRAME_H_
 #define FRAME_H_
 
-#include <map>
 #include <iostream>
+#include <map>
+#include <memory>
 
 #include <wx/wx.h>
 #include <wx/icon.h>
@@ -95,7 +96,7 @@ private:
 	GLCanvas *canvas;
 	ScrolledWindow *GLWindow;
 	wxBoxSizer *GLSizer;
-	Model *processor;
+	std::unique_ptr<Model> processor;
 	wxPanel *leftPanel;
 	wxPanel *memoryPane;
 	wxSplitterWindow *mainSplitter;

@@ -23,11 +23,13 @@
 #ifndef MODEL_H_
 #define MODEL_H_
 
-#include <list>
+#include <array>
+#include <cmath>
 #include <iostream>
 #include <limits>
-#include <cmath>
+#include <list>
 #include <map>
+#include <memory>
 
 #include <wx/gdicmn.h>
 #include <wx/utils.h>
@@ -88,21 +90,20 @@ class Model
 		static void setBool(configName name, bool newBool){ bools[name] = newBool; };
 		static bool getBool(configName name){ return bools[name]; };
 	private:
-	  	std::list<Component*> components;
-	  	std::map<uint, Memory*> memories;
-	  	PipelineRegister* buffers[4];
-	  	PC *programCounter;
-	  	AndGate* branchCheckGate;
+	  	std::list<std::shared_ptr<Component>> components;
+		std::map<uint, std::shared_ptr<Memory>> memories;
+	  	std::array<std::shared_ptr<PipelineRegister>, 4> buffers;
+	  	std::shared_ptr<PC> programCounter;
+	  	std::shared_ptr<AndGate> branchCheckGate;
 	  	bool creatingConnection;
 	  	bool movingComponent;
-	  	Component* comp;
 	  	wxRealPoint movingDifference;
 	  	OutputLink* oLink;
 	  	InputLink* iLink;
-	  	std::list<Coord*> vertices;
+	  	std::list<Coord> vertices;
 	  	Layout layout;
-	  	Scanner *smz;
-	  	Parser *pmz;
+	  	std::unique_ptr<Scanner> smz;
+	  	std::unique_ptr<Parser> pmz;
 	  	bool validInstructions;
 	  	Symbol currInstr[5];
 	  	luint currAddr[5];

@@ -200,9 +200,9 @@ void Frame::setupSimulatorPage(wxNotebook *notebook)
         
     // Set up GL canvas.
 	int attribList[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, wxFULL_REPAINT_ON_RESIZE};
-    processor = new Model();
+    processor = std::make_unique<Model>();
     processor->resetup();
-    canvas = new GLCanvas(processor, GLWindow, this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, _T("GLCanvas"), attribList, wxNullPalette);
+    canvas = new GLCanvas(processor.get(), GLWindow, this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, _T("GLCanvas"), attribList, wxNullPalette);
    	GLWindow->SetCanvas(canvas);
 	GLWindow->SetSizer(GLSizer);
    	GLSizer->Add(canvas, 1, wxEXPAND | wxALL, 0);
@@ -674,7 +674,7 @@ void Frame::showHideLeftPanel(bool showLeftPanel, bool justSwitch)
 
 void Frame::EditOptions(wxCommandEvent& WXUNUSED(event))
 {
-	Dialog *dlg = new Dialog(this, wxID_ANY, ico, processor, _T("Options"), mainSplitter->IsSplit(), processor->getBool(SHOW_INSTRUCTION_FIELDS));
+	Dialog *dlg = new Dialog(this, wxID_ANY, ico, processor.get(), _T("Options"), mainSplitter->IsSplit(), processor->getBool(SHOW_INSTRUCTION_FIELDS));
 	Config &c = Config::Instance();
 		
 	if(dlg->ShowModal() == wxID_OK)

@@ -432,13 +432,9 @@ void Component::drawConnections(bool showControl, bool showPC, Symbol* instr, bo
 								if(showPC || !(inputComp->getIsPC()))
 								{
 									glVertex2f(x1, y1);
-									auto iVertices = iLink->getVertices();
-									for(auto iVertex = iVertices.begin(); iVertex != iVertices.end(); ++iVertex)
+									for(auto &&vertex : iLink->getVertices())
 									{
-										Coord *vertex = *iVertex;
-										double x = vertex->x;
-										double y = vertex->y;
-										glVertex2f(x, y);
+										glVertex2f(vertex.x, vertex.y);
 									}
 									glVertex2f(x2, y2);
 								}
@@ -790,11 +786,11 @@ MainControl::MainControl(int layout, double x, double y, double w, double h, wxS
 
 
 	// Setup lookup table for translating opcode to output values:
-	lookup[0] = new mainControlLookup(1, 0, 0, 0, 2, 0, 0, 1); // add, sub, and, or, slt
-	lookup[4] = new mainControlLookup(0, 1, 0, 0, 1, 0, 0, 0); // beq
-	lookup[8] = new mainControlLookup(0, 0, 0, 0, 0, 0, 1, 1); // Add Immediate
-	lookup[35] = new mainControlLookup(0, 0, 1, 1, 0, 0, 1, 1); // lw
-	lookup[43] = new mainControlLookup(0, 0, 0, 0, 0, 1, 1, 0); // sw
+	lookup[0] = std::make_unique<mainControlLookup>(true, false, false, false, 2, false, false, true); // add, sub, and, or, slt
+	lookup[4] = std::make_unique<mainControlLookup>(false, true, false, false, 1, false, false, false); // beq
+	lookup[8] = std::make_unique<mainControlLookup>(false, false, false, false, 0, false, true, true); // Add Immediate
+	lookup[35] = std::make_unique<mainControlLookup>(false, false, true, true, 0, false, true, true); // lw
+	lookup[43] = std::make_unique<mainControlLookup>(false, false, false, false, 0, true, true, false); // sw
 }
 
 MainControlPipelined::MainControlPipelined(int layout, double x, double y, double w, double h, wxString name)
@@ -807,11 +803,11 @@ MainControlPipelined::MainControlPipelined(int layout, double x, double y, doubl
 
 
 	// Setup lookup table for translating opcode to output values:
-	lookup[0] = new mainControlLookup(1, 0, 0, 0, 2, 0, 0, 1); // add, sub, and, or, slt
-	lookup[4] = new mainControlLookup(0, 1, 0, 0, 1, 0, 0, 0); // beq
-	lookup[8] = new mainControlLookup(0, 0, 0, 0, 0, 0, 1, 1); // Add Immediate
-	lookup[35] = new mainControlLookup(0, 0, 1, 1, 0, 0, 1, 1); // lw
-	lookup[43] = new mainControlLookup(0, 0, 0, 0, 0, 1, 1, 0); // sw
+	lookup[0] = std::make_unique<mainControlLookup>(true, false, false, false, 2, false, false, true); // add, sub, and, or, slt
+	lookup[4] = std::make_unique<mainControlLookup>(false, true, false, false, 1, false, false, false); // beq
+	lookup[8] = std::make_unique<mainControlLookup>(false, false, false, false, 0, false, true, true); // Add Immediate
+	lookup[35] = std::make_unique<mainControlLookup>(false, false, true, true, 0, false, true, true); // lw
+	lookup[43] = std::make_unique<mainControlLookup>(false, false, false, false, 0, true, true, false); // sw
 }
 
 ALUControl::ALUControl(double x, double y, double w, double h, wxString name)
@@ -1719,7 +1715,7 @@ void ALU::step()
 
 void MainControl::step()
 {
-	mainControlLookup* result = lookup[linkList[MAINCONTROL_INPUT]->getVal()];
+	auto& result = lookup[linkList[MAINCONTROL_INPUT]->getVal()];
 	
 	linkList[MAINCONTROL_REGDST]->setVal(result->getRegDst());
 	linkList[MAINCONTROL_BRANCH]->setVal(result->getBranch());
@@ -1737,7 +1733,7 @@ void MainControl::step()
 
 void MainControlPipelined::step()
 {
-	mainControlLookup* result = lookup[linkList[MAINCONTROLPIPELINED_INPUT]->getVal()];
+	auto& result = lookup[linkList[MAINCONTROLPIPELINED_INPUT]->getVal()];
 
 	linkList[MAINCONTROLPIPELINED_WB]->setVal(result->getWB());
 	linkList[MAINCONTROLPIPELINED_MEM]->setVal(result->getMEM());

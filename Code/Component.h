@@ -259,7 +259,7 @@ class MainControl: public Control
 		MainControl(int layout, double x, double y, double w = 10, double h = 15, wxString name = _T("Control"));
 		virtual void step();
 	private:
-		std::map<uint, mainControlLookup*> lookup;
+		std::map<uint, std::unique_ptr<mainControlLookup>> lookup;
 		
 };
 
@@ -269,7 +269,7 @@ class MainControlPipelined: public Control
 		MainControlPipelined(int layout, double x, double y, double w = 10, double h = 15, wxString name = _T("Control"));
 		virtual void step();
 	private:
-		std::map<uint, mainControlLookup*> lookup;
+		std::map<uint, std::unique_ptr<mainControlLookup>> lookup;
 };
 
 class ALUControl: public Control

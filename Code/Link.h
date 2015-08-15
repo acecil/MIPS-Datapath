@@ -56,11 +56,11 @@ class Link
 		bool isShowText(){ return showText; };
 		Coord getTextPos(){ return textPos; };
 		void addVertex(double x, double y);
-		std::list<Coord*> getVertices(){ return vertices; };
+		std::vector<Coord> getVertices(){ return vertices; };
 		bool isOutput(){ return output; };
 		int getSlot(){ return slot; };
 		Component* getComp(){ return comp; };
-		void setVertexList(std::list<Coord*> *vertices);
+		void setVertexList(const std::vector<Coord> &vertices);
 		int getAbsX();
 		int getAbsY();
 		virtual bool isActive() = 0;
@@ -90,7 +90,7 @@ class Link
 		Coord pos;
 		Coord textPos;
 		wxString name;
-		std::list<Coord*> vertices;
+		std::vector<Coord> vertices;
 		int ID;
 		int slot;
 		static const int LINK_WIDTH;
