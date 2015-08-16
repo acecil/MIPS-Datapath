@@ -110,7 +110,7 @@ Frame::Frame(const wxString& title, const wxPoint& pos, const wxSize& size)
 	Component::setHighlightSingleInstruction(c.getBool(HIGHLIGHT_SINGLE_INSTRUCTION));
 	
 	// Initialise help
-	help = new wxHtmlHelpController(wxHF_CONTENTS | wxHF_SEARCH, this);
+	help = std::make_unique<wxHtmlHelpController>(wxHF_CONTENTS | wxHF_SEARCH, this);
 	wxFileSystem::AddHandler(new wxArchiveFSHandler);
 	help->AddBook(wxFileName(_T("MIPS-Datapath.htb")), true);
 	
@@ -118,7 +118,7 @@ Frame::Frame(const wxString& title, const wxPoint& pos, const wxSize& size)
 	wxInitAllImageHandlers();
 	
 	// Import icons
-	ico = new wxIconBundle();
+	ico = std::make_unique<wxIconBundle>();
 	ico->AddIcon(wxIcon(Icons::Cog_2_48_n_p_xpm));
 	ico->AddIcon(wxIcon(Icons::Cog_2_48_h_p_xpm));
 	ico->AddIcon(wxIcon(Icons::Cog_2_32_n_p_xpm));
@@ -360,7 +360,6 @@ void Frame::setupMenubar()
 
 Frame::~Frame()
 {
-
 }
 
 void Frame::updateEditorText()
@@ -674,7 +673,7 @@ void Frame::showHideLeftPanel(bool showLeftPanel, bool justSwitch)
 
 void Frame::EditOptions(wxCommandEvent& WXUNUSED(event))
 {
-	Dialog *dlg = new Dialog(this, wxID_ANY, ico, processor.get(), _T("Options"), mainSplitter->IsSplit(), processor->getBool(SHOW_INSTRUCTION_FIELDS));
+	Dialog *dlg = new Dialog(this, wxID_ANY, ico.get(), processor.get(), _T("Options"), mainSplitter->IsSplit(), processor->getBool(SHOW_INSTRUCTION_FIELDS));
 	Config &c = Config::Instance();
 		
 	if(dlg->ShowModal() == wxID_OK)

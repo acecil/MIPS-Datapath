@@ -105,8 +105,8 @@ private:
 	wxTextCtrl *errorText;
 	std::map<uint, Datalist*> dataList;
 	wxGrid *memoryList;
-	wxHtmlHelpController* help;
-	wxIconBundle* ico;
+	std::unique_ptr<wxHtmlHelpController> help;
+	std::unique_ptr<wxIconBundle> ico;
 	bool init;
 	bool initSize;
     DECLARE_EVENT_TABLE()

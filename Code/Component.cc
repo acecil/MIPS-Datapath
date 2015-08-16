@@ -42,7 +42,14 @@ int Component::count = 0;
 
 uint Component::pipelineCycle = 0;
 
-std::vector<Color> Component::activeLinkColors;
+std::vector<Color> Component::activeLinkColors =
+{
+	Color(1.0, 0.0, 0.0, 1.0),
+	Color(0.0, 1.0, 0.0, 1.0),
+	Color(1.0, 0.0, 1.0, 1.0),
+	Color(0.0, 0.0, 1.0, 1.0),
+	Color(0.0, 1.0, 1.0, 1.0)
+};
 std::map<configName, Color> Component::colours;
 bool Component::dataLinesBold = true;
 bool Component::highlightSingleInstruction = true;
@@ -153,11 +160,6 @@ Component::Component(double x, double y, double w, double h, wxString name, Comp
 
 	this->textPos = Coord(textPosX, textPosY);
 	activeOutputs = false;
-	Component::activeLinkColors.push_back(Color(1.0, 0.0, 0.0, 1.0));
-	Component::activeLinkColors.push_back(Color(0.0, 1.0, 0.0, 1.0));
-	Component::activeLinkColors.push_back(Color(1.0, 0.0, 1.0, 1.0));
-	Component::activeLinkColors.push_back(Color(0.0, 0.0, 1.0, 1.0));
-	Component::activeLinkColors.push_back(Color(0.0, 1.0, 1.0, 1.0));
 	activeLinkColor = activeLinkColors[0];
 	
 	oldActiveLinkColor = 1.0;
