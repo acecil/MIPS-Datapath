@@ -47,7 +47,6 @@ public:
 		Frame* frame, 
 		wxWindowID id = wxID_ANY, 
 		const wxPoint& pos = wxDefaultPosition, 
-		const wxSize& size = wxDefaultSize, 
 		long style=0, 
 		const wxString& name = _T("GLCanvas"), 					
 		int* attribList = 0,
@@ -59,7 +58,6 @@ public:
 	double GetScale() { return scale; }
 private:
 	void InitGL();                     // function to initialise GL context
-	void OnSize(wxSizeEvent& event);   // callback for when canvas is resized
 	void OnPaint(wxPaintEvent& event); // callback for when canvas is exposed
 	void OnLeftClick(wxMouseEvent& event);
 	void OnRightClick(wxMouseEvent& event);
@@ -69,7 +67,6 @@ private:
 	wxPoint convertScreenToMouseCoord(wxPoint pos);
 	bool init;
 	Model *processor;
-	wxSize size;
 	double scale;
 	static const double defaultWidth;
 	static const double defaultHeight;

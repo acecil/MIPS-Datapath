@@ -111,7 +111,6 @@
     <ClInclude Include="Code\GLCanvas.h" />
     <ClInclude Include="Code\Parser.h" />
     <ClInclude Include="Code\Scanner.h" />
-    <ClInclude Include="Code\ScrolledWindow.h" />
     <ClInclude Include="Code\Side.h" />
     <ClInclude Include="Code\Types.h" />
   </ItemGroup>
@@ -130,7 +129,6 @@
     <ClCompile Include="Code\GLCanvas.cc" />
     <ClCompile Include="Code\Parser.cc" />
     <ClCompile Include="Code\Scanner.cc" />
-    <ClCompile Include="Code\ScrolledWindow.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

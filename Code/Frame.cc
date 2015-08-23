@@ -20,7 +20,6 @@
  * 
  */
 
-#include "ScrolledWindow.h"
 #include "GLCanvas.h"
 #include "Dialog.h"
 #include "Datalist.h"
@@ -159,10 +158,7 @@ void Frame::setupSimulatorPage(wxNotebook *notebook)
 	wxPanel *simulatorPage = new wxPanel(notebook);
 	
 	mainSplitter = new wxSplitterWindow(simulatorPage, ID_SPLITTER_WINDOW);
-	GLSizer = new wxBoxSizer(wxHORIZONTAL);
-	GLWindow = new ScrolledWindow(mainSplitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, _T("GLWindow"));
-	GLWindow->SetMinSize(wxSize(400, 200));
-	GLWindow->SetScrollRate(1, 1);
+	GLSizer = new wxGridSizer(1, 1, wxSize());
 	wxBoxSizer *leftSizer = new wxBoxSizer(wxVERTICAL);
     
     // Set up Left panel.
@@ -202,13 +198,11 @@ void Frame::setupSimulatorPage(wxNotebook *notebook)
 	int attribList[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, wxFULL_REPAINT_ON_RESIZE};
     processor = std::make_unique<Model>();
     processor->resetup();
-    canvas = new GLCanvas(processor.get(), GLWindow, this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, _T("GLCanvas"), attribList, wxNullPalette);
-   	GLWindow->SetCanvas(canvas);
-	GLWindow->SetSizer(GLSizer);
+    canvas = new GLCanvas(processor.get(), mainSplitter, this, wxID_ANY, wxDefaultPosition, 0, _T("GLCanvas"), attribList, wxNullPalette);
    	GLSizer->Add(canvas, 1, wxEXPAND | wxALL, 0);
    
    	mainSplitter->SetMinimumPaneSize(20);
-    mainSplitter->SplitVertically(leftPanel, GLWindow, c.getNumber(SIMULATOR_SASH_POS));
+    mainSplitter->SplitVertically(leftPanel, canvas, c.getNumber(SIMULATOR_SASH_POS));
  
    	wxBoxSizer *simulatorSizer = new wxBoxSizer(wxHORIZONTAL);
    	simulatorSizer->Add(mainSplitter, 1, wxEXPAND | wxALL, 0);
@@ -664,7 +658,7 @@ void Frame::showHideLeftPanel(bool showLeftPanel, bool justSwitch)
 	}
 	else if(!mainSplitter->IsSplit() && (showLeftPanel || justSwitch))
 	{
-		mainSplitter->SplitVertically(leftPanel, GLWindow, c.getNumber(SIMULATOR_SASH_POS));
+		mainSplitter->SplitVertically(leftPanel, canvas, c.getNumber(SIMULATOR_SASH_POS));
 		c.setBool(SHOW_LEFT_PANEL, true); 
 	}
 	resetLeftPanelSizes();
@@ -848,7 +842,4 @@ void Frame::OnSelectInstruction(wxListEvent& WXUNUSED(event))
 void Frame::OnZoomSliderChanged(wxCommandEvent& event)
 {
 	canvas->SetZoom(-event.GetInt());
-	wxSize size = canvas->GetCanvasSize();
-	GLWindow->SetVirtualSize(size.GetWidth() * canvas->GetScale(), 
-		size.GetHeight() * canvas->GetScale());
 }

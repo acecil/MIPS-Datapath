@@ -30,7 +30,6 @@
 #include "GLCanvas.h"
 
 BEGIN_EVENT_TABLE(GLCanvas, wxGLCanvas)
-  EVT_SIZE(GLCanvas::OnSize)
   EVT_PAINT(GLCanvas::OnPaint)
   EVT_LEFT_UP(GLCanvas::OnLeftClick)
   EVT_RIGHT_UP(GLCanvas::OnRightClick)
@@ -45,9 +44,9 @@ const GLint GLCanvas::canvasHeight = 870;
 wxTipWindow* GLCanvas::tipWin = NULL;
 
 GLCanvas::GLCanvas(Model* proc, wxWindow* parent, Frame* frame, wxWindowID id, const wxPoint& pos, 
-	const wxSize& size, long style, const wxString& name, int* attribList, 
-	const wxPalette& palette):
-	wxGLCanvas(parent, id, attribList, pos, wxSize(canvasWidth, canvasHeight)),
+	long style, const wxString& name, int* attribList, 
+	const wxPalette& palette)
+	: wxGLCanvas(parent, id, attribList, pos, wxSize(canvasWidth, canvasHeight)),
 	glContext(wxGLContext(this))
 {
 	this->frame = frame;
@@ -73,10 +72,10 @@ void GLCanvas::Render()
   	}
   	 
   	glClear(GL_COLOR_BUFFER_BIT);
-   	glViewport(0, 0, size.x, size.y);
+   	glViewport(0, 0, GetSize().x, GetSize().y);
   	glMatrixMode(GL_PROJECTION);
   	glLoadIdentity();
-  	glOrtho(0, size.x, 0, size.y, -1, 1); 
+  	glOrtho(0, GetSize().x, 0, GetSize().y, -1, 1); 
   	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glScalef(canvasWidth / defaultWidth * scale, canvasHeight / defaultHeight * scale, 1.0);
@@ -102,10 +101,10 @@ void GLCanvas::InitGL()
   	SetCurrent(glContext);
   	glDrawBuffer(GL_BACK);
   	glClearColor(1.0, 1.0, 1.0, 0.0);
-   	glViewport(0, 0, size.x, size.y);
+   	glViewport(0, 0, GetSize().x, GetSize().y);
   	glMatrixMode(GL_PROJECTION);
   	glLoadIdentity();
-  	glOrtho(0, size.x, 0, size.y, -1, 1); 
+  	glOrtho(0, GetSize().x, 0, GetSize().y, -1, 1); 
   	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
   	// To antialias connectors...
@@ -121,18 +120,12 @@ void GLCanvas::OnPaint(wxPaintEvent& event)
 	Render();
 }
 
-void GLCanvas::OnSize(wxSizeEvent& event)
-{
-  	size = this->GetSize();
-	event.Skip();
-}
-
 wxPoint GLCanvas::GetMousePosition()
 {
 	wxPoint mousePos = wxGetMousePosition();
 	wxPoint scaledPos;
 	scaledPos.x = (int)((mousePos.x - GetScreenPosition().x) * defaultWidth / canvasWidth / scale);
-	scaledPos.y = (int)((size.y - mousePos.y + GetScreenPosition().y) * defaultHeight / canvasHeight / scale);
+	scaledPos.y = (int)((GetSize().y - mousePos.y + GetScreenPosition().y) * defaultHeight / canvasHeight / scale);
 	return scaledPos;
 }
 
@@ -140,7 +133,7 @@ wxPoint GLCanvas::convertScreenToMouseCoord(wxPoint pos)
 {
 	wxPoint scaledPos;
 	scaledPos.x = (int)(pos.x * canvasWidth / defaultWidth * scale + GetScreenPosition().x);
-	scaledPos.y = (int)(size.y - (pos.y * canvasHeight / defaultHeight * scale) + GetScreenPosition().y);
+	scaledPos.y = (int)(GetSize().y - (pos.y * canvasHeight / defaultHeight * scale) + GetScreenPosition().y);
 	return scaledPos;
 }
 

@@ -94,8 +94,7 @@ private:
 	static const int LEFT_PANEL_MIN_WIDTH=213;
 	static const int LEFT_PANEL_MIN_HEIGHT=450;
 	GLCanvas *canvas;
-	ScrolledWindow *GLWindow;
-	wxBoxSizer *GLSizer;
+	wxGridSizer *GLSizer;
 	std::unique_ptr<Model> processor;
 	wxPanel *leftPanel;
 	wxPanel *memoryPane;
