@@ -24,7 +24,6 @@
 
 BEGIN_EVENT_TABLE(Datalist, wxListCtrl)
     EVT_LIST_COL_BEGIN_DRAG(ID_INSTRUCTION_LIST, Datalist::OnDataListColSizeAdjusted)
-    //EVT_LISTBOX_DCLICK(ID_INSTRUCTION_LIST, Datalist::OnDataListColSizeAdjusted)
     EVT_LIST_COL_BEGIN_DRAG(ID_REGISTER_LIST, Datalist::OnDataListColSizeAdjusted)
     EVT_LIST_COL_BEGIN_DRAG(ID_DATA_LIST, Datalist::OnDataListColSizeAdjusted)
     EVT_LIST_ITEM_SELECTED(ID_INSTRUCTION_LIST, Datalist::OnSelect)

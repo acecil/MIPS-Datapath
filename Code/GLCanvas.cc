@@ -89,6 +89,7 @@ void GLCanvas::SetZoom(int zoom)
 {
 	scale = std::pow(0.98, static_cast<double>(zoom));
 	SetSize(canvasWidth * scale, canvasHeight * scale);
+	Render();
 }
 
 wxSize GLCanvas::GetCanvasSize()

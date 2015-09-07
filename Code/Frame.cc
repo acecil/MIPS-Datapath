@@ -421,10 +421,11 @@ void Frame::updateErrorText()
 
 void Frame::updateDataList(bool initialCall, bool selectInstruction)
 {
-	for(auto i = dataList.begin(); i != dataList.end(); ++i)
+	for(const auto& dl: dataList)
 	{
-		Datalist* list = (*i).second;
-		uint cMem = (*i).first;
+		uint cMem = dl.first;
+		Datalist* list = dl.second;
+
 		// For complete redraw, completely empty datalist then refill with columns.
 		if(initialCall)
 		{
