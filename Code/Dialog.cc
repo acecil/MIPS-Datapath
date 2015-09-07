@@ -109,31 +109,27 @@ void Dialog::createColourButton(wxFlexGridSizer *parent, wxString caption, confi
 {
 	// Create the colour button with the specified caption
 	// Also get the default colour from the config file.
-		
 	Config& c = Config::Instance();
-	colours[id] = c.getColour(id);
+	wxColour col = c.getColour(id);
+	colours[id] = col;
 	
-	unsigned char data[1200];
-	for(uint i = 0; i < 1200; i += 3)
-	{
-		data[i] = colours[id].Red();
-		data[i + 1] = colours[id].Green();
-		data[i + 2] = colours[id].Blue();
-	}
-	wxImage* image = new wxImage(20, 20, data);
-	wxBitmap* bmp = new wxBitmap(*image, -1);
-	buttons[id] = new wxBitmapButton((wxWindow*)(this), (wxWindowID)id, *bmp);
+	wxImage image(20, 20);
+	image.SetRGB(wxRect(wxSize(20, 20)), col.Red(), col.Green(), col.Blue());
+	wxBitmap bmp(image, -1);
+	buttons[id] = new wxBitmapButton((wxWindow*)(this), (wxWindowID)id, bmp);
 	parent->Add(new wxStaticText(this, wxID_ANY, caption), 0, wxALL | wxALIGN_CENTER_VERTICAL, 3);
 	parent->Add(buttons[id], 0, wxEXPAND | wxRIGHT, 3);
 }
 
 void Dialog::showColourPicker(configName id)
 {
+	const wxColour& col = colours[id];
+
 	// Show the colour picker, setting the original colour based on the required one,
 	// and storing the new colour in the same location.
 	wxColourData data;
   	data.SetChooseFull(true);
-	data.SetColour(colours[id]);
+	data.SetColour(col);
 	      
 	wxColourDialog *dialog = new wxColourDialog(this, &data);
 	if(dialog->ShowModal() == wxID_OK)
@@ -142,16 +138,10 @@ void Dialog::showColourPicker(configName id)
 	    colours[id] = retData.GetColour();
 	}
 	
-	unsigned char bdata[1200];
-	for(uint i = 0; i < 1200; i += 3)
-	{
-		bdata[i] = colours[id].Red();
-		bdata[i + 1] = colours[id].Green();
-		bdata[i + 2] = colours[id].Blue();
-	}
-	wxImage* image = new wxImage(20, 20, bdata);
-	wxBitmap* bmp = new wxBitmap(*image, -1);
-	buttons[id]->SetBitmapLabel(*bmp);
+	wxImage image(20, 20);
+	image.SetRGB(wxRect(wxSize(20, 20)), col.Red(), col.Green(), col.Blue());
+	wxBitmap bmp(image, -1);
+	buttons[id]->SetBitmapLabel(bmp);
 	
 	dialog->Destroy();
 }
