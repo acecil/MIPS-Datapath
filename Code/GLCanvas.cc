@@ -30,55 +30,63 @@
 #include "GLCanvas.h"
 
 BEGIN_EVENT_TABLE(GLCanvas, wxGLCanvas)
-  EVT_PAINT(GLCanvas::OnPaint)
-  EVT_LEFT_UP(GLCanvas::OnLeftClick)
-  EVT_RIGHT_UP(GLCanvas::OnRightClick)
-  EVT_MOTION(GLCanvas::OnMouseMotion)
-  EVT_ERASE_BACKGROUND(GLCanvas::OnEraseBackground)
+EVT_PAINT(GLCanvas::OnPaint)
+EVT_LEFT_DOWN(GLCanvas::OnLeftDown)
+EVT_LEFT_UP(GLCanvas::OnLeftClick)
+EVT_RIGHT_UP(GLCanvas::OnRightClick)
+EVT_MOTION(GLCanvas::OnMouseMotion)
+EVT_ERASE_BACKGROUND(GLCanvas::OnEraseBackground)
 END_EVENT_TABLE()
 
-const double GLCanvas::defaultWidth = 250.0;
-const double GLCanvas::defaultHeight = 174.0;
-const GLint GLCanvas::canvasWidth = 1150;
-const GLint GLCanvas::canvasHeight = 870;
-wxTipWindow* GLCanvas::tipWin = NULL;
+const double GLCanvas::defaultScale = 5.5;
+
 
 GLCanvas::GLCanvas(Model* proc, wxWindow* parent, Frame* frame, wxWindowID id, const wxPoint& pos, 
 	long style, const wxString& name, int* attribList, 
 	const wxPalette& palette)
-	: wxGLCanvas(parent, id, attribList, pos, wxSize(canvasWidth, canvasHeight)),
+	: wxGLCanvas(parent, id, attribList, pos, wxDefaultSize),
 	glContext(wxGLContext(this))
 {
 	this->frame = frame;
 	init = false;
 	processor = proc;
-	scale = 1.0;
+	scale = defaultScale;
 	
 	processor->setup();
 }
 
 void GLCanvas::Render()
 {
-	if( !IsShownOnScreen() )
+	if (!IsShownOnScreen())
 	{
 		/* Cannot render to hidden GL canvas. */
 		return;
 	}
 
 	SetCurrent(glContext);
-  	if (!init) {
-    	InitGL();
-    	init = true;
-  	}
-  	 
-  	glClear(GL_COLOR_BUFFER_BIT);
-   	glViewport(0, 0, GetSize().x, GetSize().y);
+	if (!init) {
+		InitGL();
+		init = true;
+	}
+
+	const auto size{ GetSize() };
+
+	glViewport(0, 0, size.x, size.y);
+
   	glMatrixMode(GL_PROJECTION);
   	glLoadIdentity();
-  	glOrtho(0, GetSize().x, 0, GetSize().y, -1, 1); 
+  	glOrtho(0, size.x, 0, size.y, -1, 1); 
+	
   	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glScalef(canvasWidth / defaultWidth * scale, canvasHeight / defaultHeight * scale, 1.0);
+
+	glTranslatef(offset.x, -offset.y, 0.0);
+	glTranslatef(size.x / 2.0, size.y / 2.0, 0.0);
+	glScalef(scale, scale, 1.0);
+	glTranslatef(-size.x / defaultScale / 2.0, -size.y / defaultScale / 2.0, 0.0);
+
+	glClear(GL_COLOR_BUFFER_BIT);
+	
 	processor->draw(GetMousePosition());
 
 	glFlush();
@@ -87,27 +95,21 @@ void GLCanvas::Render()
 
 void GLCanvas::SetZoom(int zoom)
 {
-	scale = std::pow(0.98, static_cast<double>(zoom));
-	SetSize(canvasWidth * scale, canvasHeight * scale);
+	scale = defaultScale * std::pow(0.98, static_cast<double>(zoom));
 	Render();
 }
 
 wxSize GLCanvas::GetCanvasSize()
 {
-	return wxSize(canvasWidth, canvasHeight);
+	const auto size{ GetSize() };
+	return wxSize(size.x / scale, size.y / scale);
 }
 
 void GLCanvas::InitGL()
 {
-  	SetCurrent(glContext);
   	glDrawBuffer(GL_BACK);
   	glClearColor(1.0, 1.0, 1.0, 0.0);
-   	glViewport(0, 0, GetSize().x, GetSize().y);
-  	glMatrixMode(GL_PROJECTION);
-  	glLoadIdentity();
-  	glOrtho(0, GetSize().x, 0, GetSize().y, -1, 1); 
-  	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+
   	// To antialias connectors...
   	glShadeModel(GL_SMOOTH);
 	glEnable(GL_POINT_SMOOTH);
@@ -123,25 +125,40 @@ void GLCanvas::OnPaint(wxPaintEvent& event)
 
 wxPoint GLCanvas::GetMousePosition()
 {
-	wxPoint mousePos = wxGetMousePosition();
+	const auto size{ GetSize() };
+	const auto mousePos{ wxGetMousePosition() };
 	wxPoint scaledPos;
-	scaledPos.x = (int)((mousePos.x - GetScreenPosition().x) * defaultWidth / canvasWidth / scale);
-	scaledPos.y = (int)((GetSize().y - mousePos.y + GetScreenPosition().y) * defaultHeight / canvasHeight / scale);
+	scaledPos.x = (int)((mousePos.x - GetScreenPosition().x - offset.x - size.x / 2) / scale + size.x / defaultScale / 2);
+	scaledPos.y = (int)((size.y / 2 - mousePos.y + GetScreenPosition().y + offset.y) / scale + size.y / defaultScale / 2);
 	return scaledPos;
 }
 
 wxPoint GLCanvas::convertScreenToMouseCoord(wxPoint pos)
 {
+	const auto size{ GetSize() };
 	wxPoint scaledPos;
-	scaledPos.x = (int)(pos.x * canvasWidth / defaultWidth * scale + GetScreenPosition().x);
-	scaledPos.y = (int)(GetSize().y - (pos.y * canvasHeight / defaultHeight * scale) + GetScreenPosition().y);
+	scaledPos.x = (int)((pos.x - size.x / defaultScale / 2) * scale + GetScreenPosition().x + offset.x + size.x / 2);
+	scaledPos.y = (int)(size.y /2 - ((pos.y - size.y / defaultScale / 2) * scale) + GetScreenPosition().y + offset.y);
 	return scaledPos;
+}
+
+void GLCanvas::OnLeftDown(wxMouseEvent& event)
+{
+	currPos = event.GetPosition();
 }
 
 void GLCanvas::OnLeftClick(wxMouseEvent& event)
 {
-	processor->step();
-	frame->updateDataList();
+	const wxPoint mousePos{ event.GetPosition() };
+	if (currPos == mousePos)
+	{
+		processor->step();
+		frame->updateDataList();
+	}
+	else
+	{
+		offset += mousePos - currPos;
+	}
  	Render();
 }
 
@@ -153,6 +170,14 @@ void GLCanvas::OnRightClick(wxMouseEvent& event)
 
 void GLCanvas::OnMouseMotion(wxMouseEvent& event)
 {
+	if (event.LeftIsDown())
+	{
+		const wxPoint mousePos{ event.GetPosition() };
+		offset += mousePos - currPos;
+		currPos = mousePos;
+		Render();
+	}
+
 	popUpString.Clear();
 	if(Model::getBool(SHOW_POPUPS))
 	{

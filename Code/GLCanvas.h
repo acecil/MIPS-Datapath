@@ -59,6 +59,7 @@ public:
 private:
 	void InitGL();                     // function to initialise GL context
 	void OnPaint(wxPaintEvent& event); // callback for when canvas is exposed
+	void OnLeftDown(wxMouseEvent& event);
 	void OnLeftClick(wxMouseEvent& event);
 	void OnRightClick(wxMouseEvent& event);
 	void OnMouseMotion(wxMouseEvent& event);
@@ -67,12 +68,11 @@ private:
 	wxPoint convertScreenToMouseCoord(wxPoint pos);
 	bool init;
 	Model *processor;
+	static const double defaultScale;
 	double scale;
-	static const double defaultWidth;
-	static const double defaultHeight;
-	static const GLint canvasWidth;
-	static const GLint canvasHeight;
-	static wxTipWindow* tipWin;
+	wxPoint offset;
+	wxPoint currPos;
+	wxTipWindow* tipWin;
 	wxString popUpString;
 	Component* prevTipComp;
 	Link* prevTipLink;
