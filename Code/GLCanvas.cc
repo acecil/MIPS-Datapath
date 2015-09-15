@@ -87,7 +87,7 @@ void GLCanvas::Render()
 
 	glClear(GL_COLOR_BUFFER_BIT);
 	
-	processor->draw(GetMousePosition());
+	processor->draw(GetMousePosition(), scale / defaultScale);
 
 	glFlush();
   	SwapBuffers();

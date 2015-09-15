@@ -1559,7 +1559,7 @@ Model::~Model()
 
 }
 
-void Model::draw(wxPoint mousePos)
+void Model::draw(wxPoint mousePos, double scale)
 {	
 	bool simpleLayout = (layout == LAYOUT_SIMPLE);
 	bool showControl = bools[SHOW_CONTROL_LINES];
@@ -1575,7 +1575,7 @@ void Model::draw(wxPoint mousePos)
  				
  				i->drawConnectors(showControl, showPC, currInstr, simpleLayout);
  				i->drawConnections(showControl, showPC, currInstr, simpleLayout);
- 				i->draw(showControl, showPC, currInstr, simpleLayout);
+ 				i->draw(showControl, showPC, currInstr, simpleLayout, scale);
 			}
 		}
 

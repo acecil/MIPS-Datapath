@@ -72,7 +72,7 @@ class Model
 		void saveFile(wxString file);
 		void step();
 		void reset();
-		void draw(wxPoint mousePos);
+		void draw(wxPoint mousePos, double scale);
 		void addVertex(wxPoint mousePos);
 		Component* findComponent(wxPoint mousePos);
 		Link* findLink(wxPoint mousePos);

@@ -311,8 +311,18 @@ void Component::drawBackground()
 	glPopAttrib();
 }
 
-void Component::drawName(bool showControl, bool showPC)
+void Component::drawName(bool showControl, bool showPC, double scale)
 {
+	void *font = GLUT_BITMAP_HELVETICA_10;
+	if (scale > 1.8)
+	{
+		font = GLUT_BITMAP_HELVETICA_18;
+	}
+	else if (scale > 1.2)
+	{
+		font = GLUT_BITMAP_HELVETICA_12;
+	}
+
 	glPushAttrib(GL_COLOR_BUFFER_BIT);
 	glPushMatrix();
 	// Translate text to the top of the component.
@@ -328,7 +338,7 @@ void Component::drawName(bool showControl, bool showPC)
     	}
     	else
     	{
-			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, name[i]);
+			glutBitmapCharacter(font, name[i]);
     	}
 	}
 	glPopMatrix();
@@ -347,7 +357,7 @@ void Component::drawName(bool showControl, bool showPC)
 					wxString linkName = currLink->getName();
 					for(uint j = 0; j < linkName.length(); ++j)
 					{
-						glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, linkName[j]);
+						glutBitmapCharacter(font, linkName[j]);
 					}
 					glPopMatrix();
 				}
@@ -1188,19 +1198,19 @@ Forwarding::Forwarding(double x, double y, double w, double h, wxString name)
 	
 }
 
-void PC::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout)
+void PC::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale)
 {
 	glPushAttrib(GL_COLOR_BUFFER_BIT);
 	glPushMatrix();
 	position(); 
 	drawShadedRectangle();
 	drawRectangle();
-	drawName(showControl, showPC);
+	drawName(showControl, showPC, scale);
 	glPopMatrix();
 	glPopAttrib();
 }
 
-void AndGate::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout)
+void AndGate::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale)
 {
 	glPushAttrib(GL_COLOR_BUFFER_BIT);	
 	glPushMatrix();
@@ -1235,12 +1245,12 @@ void AndGate::draw(bool showControl, bool showPC, Symbol* currInstr, bool simple
 		}
 		glVertex2f(1.0, 0.0);
 	glEnd();
-	drawName(showControl, showPC);
+	drawName(showControl, showPC, scale);
 	glPopMatrix();
 	glPopAttrib();
 }
 
-void ALU::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout)
+void ALU::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale)
 {
 	glPushAttrib(GL_COLOR_BUFFER_BIT);	
 	glPushMatrix();
@@ -1270,24 +1280,24 @@ void ALU::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayo
   		glVertex2f(0.45F, 0.5F);
   		glVertex2f(0.0F, 0.33F);	
 	glEnd();
-  	drawName(showControl, showPC);
+  	drawName(showControl, showPC, scale);
   	glPopMatrix();
   	glPopAttrib();
 }
 
-void Memory::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout)
+void Memory::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale)
 {
 	glPushAttrib(GL_COLOR_BUFFER_BIT);
 	glPushMatrix();
 	position(); 
 	drawShadedRectangle();
 	drawRectangle();
-	drawName(showControl, showPC);
+	drawName(showControl, showPC, scale);
 	glPopMatrix();
 	glPopAttrib();
 }
 
-void Control::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout)
+void Control::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale)
 {
 	glPushAttrib(GL_COLOR_BUFFER_BIT);
 	glPushMatrix();
@@ -1316,12 +1326,12 @@ void Control::draw(bool showControl, bool showPC, Symbol* currInstr, bool simple
 		}
 	glEnd();
 	glPopMatrix();
-	drawName(showControl, showPC);
+	drawName(showControl, showPC, scale);
 	glPopMatrix();
 	glPopAttrib();
 }
 
-void MuxBase::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout)
+void MuxBase::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale)
 {
 	glPushAttrib(GL_COLOR_BUFFER_BIT);
 	glPushMatrix();
@@ -1370,36 +1380,36 @@ void MuxBase::draw(bool showControl, bool showPC, Symbol* currInstr, bool simple
 			glVertex2f(0.5 + 0.5 * cos(PI * i / NUM_CIRCLE_LINES), 0.875 + 0.125 * sin(PI * i / NUM_CIRCLE_LINES));
 		}
 	glEnd();
-	drawName(showControl, showPC);
+	drawName(showControl, showPC, scale);
 	glPopMatrix();
 	glPopAttrib();
 }
 
-void PipelineRegister::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout)
+void PipelineRegister::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale)
 {
 	glPushAttrib(GL_COLOR_BUFFER_BIT);
 	glPushMatrix();
 	position(); 
 	drawShadedRectangle();
 	drawRectangle();
-	drawName(showControl, showPC);
+	drawName(showControl, showPC, scale);
 	glPopMatrix();
 	glPopAttrib();
 }
 
-void Forwarding::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout)
+void Forwarding::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale)
 {
 	glPushAttrib(GL_COLOR_BUFFER_BIT);
 	glPushMatrix();
 	position(); 
 	drawShadedRectangle();
 	drawRectangle();
-	drawName(showControl, showPC);
+	drawName(showControl, showPC, scale);
 	glPopMatrix();
 	glPopAttrib();
 }
 
-void Node::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout)
+void Node::draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale)
 {
 	uint numInputs = 1;
 	uint numOutputs = 2;

@@ -86,8 +86,8 @@ class Component
 		virtual void resetColour(){ fillColorMin = colours[COMPONENT_COLOUR]; };
 		// Drawing functions:
 		static void drawBackground();
-		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout) = 0;
-		void drawName(bool showControl, bool showPC);
+		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale) = 0;
+		void drawName(bool showControl, bool showPC, double scale);
 		void drawConnections(bool showControl, bool showPC, Symbol* instr, bool simpleLayout);
 		virtual void drawConnectors(bool showControl, bool showPC, Symbol* instr, bool simpleLayout);
 		void drawLinkTriangle(Side edge, bool large);
@@ -171,6 +171,7 @@ class Component
 		static bool highlightSingleInstruction;
 	private:
 		wxString getLinkInfo(int ID, Link* currLink);
+		void * getFont();
 		Link* currentLink; // Current link, used when setting up layouts.
 		wxString name; 
 		ComponentType type;
@@ -192,7 +193,7 @@ class MuxBase: public Component
 {
 	public:
 		MuxBase(double x, double y, double w, double h, wxString name, ComponentType type, bool PC = false);
-		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout);
+		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale);
 	private:
 };
 
@@ -218,7 +219,7 @@ class Control: public Component
 		Control(double x, double y, double w, double h, wxString name, ComponentType type, bool control = true, bool PC = false, double textPosX = 0, double textPosY = 1)
 		: Component(x, y, w, h, name, type, control, PC, textPosX, textPosY){};
 	private:
-		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout);
+		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale);
 		
 };
 
@@ -302,7 +303,7 @@ class Memory: public Component
 	public:
 		Memory(double x, double y, double w, double h, wxString name, ComponentType type, double textPosX = 0, double textPosY = 1)
 		: Component(x, y, w, h, name, type, false, false, textPosX, textPosY){};
-		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout);
+		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale);
 		luint getData(luint address);
 		void setData(luint address, luint val){ data[address] = val; };
 	protected:
@@ -349,7 +350,7 @@ class ALU: public Component
 {
 	public:
 		ALU(double x, double y, double w = 10, double h = 25, wxString name = _T("ALU"), bool PC = false);
-		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout);
+		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale);
 		virtual void step();
 	private:
 };
@@ -358,7 +359,7 @@ class AndGate: public Component
 {
 	public:
 		AndGate(double x, double y, double w = 8, double h = 5, wxString name = _T("AndGate"), bool PC = false);
-		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout);
+		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale);
 		virtual void step();
 		luint getOutput();
 	private:
@@ -368,7 +369,7 @@ class PC: public Component
 {
 	public:
 		PC(int layout, double x, double y, double w = 5, double h = 8, wxString name = _T("PC"));
-		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout);
+		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale);
 		virtual void step();
 		virtual void reset();
 		luint getOutput();
@@ -384,7 +385,7 @@ class PipelineRegister: public Component
 {
 	public:
 		PipelineRegister(double x, double y, double w, double h, wxString name, ComponentType type, double textPosX = 0.0, double textPosY = 1.0);
-		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout);
+		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale);
 		virtual void reset();
 		virtual void resetColour(){ fillColorMin = colours[PIPEREG_COLOUR]; };
 		wxString getMainInfo(wxPoint mousePos);
@@ -435,7 +436,7 @@ class Forwarding: public Component
 {
 	public:
 		Forwarding(double x, double y, double w = 30, double h = 10, wxString name = _T("Forwarding"));
-		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout);
+		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale);
 	private:
 		void setDelay(int delay){ this->delay = delay; };
 		void decrementDelayRemaining(){ delayRemaining--; };
@@ -450,7 +451,7 @@ class Node: public Component
 {
 	public:
 		Node(double x, double y, double w = 2, double h = 2, wxString name = _T(""));
-		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout);
+		virtual void draw(bool showControl, bool showPC, Symbol* currInstr, bool simpleLayout, double scale);
 		virtual void drawConnectors(bool showControl, bool showPC){};
 		virtual bool isActive();
 		virtual luint getVal();
