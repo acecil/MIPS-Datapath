@@ -72,6 +72,7 @@ private:
 	double scale;
 	wxPoint offset;
 	wxPoint currPos;
+	wxPoint downPos;
 	wxTipWindow* tipWin;
 	wxString popUpString;
 	Component* prevTipComp;

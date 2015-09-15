@@ -51,6 +51,8 @@ GLCanvas::GLCanvas(Model* proc, wxWindow* parent, Frame* frame, wxWindowID id, c
 	init = false;
 	processor = proc;
 	scale = defaultScale;
+	currPos = wxPoint();
+	downPos = wxPoint();
 	
 	processor->setup();
 }
@@ -144,13 +146,14 @@ wxPoint GLCanvas::convertScreenToMouseCoord(wxPoint pos)
 
 void GLCanvas::OnLeftDown(wxMouseEvent& event)
 {
-	currPos = event.GetPosition();
+	downPos = event.GetPosition();
+	currPos = downPos;
 }
 
 void GLCanvas::OnLeftClick(wxMouseEvent& event)
 {
 	const wxPoint mousePos{ event.GetPosition() };
-	if (currPos == mousePos)
+	if (downPos == mousePos)
 	{
 		processor->step();
 		frame->updateDataList();
