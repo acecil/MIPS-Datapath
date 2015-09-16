@@ -63,9 +63,11 @@ private:
 	void OnLeftClick(wxMouseEvent& event);
 	void OnRightClick(wxMouseEvent& event);
 	void OnMouseMotion(wxMouseEvent& event);
+	void OnWheel(wxMouseEvent& event);
 	void OnEraseBackground(wxEraseEvent& event);
-	wxPoint GetMousePosition();
-	wxPoint convertScreenToMouseCoord(wxPoint pos);
+	wxPoint GetMousePosition() const;
+	wxPoint convertMouseToScreenCoord(wxPoint pos) const;
+	wxPoint convertScreenToMouseCoord(wxPoint pos) const;
 	bool init;
 	Model *processor;
 	static const double defaultScale;

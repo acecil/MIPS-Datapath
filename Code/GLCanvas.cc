@@ -35,6 +35,7 @@ EVT_LEFT_DOWN(GLCanvas::OnLeftDown)
 EVT_LEFT_UP(GLCanvas::OnLeftClick)
 EVT_RIGHT_UP(GLCanvas::OnRightClick)
 EVT_MOTION(GLCanvas::OnMouseMotion)
+EVT_MOUSEWHEEL(GLCanvas::OnWheel)
 EVT_ERASE_BACKGROUND(GLCanvas::OnEraseBackground)
 END_EVENT_TABLE()
 
@@ -125,7 +126,12 @@ void GLCanvas::OnPaint(wxPaintEvent& event)
 	Render();
 }
 
-wxPoint GLCanvas::GetMousePosition()
+wxPoint GLCanvas::GetMousePosition() const
+{
+	return convertMouseToScreenCoord(wxGetMousePosition());
+}
+
+wxPoint GLCanvas::convertMouseToScreenCoord(wxPoint pos) const
 {
 	const auto size{ GetSize() };
 	const auto mousePos{ wxGetMousePosition() };
@@ -135,7 +141,7 @@ wxPoint GLCanvas::GetMousePosition()
 	return scaledPos;
 }
 
-wxPoint GLCanvas::convertScreenToMouseCoord(wxPoint pos)
+wxPoint GLCanvas::convertScreenToMouseCoord(wxPoint pos) const
 {
 	const auto size{ GetSize() };
 	wxPoint scaledPos;
@@ -303,6 +309,12 @@ void GLCanvas::OnMouseMotion(wxMouseEvent& event)
 		}
 	}
 	event.Skip();
+}
+
+void GLCanvas::OnWheel(wxMouseEvent& event)
+{
+	scale *= std::pow(0.98, static_cast<double>(-event.GetWheelRotation()) * 4 / event.GetWheelDelta());
+	Render();
 }
 
 void GLCanvas::OnEraseBackground(wxEraseEvent &event)
